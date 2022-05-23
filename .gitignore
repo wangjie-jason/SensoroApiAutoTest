@@ -1,0 +1,9 @@
+# Project exclude paths
+/venv/
+.idea/
+__*__/
+.DS_Store
+Temp
+/outFiles/report/
+/outFiles/logs/
+/outFiles/screenShot/
