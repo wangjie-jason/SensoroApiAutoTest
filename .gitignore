@@ -7,3 +7,4 @@ Temp
 /outFiles/report/
 /outFiles/logs/
 /outFiles/screenShot/
+/.pytest_cache/

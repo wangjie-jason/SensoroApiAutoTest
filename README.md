@@ -6,6 +6,10 @@
 - 安装依赖 
     - pip3 install -r requirements.txt
 
+# 项目结构
+![img.png](img.png)
+
+
 ## 配置文件
 
 ```bash
