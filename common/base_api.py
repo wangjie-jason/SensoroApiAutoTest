@@ -11,6 +11,7 @@ from common.base_log import Logging
 path = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.abspath(os.path.join(path, '../configs'))
 
+
 # logger = Logging().get_logger()
 
 class BaseApi:
@@ -104,16 +105,10 @@ class BaseApi:
         except Exception as e:
             self.logger.error('put请求%s失败，错误信息%s' % (f'{self.host[environment]["host"]}{address}', e))
 
-    def foo(self):
-        self.logger.info('1111')
 
 if __name__ == '__main__':
-    # BaseApi().foo("https://www.baidu.com")
-    # address = 'https://lins-test1-api.sensoro.com/auth/v1/sendSms'
-    # params = {
-    #     'mobile': '13718395478',
-    #     'region': 'CN'}
-    # BaseApi().get_(address, params=params)
-    # BaseApi().get_(address, params=params)
-    # BaseApi().get_(address, params=params)
-    BaseApi().foo()
+    address = 'https://lins-test1-api.sensoro.com/auth/v1/sendSms'
+    params = {
+        'mobile': '13718395478',
+        'region': 'CN'}
+    BaseApi().get_(address, params=params)
