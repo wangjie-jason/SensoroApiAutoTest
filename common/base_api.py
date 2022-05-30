@@ -18,7 +18,7 @@ class BaseApi:
     """基础类，提供公共方法"""
 
     def __init__(self):
-        '''读取环境配置文件'''
+        """读取环境配置文件"""
         config = configparser.ConfigParser()
         config.read(file_path + '/lins_environment.ini', encoding="utf-8")
         self.host = config

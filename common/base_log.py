@@ -12,19 +12,19 @@ import time
 
 
 class Logging:
-    '''用于全局记录log'''
+    """用于全局记录log"""
     logger_instance = None
 
     @classmethod
     def get_logger(cls):
-        '''单例模式,使多文件或多次调用时,始终使用这一个logger'''
+        """单例模式,使多文件或多次调用时,始终使用这一个logger"""
         if cls.logger_instance:
             return cls.logger_instance
         else:
-            logger = logging.getLogger()
+            logger_ = logging.getLogger()
 
             # 设置日志可输出的最低等级
-            logger.setLevel(logging.DEBUG)
+            logger_.setLevel(logging.DEBUG)
             # 设置日志输入格式
             format_ = logging.Formatter(
                 '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
@@ -51,12 +51,12 @@ class Logging:
             ch.setLevel(logging.INFO)
 
             # 添加输出
-            logger.addHandler(ch)
-            logger.addHandler(fh)
+            logger_.addHandler(ch)
+            logger_.addHandler(fh)
 
             # logger.removeHandler(ch)
             # logger.removeHandler(fh)
-            cls.logger_instance = logger
+            cls.logger_instance = logger_
 
             return cls.logger_instance
 
