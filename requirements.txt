@@ -3,3 +3,4 @@ PyYAML==6.0
 requests==2.27.1
 allure-pytest==2.9.45
 pytest_ordering==0.6 #pytest控制用例执行顺序的包
+pytest-rerunfailures==10.2

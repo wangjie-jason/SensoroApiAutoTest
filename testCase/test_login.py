@@ -13,6 +13,7 @@ class TestLogin:
     @allure.feature('获取手机号验证码测试')
     @pytest.mark.run(order=1)
     @pytest.mark.parametrize('mobile, message', data_smsCode)
+    # @pytest.mark.flaky(reruns=5, reruns_delay=2)
     def test_smsCode(self, mobile, message):
         """获取验证码"""
         r = Login().get_sendSms(mobile)['message']
