@@ -6,7 +6,7 @@ import os
 
 import requests
 
-from common.base_log import Logging
+from common.base_log import Logger
 
 path = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.abspath(os.path.join(path, '../configs'))
@@ -15,7 +15,7 @@ file_path = os.path.abspath(os.path.join(path, '../configs'))
 # logger = Logging().get_logger()
 
 class BaseApi:
-    """基础类，提供公共方法"""
+    """基础类，对请求方法进行二次封装"""
 
     def __init__(self):
         """读取环境配置文件"""
@@ -23,7 +23,7 @@ class BaseApi:
         config.read(file_path + '/lins_environment.ini', encoding="utf-8")
         self.host = config
         # 添加日志器
-        self.logger = Logging().get_logger()
+        self.logger = Logger().get_logger()
 
     def get_(self, address, params=None, header=None, environment='test'):
         """发送get请求，返回json格式数据"""

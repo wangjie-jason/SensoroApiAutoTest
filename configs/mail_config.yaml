@@ -1,0 +1,7 @@
+mail_subject: 'lins接口自动化测试报告'
+sender_mail_address: 'wangjie@sensoro.com'
+sender_username: 'wangjie@sensoro.com'
+sender_password: PeeuobDpukzEcD54
+receiver_mail_list: ['zhouzhuoxian@sensoro.com', 'wangjie@sensoro.com']
+smtp_domain: 'smtp.exmail.qq.com'
+smtp_port: 465

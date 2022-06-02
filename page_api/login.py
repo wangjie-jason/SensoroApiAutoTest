@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-from common.base_api import BaseApi
+from common.http_method import BaseApi
 
 
 class Login(BaseApi):

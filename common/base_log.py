@@ -11,7 +11,7 @@ import os.path
 import time
 
 
-class Logging:
+class Logger:
     """用于全局记录log"""
     logger_instance = None
 
@@ -21,10 +21,10 @@ class Logging:
         if cls.logger_instance:
             return cls.logger_instance
         else:
-            logger_ = logging.getLogger()
+            logger = logging.getLogger()
 
             # 设置日志可输出的最低等级
-            logger_.setLevel(logging.DEBUG)
+            logger.setLevel(logging.DEBUG)
             # 设置日志输入格式
             format_ = logging.Formatter(
                 '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
@@ -51,16 +51,16 @@ class Logging:
             ch.setLevel(logging.INFO)
 
             # 添加输出
-            logger_.addHandler(ch)
-            logger_.addHandler(fh)
+            logger.addHandler(ch)
+            logger.addHandler(fh)
 
             # logger.removeHandler(ch)
             # logger.removeHandler(fh)
-            cls.logger_instance = logger_
+            cls.logger_instance = logger
 
             return cls.logger_instance
 
 
 if __name__ == '__main__':
-    logger = Logging().get_logger()
+    logger = Logger().get_logger()
     logger.info('测试日志')

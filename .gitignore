@@ -4,6 +4,7 @@
 __*__/
 .DS_Store
 Temp
+/outFiles/
 /outFiles/report/
 /outFiles/logs/
 /outFiles/screenShot/
