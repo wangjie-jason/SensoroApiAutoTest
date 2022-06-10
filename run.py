@@ -5,7 +5,6 @@ import os
 import pytest
 
 from common.mail_sender import MailSender
-from tools.get_config import get_config
 from tools.get_yaml_data import get_yaml_data
 
 if __name__ == '__main__':

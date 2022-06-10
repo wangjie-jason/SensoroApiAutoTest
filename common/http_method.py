@@ -39,17 +39,19 @@ class BaseApi:
                 self.logger.info("Redirect_URL: {}".format(response.url))
             elif 400 <= response.status_code < 500:
                 self.logger.info("接口请求异常,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
                 return response.json()
             else:
                 self.logger.info("服务器内部报错,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
         except Exception as e:
             self.logger.error('get请求%s失败，错误信息%s' % (f'{self.host[environment]["host"]}{address}', e))
 
-    def post_(self, address, data=None, json=None, header=None, file=None, environment='test'):
+    def post_(self, address, data=None, json=None, headers=None, files=None, environment='test'):
         """发送past请求，返回json格式数据"""
         try:
-            response = requests.post(url=self.host[environment]["host"] + address, headers=header,
-                                     data=data, json=json, files=file)
+            response = requests.post(url=self.host[environment]["host"] + address, headers=headers,
+                                     data=data, json=json, files=files)
             if response.status_code == 200:
                 self.logger.info("测试接口：{}".format(f'{self.host[environment]["host"]}{address}'))
                 self.logger.info("响应内容：{}".format(response.json()))
@@ -59,17 +61,19 @@ class BaseApi:
                 self.logger.info("Redirect_URL: {}".format(response.url))
             elif 400 <= response.status_code < 500:
                 self.logger.info("接口请求异常,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
                 return response.json()
             else:
                 self.logger.info("服务器内部报错,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
         except Exception as e:
             self.logger.error('post请求%s失败，错误信息%s' % (f'{self.host[environment]["host"]}{address}', e))
 
-    def delete_(self, address, data=None, json=None, header=None, file=None, environment='test') -> json:
+    def delete_(self, address, data=None, json=None, headers=None, files=None, environment='test') -> json:
         """发送delete请求，返回json格式数据"""
         try:
-            response = requests.delete(url=self.host[environment]["host"] + address, headers=header,
-                                       data=data, json=json, files=file)
+            response = requests.delete(url=self.host[environment]["host"] + address, headers=headers,
+                                       data=data, json=json, files=files)
             if response.status_code == 200:
                 self.logger.info("测试接口：{}".format(f'{self.host[environment]["host"]}{address}'))
                 self.logger.info("响应内容：{}".format(response.json()))
@@ -79,17 +83,19 @@ class BaseApi:
                 self.logger.info("Redirect_URL: {}".format(response.url))
             elif 400 <= response.status_code < 500:
                 self.logger.info("接口请求异常,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
                 return response.json()
             else:
                 self.logger.info("服务器内部报错,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
         except Exception as e:
             self.logger.error('delete请求%s失败，错误信息%s' % (f'{self.host[environment]["host"]}{address}', e))
 
-    def put_(self, address, data=None, json=None, header=None, file=None, environment='test') -> json:
+    def put_(self, address, data=None, json=None, headers=None, files=None, environment='test') -> json:
         """发送put请求，返回json格式数据"""
         try:
-            response = requests.post(url=self.host[environment]["host"] + address, headers=header,
-                                     data=data, json=json, files=file)
+            response = requests.post(url=self.host[environment]["host"] + address, headers=headers,
+                                     data=data, json=json, files=files)
             if response.status_code == 200:
                 self.logger.info("测试接口：{}".format(f'{self.host[environment]["host"]}{address}'))
                 self.logger.info("响应内容：{}".format(response.json()))
@@ -99,9 +105,11 @@ class BaseApi:
                 self.logger.info("Redirect_URL: {}".format(response.url))
             elif 400 <= response.status_code < 500:
                 self.logger.info("接口请求异常,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
                 return response.json()
             else:
                 self.logger.info("服务器内部报错,状态码为：{}".format(response.status_code))
+                self.logger.info("响应内容：{}".format(response.json()))
         except Exception as e:
             self.logger.error('put请求%s失败，错误信息%s' % (f'{self.host[environment]["host"]}{address}', e))
 
