@@ -25,10 +25,10 @@ class BaseApi:
         # 添加日志器
         self.logger = Logger().get_logger()
 
-    def get_(self, address, params=None, header=None, environment='test'):
+    def get_(self, address, params=None, headers=None, environment='test'):
         """发送get请求，返回json格式数据"""
         try:
-            response = requests.get(url=f'{self.host[environment]["host"]}{address}', headers=header,
+            response = requests.get(url=f'{self.host[environment]["host"]}{address}', headers=headers,
                                     params=params)
             if response.status_code == 200:
                 self.logger.info("测试接口：{}".format(f'{self.host[environment]["host"]}{address}'))

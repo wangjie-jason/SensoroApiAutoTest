@@ -18,7 +18,6 @@ class TestLogin:
         """获取验证码"""
         r = Login().get_sendSms(mobile)['message']
         assert r == message
-        print(r)
 
     data_login = get_yaml_data('datas/login')
 
@@ -30,6 +29,5 @@ class TestLogin:
         # 登录前先获取手机号验证码
         # Login().get_sendSms('13718395478')
         # 登录测试
-        r = Login().login(mobile, smsCode)['message']
+        r = Login().login_v1(mobile, smsCode)['message']
         assert r == message
-        print(r)
