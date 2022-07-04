@@ -5,7 +5,7 @@ import os
 import pytest
 
 from common.mail_sender import MailSender
-from tools.get_yaml_data import get_yaml_data
+from utils.get_yaml_data import get_yaml_data
 
 if __name__ == '__main__':
     # # 执行pytest单元测试，生成 Allure原始报告需要的数据存在 /Temp 目录
@@ -31,4 +31,4 @@ if __name__ == '__main__':
         smtp_domain=config['smtp_domain'],
         smtp_port=config['smtp_port'],
     )
-    ms.attach_text(text_to_send).attach_file(file_path).send()
+    # ms.attach_text(text_to_send).attach_file(file_path).send()

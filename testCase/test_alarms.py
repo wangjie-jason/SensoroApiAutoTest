@@ -6,7 +6,7 @@
 # @project : SensoroApi
 from time import sleep
 
-from page_api.alarms import Alarms
+from pageApi.alarms import Alarms
 
 
 class TestAlarms:

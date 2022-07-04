@@ -8,7 +8,7 @@
 import pytest
 from py.xml import html
 
-from page_api.login import Login
+from pageApi.login import Login
 
 
 @pytest.fixture(scope="session", autouse=False)

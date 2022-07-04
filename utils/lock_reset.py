@@ -8,7 +8,7 @@ from common.http_method import BaseApi
 
 
 def lock_reset():
-    """门禁出厂到测试环境"""
+    """门禁出厂，需要去configs/lins_environment.ini文件下修改至对应环境的host"""
     address = 'enter/v1/enter/release'
     data = {
         'version': 'OA',

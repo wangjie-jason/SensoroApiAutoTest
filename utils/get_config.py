@@ -7,11 +7,15 @@
 import configparser
 import os.path
 
+from utils.get_dir_path import GetPath
+
 
 def get_config(file_name):
     """读取config配置文件"""
-    path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(path, '../configs', file_name)
+    # path = os.path.dirname(os.path.abspath(__file__))
+    # file_path = os.path.join(path, '../configs', file_name)
+
+    file_path = os.path.join(GetPath.get_configs_path(), file_name)
 
     config = configparser.ConfigParser()
     config.read(file_path, encoding="utf-8")
@@ -19,4 +23,5 @@ def get_config(file_name):
 
 
 if __name__ == '__main__':
-    get_config('lins_environment.ini')
+    config = get_config('lins_environment.ini')
+    print(config['test']['host'])

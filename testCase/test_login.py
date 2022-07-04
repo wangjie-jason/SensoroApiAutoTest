@@ -3,12 +3,12 @@
 import allure
 import pytest
 
-from page_api.login import Login
-from tools.get_yaml_data import get_yaml_data
+from pageApi.login import Login
+from utils.get_yaml_data import get_yaml_data
 
 
 class TestLogin:
-    data_smsCode = get_yaml_data('datas/smsCode')
+    data_smsCode = get_yaml_data('datas/smsCode.yaml')
 
     @allure.feature('获取手机号验证码测试')
     @pytest.mark.run(order=1)
@@ -19,7 +19,7 @@ class TestLogin:
         r = Login().get_sendSms(mobile)['message']
         assert r == message
 
-    data_login = get_yaml_data('datas/login')
+    data_login = get_yaml_data('datas/login.yaml')
 
     @allure.feature('登录测试')
     @pytest.mark.run(order=2)
