@@ -16,8 +16,13 @@ def get_token():
     """获取登录V1的token"""
     # 获取token前需要先获取验证码
     Login().get_sendSms('13718395478')
-    login_token = Login().login_v1('13718395478', '111111')['data']['token']
-    return Login().select_merchant(login_token)['data']['token']
+    # 调登录接口，获取登录接口的token¬
+    login_response = Login().login_v1('13718395478', '111111')
+    login_token = login_response.json()['data']['token']
+    # 调项目接口，将登录token替换为用户token
+    user_response = Login().select_merchant(login_token)
+    user_token = user_response.json()['data']['token']
+    return user_token
 
 
 @pytest.fixture(scope="session", autouse=False)
@@ -25,8 +30,13 @@ def get_token_v2():
     """获取登录V2的token"""
     # 获取token前需要先获取验证码
     Login().get_sendSms('13718395478')
-    login_token = Login().login_v2('13718395478', '111111')['data']['token']
-    return Login().select_tenant(login_token)['data']['token']
+    # 调登录接口，获取登录接口的token
+    login_response = Login().login_v2('13718395478', '111111')
+    login_token = login_response.json()['data']['token']
+    # 调租户接口，将登录token替换为Avatartoken
+    avatar_response = Login().select_tenant(login_token)
+    avatar_token = avatar_response.json()['data']['token']
+    return avatar_token
 
 
 def pytest_configure(config):

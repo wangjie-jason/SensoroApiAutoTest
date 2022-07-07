@@ -16,4 +16,4 @@ class TestAlarms:
         """获取预警列表"""
         r = Alarms().get_alarms_list(token=get_token_v2, merchant_id='1479292366633476097',
                                      project_id='1479292352406396929')
-        assert r['message'] == 'SUCCESS'
+        assert r.json()['message'] == 'SUCCESS'

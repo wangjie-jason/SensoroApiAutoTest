@@ -5,6 +5,7 @@ import os
 import pytest
 
 from common.mail_sender import MailSender
+from common.settings import IS_SEND
 from utils.get_yaml_data import get_yaml_data
 
 if __name__ == '__main__':
@@ -17,18 +18,19 @@ if __name__ == '__main__':
     os.system('allure generate ./Temp -o ./outFiles/report --clean')
 
     # 发送邮件
-    file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html'
-    with open(file_path, 'rb') as f:
-        text_to_send = f.read()
+    if IS_SEND:
+        file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html'
+        with open(file_path, 'rb') as f:
+            text_to_send = f.read()
 
-    config = get_yaml_data('configs/mail_config.yaml')
-    ms = MailSender(
-        mail_subject=config['mail_subject'],
-        sender_mail_address=config['sender_mail_address'],
-        sender_username=config['sender_username'],
-        sender_password=config['sender_password'],
-        receiver_mail_list=config['receiver_mail_list'],
-        smtp_domain=config['smtp_domain'],
-        smtp_port=config['smtp_port'],
-    )
-    # ms.attach_text(text_to_send).attach_file(file_path).send()
+        config = get_yaml_data('configs/mail_config.yaml')
+        ms = MailSender(
+            mail_subject=config['mail_subject'],
+            sender_mail_address=config['sender_mail_address'],
+            sender_username=config['sender_username'],
+            sender_password=config['sender_password'],
+            receiver_mail_list=config['receiver_mail_list'],
+            smtp_domain=config['smtp_domain'],
+            smtp_port=config['smtp_port'],
+        )
+        ms.attach_text(text_to_send).attach_file(file_path).send()
