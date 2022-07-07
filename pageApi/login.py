@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 from common.http_method import BaseApi
+from utils.time_utils import TimeUtil
 
 
 class Login(BaseApi):
@@ -42,7 +43,7 @@ class Login(BaseApi):
             'mobile': mobile,
             'smsCode': sms_code,
             'region': "CN",
-            'selectedTime': 1655783394393
+            'selectedTime': TimeUtil.get_current_time_unix()
         }
 
         return self.post_(address, json=json)
@@ -67,3 +68,4 @@ class Login(BaseApi):
 if __name__ == '__main__':
     Login().select_tenant(
         'eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4Iiwibmlja25hbWUiOiLmsarmnbAiLCJleHAiOjE2NTYzOTc5ODgsImlhdCI6MTY1NTc5MzE4OCwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCIsInJlZnJlc2hUb2tlbiI6IjdkM2Q3ZmJiMGY0YjQxOTE5NDJhNDNjMzg1ODdkZTRjIn0.QhSWRjmDVMLlTkb1cmv5qi8KjWQ37bzahpAxFA8Y_9SGxyQ5q1UHup-RIa3vF_AG5OTPPf_5wjfG75K9GF80Jw')
+    Login().get_sendSms('13718395478')
