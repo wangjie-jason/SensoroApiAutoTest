@@ -48,11 +48,12 @@ class Login(BaseApi):
 
         return self.post_(address, json=json)
 
-    def select_merchant(self, token):
+    def select_merchant(self, token,x_lins_view='all'):
         """选择项目"""
         address = 'auth/v1/selectMerchant'
         headers = {
-            'Authorization': f'Bearer {token}'
+            'Authorization': f'Bearer {token}',
+            'x-lins-view':x_lins_view
         }
         return self.get_(address=address, headers=headers)
 

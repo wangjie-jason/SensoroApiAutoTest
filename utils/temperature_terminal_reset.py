@@ -5,6 +5,21 @@
 # @File : temperature_terminal_reset.py
 # @project : SensoroApi
 from common.http_method import BaseApi
+from pageApi.login import Login
+
+
+def get_token():
+    """获取登录V1的token"""
+    # 获取token前需要先获取验证码
+    mobile = input('请输入你的手机号：')
+    Login().get_sendSms(mobile)
+    # 调登录接口，获取登录接口的token
+    login_response = Login().login_v1(mobile, input('请输入验证码：'))
+    login_token = login_response.json()['data']['token']
+    # 调项目接口，将登录token替换为用户token
+    user_response = Login().select_merchant(login_token, x_lins_view='default')
+    user_token = user_response.json()['data']['token']
+    return user_token
 
 
 def temperature_terminal_reset():
@@ -24,7 +39,7 @@ def temperature_terminal_reset():
     ]
     headers = {
         # 用0号商户的token
-        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxMjg4ODM2NjI3OTMyMTIzMTM4Iiwibmlja25hbWUiOiLlkajmoYzlhYgiLCJleHAiOjE2NTY5MTY4OTgsImlhdCI6MTY1NjMxMjA5OCwidXNlcm5hbWUiOiIrODYxODA0NTI5NjAxNyIsInJlZnJlc2hUb2tlbiI6IjIwZWEzNjQyMDAzYTQ1NzNiOTM2YjMwNDgzY2U4NmIwIiwibWVyY2hhbnRJZCI6IjAiLCJ1c2VySWQiOiIxMzY1MjE0ODE4Nzk4Mzg3MjAyIn0.SdHQaKXIZ2ZxvX3ARwUDxjM5GUv3xmNEBjJdWaKBM-hrHKHH9qj_L8RunbWV49mjtxaEjsjwNmVCYIvSXDZ5PQ'
+        'Authorization': f'Bearer {get_token()}'
     }
     return BaseApi().post_(address, data=data, files=files, headers=headers)
 
