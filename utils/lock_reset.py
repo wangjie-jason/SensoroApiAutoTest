@@ -31,7 +31,8 @@ def lock_reset():
         # 生产环境：'productId': 'c14397fe-1462-11ec-a2de-0e0d1d54f276'
         # 点军环境：'productId': '26aa8aa7-d266-11ec-be12-ee7960eede4b'
         # 测试环境：'productId': '609594a2-f4fd-11eb-98f1-363f1ff6b505'
-        'productId': 'c14397fe-1462-11ec-a2de-0e0d1d54f276',
+        # 开发环境：'productId': '3347b3b7-cda4-11eb-b0ab-9a27cf714ac0'
+        'productId': '3347b3b7-cda4-11eb-b0ab-9a27cf714ac0',
     }
     files = [
         ('file', ('门禁出厂.xlsx', open('/Users/wangjie/Desktop/门禁出厂.xlsx', 'rb'),
