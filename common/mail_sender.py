@@ -73,7 +73,8 @@ class MailSender:
 
     def attach_file(self, file_path):
         """添加附件"""
-        mime_app = MIMEApplication(open(file_path, 'r').read())
+        with open(file_path, 'rb') as f:
+            mime_app = MIMEApplication(f.read())
         mime_app['Content-Type'] = self.get_MIME(file_path)
         mime_app.add_header('content-disposition', 'attachment', filename='reporter.html')
         self.message.attach(mime_app)
