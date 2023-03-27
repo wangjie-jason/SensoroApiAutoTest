@@ -36,7 +36,7 @@ class BaseApi:
 
     @staticmethod
     def request(method, address, headers=None, params=None, data=None, json=None, files=None) -> requests.Response:
-        """发送http请求，返回json格式数据"""
+        """发送http请求，返回response对象"""
         url = BaseApi._get_url(address)
         headers = BaseApi._get_headers(headers)
         method = BaseApi._get_method(method)
