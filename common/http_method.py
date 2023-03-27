@@ -11,6 +11,7 @@ import requests
 from requests import PreparedRequest
 from common.base_log import Logger
 from configs.lins_environment import EntryPoint
+from configs.lins_headers import DEFAULT_HEADERS
 
 
 class BaseApi:
@@ -25,9 +26,11 @@ class BaseApi:
         return BaseApi.host + address
 
     @staticmethod
-    def _get_headers(headers):
+    def _get_headers(headers, default_headers):
         """获取请求头"""
-        return headers or {}
+        headers = headers or {}
+        headers = {**default_headers, **headers}
+        return headers
 
     @staticmethod
     def _get_method(method):
@@ -37,10 +40,12 @@ class BaseApi:
     @staticmethod
     def request(method, address, headers=None, params=None, data=None, json=None, files=None) -> requests.Response:
         """发送http请求，返回response对象"""
+        # 处理请求参数
         url = BaseApi._get_url(address)
-        headers = BaseApi._get_headers(headers)
+        headers = BaseApi._get_headers(headers, DEFAULT_HEADERS)
         method = BaseApi._get_method(method)
 
+        # 发送请求
         try:
             response = requests.request(method=method, url=url, headers=headers, params=params,
                                         data=data, json=json, files=files)
