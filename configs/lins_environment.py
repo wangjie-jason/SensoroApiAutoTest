@@ -4,7 +4,7 @@
 # @Author : wangjie
 # @File : lins_environment.py
 # @project : SensoroApi
-from common.settings import env
+from common.settings import ENV
 from configs.lins_environment_enum import Environment
 
 
@@ -18,7 +18,7 @@ class EntryPoint:
 
     @property
     def URL(self):
-        return self._ENV_URL[env]
+        return self._ENV_URL[ENV]
 
 
 if __name__ == '__main__':

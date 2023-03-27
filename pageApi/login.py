@@ -14,7 +14,7 @@ class Login(BaseApi):
             'mobile': mobile,
             'region': 'CN'}
 
-        return self.get_(address, params=params)
+        return self.get(address, params=params)
 
     def login_v1(self, mobile, sms_code):
         """登录V1权限"""
@@ -29,7 +29,7 @@ class Login(BaseApi):
             'smsCode': sms_code,
             'region': "CN"}
 
-        return self.post_(address, json=json)
+        return self.post(address, json=json)
 
     def login_v2(self, mobile, sms_code):
         """登录V2权限"""
@@ -46,7 +46,7 @@ class Login(BaseApi):
             'selectedTime': TimeUtil.get_current_time_unix()
         }
 
-        return self.post_(address, json=json)
+        return self.post(address, json=json)
 
     def select_merchant(self, token,x_lins_view='all'):
         """选择项目"""
@@ -55,7 +55,7 @@ class Login(BaseApi):
             'Authorization': f'Bearer {token}',
             'x-lins-view':x_lins_view
         }
-        return self.get_(address=address, headers=headers)
+        return self.get(address=address, headers=headers)
 
     def select_tenant(self, token):
         """切换租户"""
@@ -63,7 +63,7 @@ class Login(BaseApi):
         headers = {
             'Authorization': f'Bearer {token}'
         }
-        return self.get_(address=address, headers=headers)
+        return self.get(address=address, headers=headers)
 
 
 if __name__ == '__main__':

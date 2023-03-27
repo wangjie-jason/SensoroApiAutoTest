@@ -8,7 +8,10 @@
 from configs.lins_environment_enum import Environment
 
 # 设置运行的环境变量
-env = Environment.TEST
+ENV = Environment.DEV
 
 # 设置是否需要发送邮件：Ture发送，False不发送
 IS_SEND = False
+
+# 设置是否开启debug日志
+LOG_DEBUG = False

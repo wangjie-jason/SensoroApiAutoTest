@@ -30,7 +30,7 @@ class Alarms(BaseApi):
             'startTime': startTime,
             'endTime': endTime
         }
-        return self.get_(address, params=params, headers=headers)
+        return self.get(address, params=params, headers=headers)
 
 
 if __name__ == '__main__':

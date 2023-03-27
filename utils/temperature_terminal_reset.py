@@ -41,7 +41,7 @@ def temperature_terminal_reset():
         # 用0号商户的token
         'Authorization': f'Bearer {get_token()}'
     }
-    return BaseApi().post_(address, data=data, files=files, headers=headers)
+    return BaseApi().post(address, data=data, files=files, headers=headers)
 
 
 if __name__ == '__main__':
