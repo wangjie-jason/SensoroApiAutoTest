@@ -11,13 +11,13 @@ import requests
 from requests import PreparedRequest
 from common.base_log import Logger
 from configs.lins_environment import EntryPoint
-from configs.lins_headers import DEFAULT_HEADERS
 
 
 class BaseApi:
     """基础类，对请求方法进行二次封装"""
 
-    host = EntryPoint().URL
+    host = EntryPoint.URL()
+    default_headers = EntryPoint.DEFAULT_HEADERS()
     logger = Logger().get_logger()
 
     @staticmethod
@@ -26,10 +26,10 @@ class BaseApi:
         return BaseApi.host + address
 
     @staticmethod
-    def _get_headers(headers, default_headers):
+    def _get_headers(headers):
         """获取请求头"""
         headers = headers or {}
-        headers = {**default_headers, **headers}
+        headers = {**BaseApi.default_headers, **headers}
         return headers
 
     @staticmethod
@@ -42,7 +42,7 @@ class BaseApi:
         """发送http请求，返回response对象"""
         # 处理请求参数
         url = BaseApi._get_url(address)
-        headers = BaseApi._get_headers(headers, DEFAULT_HEADERS)
+        headers = BaseApi._get_headers(headers)
         method = BaseApi._get_method(method)
 
         # 发送请求
@@ -54,6 +54,7 @@ class BaseApi:
                 BaseApi.logger.info(f"响应状态码：{response.status_code}")
             else:
                 BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{url}")
+                BaseApi.logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
                 BaseApi.logger.info(f"响应状态码：{response.status_code}")
                 BaseApi.logger.info(f"响应内容：{response.json()}")
             return response
@@ -83,7 +84,11 @@ class BaseApi:
     @staticmethod
     def get_json(response: requests.Response) -> json:
         """获取响应结果的json格式"""
-        return response.json
+        if response:
+            json_data = response.json()
+            return json_data
+        else:
+            raise Exception('请求返回结果为空')
 
     @staticmethod
     def get_text(response: requests.Response) -> str:
@@ -111,7 +116,7 @@ class BaseApi:
         body = request.body
         if isinstance(body, bytes):
             body = body.decode('utf-8')
-        return method, url, headers, body
+        return method, url, body, headers
 
 
 if __name__ == '__main__':

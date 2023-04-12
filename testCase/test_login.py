@@ -27,7 +27,7 @@ class TestLogin:
     def test_login(self, mobile, smsCode, message):
         """登录测试"""
         # 登录前先获取手机号验证码
-        # Login().get_sendSms('13718395478')
+        Login().get_sendSms('13800000000')
         # 登录测试
-        r = Login().login_v1(mobile, smsCode)
+        r = Login().login_app_v2(mobile, smsCode)
         assert r.json()['message'] == message

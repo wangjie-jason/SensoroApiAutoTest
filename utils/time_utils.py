@@ -66,26 +66,34 @@ class TimeUtil:
             return int(round(unix_time * 1000))
 
     @staticmethod
-    def get_day_begin_unix(recently_day=0):
+    def get_day_begin_unix(recently_day=0, type='unix'):
         """
         获取某天的0点0分0秒的时间戳
         :param recently_day: 几天前就减几,几天后就加几
+        :param type: 默认返回时间戳，传str则返回字符串时间
         """
         day = ((datetime.datetime.now()) + datetime.timedelta(days=recently_day)).strftime(
             "%Y-%m-%d")
         unit_day_start = int(round(time.mktime(time.strptime(day, "%Y-%m-%d")) * 1000))
-        return unit_day_start
+        if type == 'unix':
+            return unit_day_start
+        elif type == 'str':
+            return TimeUtil.unix_time_to_str(unit_day_start)
 
     @staticmethod
-    def get_day_end_unix(recently_day=0):
+    def get_day_end_unix(recently_day=0, type='unix'):
         """
         获取某天的23点59分59秒的时间戳
         :param recently_day: 几天前就减几,几天后就加几
+        :param type: 默认返回时间戳，传str则返回字符串时间
         """
         day = ((datetime.datetime.now()) + datetime.timedelta(days=recently_day)).strftime(
             "%Y-%m-%d")
         unit_day_end = int(round(time.mktime(time.strptime(day, "%Y-%m-%d")) * 1000 + 86399000))
-        return unit_day_end
+        if type == 'unix':
+            return unit_day_end
+        elif type == 'str':
+            return TimeUtil.unix_time_to_str(unit_day_end)
 
     @staticmethod
     def get_month_datetime_begin(date_time):

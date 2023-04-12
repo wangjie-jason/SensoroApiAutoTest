@@ -16,7 +16,8 @@ if __name__ == '__main__':
         '--alluredir', './Temp',  # 生成Allure原始报告需要的数据,并存放在 /Temp 目录
         '--html=./outFiles/pytest_report/report.html',  # 指定pytest-html报告的存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
-        '--capture=sys',  # 使pytest-html中失败的case展示错误日志
+        # '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的prin不打印
+        '-k not test_login.py',  # 不执行该文件里的case
     ])
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
     os.system('allure generate ./Temp -o ./outFiles/report --clean')

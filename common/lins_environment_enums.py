@@ -2,14 +2,14 @@
 # -*- coding:utf-8 -*-
 # @Time : 2022/7/7 15:23
 # @Author : wangjie
-# @File : lins_environment_enum.py
+# @File : lins_environment_enums.py
 # @project : SensoroApi
 
 from enum import Enum
 
 
 class Environment(Enum):
-    DEV = 0
-    TEST = 1
-    PROD = 2
-    DIANJUN = 3
+    DEV = 'dev'
+    TEST = 'test'
+    PROD = 'prod'
+    DIANJUN = 'dianjun'

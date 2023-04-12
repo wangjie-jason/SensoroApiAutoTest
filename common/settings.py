@@ -5,10 +5,10 @@
 # @File : settings.py
 # @project : SensoroApi
 
-from configs.lins_environment_enum import Environment
+from common.lins_environment_enums import Environment
 
 # 设置运行的环境变量
-ENV = Environment.DEV
+ENV = Environment.TEST
 
 # 设置是否需要发送邮件：Ture发送，False不发送
 IS_SEND = False
