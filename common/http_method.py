@@ -7,6 +7,8 @@
 
 
 import json
+
+import py3curl
 import requests
 from requests import PreparedRequest
 from common.base_log import Logger
@@ -55,6 +57,7 @@ class BaseApi:
             else:
                 BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{url}")
                 BaseApi.logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
+                BaseApi.logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
                 BaseApi.logger.info(f"响应状态码：{response.status_code}")
                 BaseApi.logger.info(f"响应内容：{response.json()}")
             return response
@@ -117,6 +120,12 @@ class BaseApi:
         if isinstance(body, bytes):
             body = body.decode('utf-8')
         return method, url, body, headers
+
+    @staticmethod
+    def request_to_curl(response: requests.Response) -> str:
+        """将request请求转化为curl命令"""
+        curl = py3curl.request_to_curl(response.request)
+        return curl
 
 
 if __name__ == '__main__':

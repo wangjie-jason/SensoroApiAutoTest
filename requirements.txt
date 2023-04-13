@@ -1,7 +1,7 @@
 pytest==7.1.2
 PyYAML==6.0
 requests==2.27.1
-py3curl==1.1.3 # py2curl是一个Python库，它可以将Python中的requests请求转换为cURL命令，方便开发人员在终端中进行调试和测试。
+py3curl==1.1.3 # py3curl是一个Python库，它可以将Python中的requests请求转换为cURL命令，方便开发人员在终端中进行调试和测试。
 allure-pytest==2.9.45
 pytest_ordering==0.6 #pytest控制用例执行顺序的包
 pytest-rerunfailures==10.2

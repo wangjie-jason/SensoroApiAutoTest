@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 from common.http_method import BaseApi
 from utils.time_utils import TimeUtil
-import py3curl
 
 
 class Login(BaseApi):
@@ -79,4 +78,4 @@ if __name__ == '__main__':
     # Login().get_sendSms('13800000000')
     # print(BaseApi.get_json(Login().login_app_v2('13800000000', '138000'))['data']['token'])
     r = Login().select_tenant('1622903542623612930', '1622903550156582913')
-    print(py3curl.request_to_curl(r.request))
+    print(BaseApi.request_to_curl(r))
