@@ -10,7 +10,7 @@ from utils.get_yaml_data import get_yaml_data
 class TestLogin:
     data_smsCode = get_yaml_data('datas/smsCode.yaml')
 
-    @allure.feature('获取手机号验证码测试')
+    @allure.title('获取手机号验证码测试')
     @pytest.mark.run(order=1)
     @pytest.mark.parametrize('mobile, message', data_smsCode)
     # @pytest.mark.flaky(reruns=5, reruns_delay=2)
@@ -21,7 +21,7 @@ class TestLogin:
 
     data_login = get_yaml_data('datas/login.yaml')
 
-    @allure.feature('登录测试')
+    @allure.title('登录测试')
     @pytest.mark.run(order=2)
     @pytest.mark.parametrize('mobile,smsCode,message', data_login)
     def test_login(self, mobile, smsCode, message):

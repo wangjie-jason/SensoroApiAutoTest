@@ -51,7 +51,6 @@ def get_token():
     # 调登录接口，获取登录接口的token¬
     login_response = Login().login_v1('13800000000', '138000')
     token = BaseApi.get_json(login_response)['data']['token']
-
     return token
 
 

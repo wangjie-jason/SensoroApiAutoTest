@@ -4,7 +4,7 @@
 # @Author : wangjie
 # @File : test_alarms.py
 # @project : SensoroApi
-
+import allure
 import pytest
 
 from common.http_method import BaseApi
@@ -15,6 +15,7 @@ from utils.time_utils import TimeUtil
 class TestAlarms:
     """测试预警"""
 
+    @allure.title('获取预警列表')
     @pytest.mark.run(order=1)
     def test_get_alarms_list(self, get_token_v2, set_global_data):
         """获取预警列表"""
@@ -31,7 +32,9 @@ class TestAlarms:
         message = BaseApi.get_json(r)['message']
         assert message == 'SUCCESS'
 
+    @allure.title('获取预警详情')
     def test_get_alarms_details(self, get_token_v2, get_global_data):
+        """获取预警详情"""
         headers = {'Authorization': f'Bearer {get_token_v2}'}
         alarms_id = get_global_data('alarms_id')
         print('取出来的：', alarms_id)
