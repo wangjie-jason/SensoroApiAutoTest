@@ -12,9 +12,11 @@ from pageApi.alarms import Alarms
 from utils.time_utils import TimeUtil
 
 
+@allure.feature("事件中心预警模块测试用例")
 class TestAlarms:
     """测试预警"""
 
+    @allure.story('事件中心')
     @allure.title('获取预警列表')
     @pytest.mark.run(order=1)
     def test_get_alarms_list(self, get_token_v2, set_global_data):
@@ -32,6 +34,7 @@ class TestAlarms:
         message = BaseApi.get_json(r)['message']
         assert message == 'SUCCESS'
 
+    @allure.story('事件中心')
     @allure.title('获取预警详情')
     def test_get_alarms_details(self, get_token_v2, get_global_data):
         """获取预警详情"""

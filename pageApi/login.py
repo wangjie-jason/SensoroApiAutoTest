@@ -7,16 +7,16 @@ from utils.time_utils import TimeUtil
 class Login(BaseApi):
     """登录模块"""
 
-    def get_sendSms(self, mobile):
+    def get_sendSms(self, phone):
         """获取手机号验证码"""
         address = '/auth/v2/session/sendSms'
         json = {
-            'mobile': mobile,
+            'mobile': phone,
             'region': 'CN'}
 
         return self.post(address, json=json)
 
-    def login_v1(self, mobile, sms_code):
+    def login_v1(self, phone, sms_code):
         """登录V1权限"""
         address = '/auth/v1/session/web/loginByMobile'
         json = {
@@ -28,13 +28,13 @@ class Login(BaseApi):
                 'appKey': "FFFF0N00000000008D02",
                 'region': "CN"
             },
-            'mobile': mobile,
+            'mobile': phone,
             'smsCode': sms_code,
         }
 
         return self.post(address, json=json)
 
-    def login_web_v2(self, mobile, sms_code):
+    def login_web_v2(self, phone, sms_code):
         """web端登录V2权限"""
         address = '/auth/v2/session/web/loginByMobile'
         json = {
@@ -45,7 +45,7 @@ class Login(BaseApi):
                 'scene': "ic_login",
                 'appKey': "FFFF0N00000000008D02",
             },
-            'mobile': mobile,
+            'mobile': phone,
             'smsCode': sms_code,
             'region': "CN",
             'selectedTime': TimeUtil.get_current_time_unix()
@@ -53,11 +53,11 @@ class Login(BaseApi):
 
         return self.post(address, json=json)
 
-    def login_app_v2(self, mobile, sms_code):
+    def login_app_v2(self, phone, sms_code):
         """移动端登录V2权限"""
         address = '/auth/v2/session/app/loginByMobile'
         json = {
-            'mobile': mobile,
+            'mobile': phone,
             'smsCode': sms_code,
         }
 

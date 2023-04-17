@@ -20,3 +20,6 @@ def get_yaml_data(dir_file_name):
 
 if __name__ == '__main__':
     print(get_yaml_data('datas/login.yaml'))
+    data_smsCode = get_yaml_data('datas/login.yaml')
+    params = [(item['phone'], item['smsCode'], item['expected']) for item in data_smsCode]
+    print(params)
