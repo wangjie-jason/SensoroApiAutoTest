@@ -20,7 +20,7 @@ if __name__ == '__main__':
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
         '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
         '-p', 'no:logging',  # 表示禁用logging插件，使报告中不显示log信息，只会显示stderr和stdoyt信息,避免log和stderr重复。
-        '-k not test_login.py',  # 不执行该文件里的case
+        # '-k not test_login.py',  # 不执行该文件里的case
     ])
 
     # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空

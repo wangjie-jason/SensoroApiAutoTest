@@ -2,7 +2,7 @@
 
 ## 准备Python环境
 
-- 安装Python>=3.10
+- 安装Python>=3.6
 - 安装依赖 
     - pip3 install -r requirements.txt
 
@@ -25,7 +25,7 @@
 ├── conftest.py						pytest共享文件，设置allure报告及其他报告的环境变量
 ├── datas						测试数据存放目录
 │     ├── login.yaml					登录测试的数据demo
-├── environment.properties				allure报告的环境变量文件
+├── environment.properties				allure报告环境变量展示文件
 ├── outFiles						各种输出文件存放目录
 │     ├── logs						日志存放目录
 │     ├── pytest_report					pytest报告存放目录

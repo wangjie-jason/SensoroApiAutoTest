@@ -14,8 +14,10 @@ class TestLogin:
 
     @allure.story("测试获取验证码")
     @allure.title('{case_title}')
+    @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.run(order=1)
     @pytest.mark.parametrize('case_title,phone, message', params)
+    @pytest.mark.dependency(name='get_smsCode')
     # @pytest.mark.flaky(reruns=5, reruns_delay=2)
     def test_smsCode(self, case_title, phone, message):
         """获取验证码"""
@@ -27,12 +29,11 @@ class TestLogin:
 
     @allure.story("测试登录")
     @allure.title('{case_title}')
+    @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.run(order=2)
     @pytest.mark.parametrize('case_title,phone,smsCode,message', params)
+    @pytest.mark.dependency(depends=["get_smsCode"],scope='class')
     def test_login(self,case_title, phone, smsCode, message):
         """登录测试"""
-        # 登录前先获取手机号验证码
-        Login().get_sendSms('13800000000')
-        # 登录测试
         r = Login().login_app_v2(phone, smsCode)
         assert r.json()['message'] == message

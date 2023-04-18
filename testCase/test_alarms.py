@@ -18,7 +18,8 @@ class TestAlarms:
 
     @allure.story('事件中心')
     @allure.title('获取预警列表')
-    @pytest.mark.run(order=1)
+    # @pytest.mark.run(order=1)
+    @pytest.mark.dependency()
     def test_get_alarms_list(self, get_token_v2, set_global_data):
         """获取预警列表"""
         headers = {'Authorization': f'Bearer {get_token_v2}'}
@@ -36,6 +37,7 @@ class TestAlarms:
 
     @allure.story('事件中心')
     @allure.title('获取预警详情')
+    @pytest.mark.dependency(depends=["TestAlarms::test_get_alarms_list"])
     def test_get_alarms_details(self, get_token_v2, get_global_data):
         """获取预警详情"""
         headers = {'Authorization': f'Bearer {get_token_v2}'}

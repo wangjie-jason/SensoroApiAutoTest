@@ -7,29 +7,35 @@
 import os.path
 import platform
 
-import allure
 import pytest
 from py.xml import html
 
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
+from configs.lins_environment import EntryPoint
 
 
-@pytest.fixture(scope="session", autouse=True)
-def set_allure_env():
-    """设置allure报告的环境变量信息"""
+def pytest_sessionstart():
+    """在整个pytest运行过程开始之前设置allure报告的环境变量信息"""
     allure_env = {
         'OperatingEnvironment': ENV.name,
-        'Python': platform.python_version(),
+        'BaseUrl': EntryPoint.URL(),
+        'PythonVersion': platform.python_version(),
         'Platform': platform.platform(),
-        'Pytest': pytest.__version__,
+        'PytestVersion': pytest.__version__,
     }
     allure_env_file = os.path.join(BASE_DIR, 'environment.properties')
     with open(allure_env_file, 'w', encoding='utf-8') as f:
         for _k, _v in allure_env.items():
             f.write(f'{_k}={_v}\n')
-    # with open(allure_env_file, 'r', encoding='utf-8') as f:
-    #     allure.attach(f.read(), '环境信息', allure.attachment_type.TEXT)
+
+
+def pytest_collection_modifyitems(items) -> None:
+    """解决控制台及pytest-html报告用例参数化中文编码问题"""
+    # item表示每个测试用例，解决用例名称中文显示问题
+    for item in items:
+        item.name = item.name.encode("utf-8").decode("unicode-escape")
+        item._nodeid = item._nodeid.encode("utf-8").decode("unicode-escape")
 
 
 def pytest_configure(config):
@@ -69,7 +75,6 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
     outcome = yield
     report = outcome.get_result()
     report.description = str(item.function.__doc__)
-
 
 # @pytest.mark.optionalhook
 # def pytest_html_results_table_html(report, data):
