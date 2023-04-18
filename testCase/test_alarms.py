@@ -40,7 +40,7 @@ class TestAlarms:
         """获取预警详情"""
         headers = {'Authorization': f'Bearer {get_token_v2}'}
         alarms_id = get_global_data('alarms_id')
-        print('取出来的：', alarms_id)
+        print('取出来的alarms_id：', alarms_id)
         r = Alarms().get_alarms_details(alarms_id, headers=headers)
         message = BaseApi.get_json(r)['message']
         assert message == 'SUCCESS'

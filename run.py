@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 
 import os
+import shutil
+
 import pytest
 
 from common.mail_sender import MailSender
@@ -16,9 +18,13 @@ if __name__ == '__main__':
         '--alluredir', './Temp', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
         '--html=./outFiles/pytest_report/report.html',  # 指定pytest-html报告的存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
-        '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的prin不打印
-        # '-k not test_login.py',  # 不执行该文件里的case
+        '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
+        '-p', 'no:logging',  # 表示禁用logging插件，使报告中不显示log信息，只会显示stderr和stdoyt信息,避免log和stderr重复。
+        '-k not test_login.py',  # 不执行该文件里的case
     ])
+
+    # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
+    shutil.copy('./environment.properties', './Temp/environment.properties')
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
     os.system('allure generate ./Temp -o ./outFiles/report --clean')
 

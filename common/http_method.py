@@ -134,5 +134,4 @@ if __name__ == '__main__':
         'mobile': '13800000000',
         'region': 'CN'}
     r = BaseApi.get(address, params=params)
-    print("111111")
     print(BaseApi.get_request_info(r))

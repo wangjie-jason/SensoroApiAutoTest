@@ -13,3 +13,8 @@ class Environment(Enum):
     TEST = 'test'
     PROD = 'prod'
     DIANJUN = 'dianjun'
+
+
+if __name__ == '__main__':
+    print(Environment.DEV.name)
+    print(Environment.DEV.value)
