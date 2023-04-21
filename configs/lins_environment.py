@@ -25,6 +25,15 @@ class EntryPoint:
                 'x-lins-platform': 'aicity',
                 'authorization': 'eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4IiwiYXZhdGFySWQiOiIxNTQyMDU1Mjg0MDIzNTc0NTMwIiwibWVyY2hhbnRJZCI6IjE1NDIwNTUyMTU1MTM4MTI5OTMiLCJuaWNrbmFtZSI6IuaxquadsCIsInRlbmFudElkIjoiMTU0MjA1NTIxNTQ1NTA5MjczNyIsImV4cCI6MTcxMTc5MTA1NCwidXNlcklkIjoiMTU0MjA1NTI4NDAyMzU3NDUzMCIsImlhdCI6MTY4MTIwNDUwOCwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCJ9.66XK7rg6cDYMRgULdLooBWoAx2BenWkJjOt8lbqQ1LQDcmh1RlW4LsjMWUXdIhcxTQzgkvfgR1wo2QRgdK-OTg',
             },
+            'DB_CONFIG': {
+                'host': 'localhost',
+                'port': 3306,
+                'user': 'root',
+                'password': '',
+                'db': 'autotest',
+                'charset': 'utf8',
+                # 'cursorclass': pymysql.cursors.DictCursor
+            }
         },
         Environment.PROD: {
             'URL': "https://lins-api.sensoro.com",
@@ -47,6 +56,12 @@ class EntryPoint:
         if env is None:
             env = ENV
         return cls._ENVIRONMENT_CONFIGS[env]['DEFAULT_HEADERS']
+
+    @classmethod
+    def DB_CONFIG(cls, env=None):
+        if env is None:
+            env = ENV
+        return cls._ENVIRONMENT_CONFIGS[env]['DB_CONFIG']
 
 
 if __name__ == '__main__':

@@ -9,6 +9,8 @@ import psycopg2.pool
 import pymysql
 from dbutils.pooled_db import PooledDB
 
+from configs.lins_environment import EntryPoint
+
 
 class Postgresql:
     """连接Postgresql数据库"""
@@ -21,6 +23,7 @@ class Postgresql:
 
     def connect(self):
         try:
+            # 创建连接池
             self.pool = psycopg2.pool.SimpleConnectionPool(
                 self.minconn, self.maxconn, **self.db_config)
             print("Database connected successfully")
@@ -30,6 +33,7 @@ class Postgresql:
     def execute_query(self, query):
         conn = None
         try:
+            # 从连接池中获取1个连接
             with self.pool.getconn() as conn:
                 with conn.cursor() as cur:
                     cur.execute(query)
@@ -39,11 +43,12 @@ class Postgresql:
             print(f"Error executing query: {e}")
         finally:
             if conn:
-                self.pool.putconn(conn)
+                self.pool.putconn(conn)  # 将连接归还到连接池
 
     def execute_query_with_result(self, query):
         conn = None
         try:
+            # 从连接池中获取1个连接
             with self.pool.getconn() as conn:
                 with conn.cursor() as cur:
                     cur.execute(query)
@@ -54,7 +59,7 @@ class Postgresql:
             return None
         finally:
             if conn:
-                self.pool.putconn(conn)
+                self.pool.putconn(conn)  # 将连接归还到连接池
 
     def disconnect(self):
         if self.pool:
@@ -80,11 +85,13 @@ class MySQL:
 
     def connect(self):
         try:
+            # 创建连接池
             self.pool = PooledDB(
                 creator=pymysql,  # 使用pymysql库
                 maxconnections=self.maxconn,
                 mincached=self.minconn,
                 maxcached=self.maxconn,
+                cursorclass=pymysql.cursors.DictCursor,  # 使查询的结构返回为字典格式，默认为元组格式
                 **self.db_config
             )
             print("Database connected successfully")
@@ -93,6 +100,7 @@ class MySQL:
 
     def execute_query(self, query):
         try:
+            # 从连接池中获取1个连接
             with self.pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(query)
@@ -103,6 +111,7 @@ class MySQL:
 
     def execute_query_with_result(self, query):
         try:
+            # 从连接池中获取1个连接
             with self.pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(query)
@@ -137,16 +146,7 @@ if __name__ == '__main__':
     # with Postgresql(db_config) as db:
     #     db.execute_query("SELECT * FROM mytable")
 
-    db_config = {
-        'host': 'localhost',
-        'port': 3306,
-        'user': 'root',
-        'password': '',
-        'db': 'autotest',
-        'charset': 'utf8',
-        'cursorclass': pymysql.cursors.DictCursor
-    }
-
+    db_config = EntryPoint.DB_CONFIG()
     with MySQL(db_config) as db:
         query = "SELECT * FROM student WHERE name = '张三'"
         result = db.execute_query_with_result(query)
