@@ -31,7 +31,8 @@ def pytest_sessionstart():
 
 
 def pytest_collection_modifyitems(items) -> None:
-    """解决控制台及pytest-html报告用例参数化中文编码问题"""
+    """解决控制台用例参数化中文编码问题"""
+    # 会使pytest-html报告里面的中文乱码，需要去手动改一下pytest-html源码即可
     # item表示每个测试用例，解决用例名称中文显示问题
     for item in items:
         item.name = item.name.encode("utf-8").decode("unicode-escape")
