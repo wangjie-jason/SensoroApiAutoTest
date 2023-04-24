@@ -30,6 +30,11 @@ def pytest_sessionstart():
             f.write(f'{_k}={_v}\n')
 
 
+def pytest_sessionfinish(session, exitstatus):
+    # TODO，allure报告处理逻辑
+    pass
+
+
 def pytest_collection_modifyitems(items) -> None:
     """解决控制台用例参数化中文编码问题"""
     # 会使pytest-html报告里面的中文乱码，需要去手动改一下pytest-html源码即可

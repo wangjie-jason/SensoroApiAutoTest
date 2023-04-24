@@ -4,8 +4,7 @@
 # @Author : wangjie
 # @File : http_method.py
 # @project : SensoroApi
-
-
+import base64
 import json
 
 import py3curl
@@ -63,6 +62,7 @@ class BaseApi:
             return response
         except Exception as e:
             BaseApi.logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
+            raise e
 
     @staticmethod
     def get(address, params=None, headers=None) -> requests.Response:
@@ -118,14 +118,20 @@ class BaseApi:
         method = request.method.upper()
         body = request.body
         if isinstance(body, bytes):
-            body = body.decode('utf-8')
+            try:  # 请求体是文本就直接将其解码为 UTF-8 编码的字符串
+                body = body.decode('utf-8')
+            except UnicodeDecodeError:  # 否则将其编码为 base64 编码的字符串。
+                body = base64.b64encode(body).decode('utf-8')
         return method, url, body, headers
 
     @staticmethod
     def request_to_curl(response: requests.Response) -> str:
         """将request请求转化为curl命令"""
-        curl = py3curl.request_to_curl(response.request)
-        return curl
+        try:
+            curl = py3curl.request_to_curl(response.request)
+            return curl
+        except Exception as e:
+            return BaseApi.logger.info(f"请求中可能存在二进制文件，不建议转成curl,错误信息：{e}")
 
 
 if __name__ == '__main__':

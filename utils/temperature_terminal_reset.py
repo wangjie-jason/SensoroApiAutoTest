@@ -9,15 +9,20 @@ from pageApi.login import Login
 
 
 def get_token():
-    """获取登录V1的token"""
+    """获取登录SCOM_V1的token"""
     # 获取token前需要先获取验证码
-    mobile = input('请输入你的手机号：')
-    Login().get_sendSms(mobile)
+    phone = input('请输入你的手机号：')
+    Login().get_sendSms(phone)
     # 调登录接口，获取登录接口的token
-    login_response = Login().login_v1(mobile, input('请输入验证码：'))
+    login_response = Login().login_scom_v1(phone, input('请输入验证码：'))
     login_token = login_response.json()['data']['token']
     # 调项目接口，将登录token替换为用户token
-    user_response = Login().select_merchant(login_token, x_lins_view='default')
+    params = {'merchantId': 0}
+    headers = {
+        'Authorization': f'Bearer {login_token}',
+        'x-lins-view': 'default'
+    }
+    user_response = Login().select_merchant(params=params, headers=headers)
     user_token = user_response.json()['data']['token']
     return user_token
 
