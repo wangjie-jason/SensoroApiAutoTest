@@ -6,6 +6,7 @@
 # @project : SensoroApi
 import os.path
 import platform
+import shutil
 
 import pytest
 from py.xml import html
@@ -31,8 +32,14 @@ def pytest_sessionstart():
 
 
 def pytest_sessionfinish(session, exitstatus):
-    # TODO，allure报告处理逻辑
-    pass
+    """运行完成后生成allure报告文件，再将本地启动方式放入该目录下"""
+    # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
+    shutil.copy('./environment.properties', './Temp/environment.properties')
+    # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
+    os.system('allure generate ./Temp -o ./outFiles/report --clean')
+    # 将本地启动脚本和查看allure报告方法放入报告目录下面
+    shutil.copy('./open_report.sh', './outFiles/report/open_report.sh')
+    shutil.copy('./查看allure报告方法', './outFiles/report/查看allure报告方法')
 
 
 def pytest_collection_modifyitems(items) -> None:

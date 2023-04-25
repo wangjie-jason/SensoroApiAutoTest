@@ -24,12 +24,12 @@ if __name__ == '__main__':
     ])
 
     # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    shutil.copy('./environment.properties', './Temp/environment.properties')
+    # shutil.copy('./environment.properties', './Temp/environment.properties')
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
-    os.system('allure generate ./Temp -o ./outFiles/report --clean')
+    # os.system('allure generate ./Temp -o ./outFiles/report --clean')
 
     # 发送邮件
-    if IS_SEND:
+    if IS_SEND: # 判断是否需要发送邮件
         file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html'
         with open(file_path, 'rb') as f:
             text_to_send = f.read()

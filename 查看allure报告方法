@@ -1,0 +1,6 @@
+注：目前只支持mac电脑本地查看（但需要有npm包），windows电脑需要去服务器上查看
+查看方法：
+1.打开terminal终端
+2.cd进入report目录
+3.运行open_report.sh文件
+4.运行命令：sh open_report.sh
