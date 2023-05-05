@@ -4,13 +4,16 @@
 # @Author : wangjie
 # @File : conftest.py
 # @project : SensoroApi
+import json
 import os.path
 import platform
 import shutil
+import time
 
 import pytest
 from py.xml import html
 
+from common.robot_sender import RobotSender
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from configs.lins_environment import EntryPoint
@@ -84,12 +87,78 @@ def pytest_html_results_table_row(report, cells):
     cells.pop(-1)  # 删除link列
 
 
+# 收集用例
+pytest_result = {
+    "case_pass": 0,
+    "case_fail": 0,
+    "case_skip": 0,
+    "case_error": 0,
+    "case_count": 0
+}
+
+
 @pytest.mark.hookwrapper
 def pytest_runtest_makereport(item, call):  # description取值为用例说明__doc__
-    """修改pytest-html报告中description取值为用例说明__doc__"""
+    """获取测试结果、生成测试报告"""
     outcome = yield
     report = outcome.get_result()
+    # 修改pytest-html报告中description取值为用例说明__doc__
     report.description = str(item.function.__doc__)
+
+    with open(BASE_DIR + '/outFiles/pytest_result/pytest_result.json', 'w', encoding='utf-8') as f:
+        if report.when == 'call':
+            # print(f"测试报告：{report}")
+            # print(f"步骤：{report.when}")
+            # print(f"用例id：{report.nodeid}")
+            print(f"用例描述：{str(item.function.__doc__)}")
+            print(f"运行结果：{report.outcome}")
+            if report.outcome == 'passed':
+                pytest_result["case_pass"] += 1
+            if report.outcome == 'failed':
+                pytest_result["case_fail"] += 1
+        if report.when == 'setup':
+            if report.outcome == 'skipped':
+                pytest_result["case_skip"] += 1
+        pytest_result["case_count"] = pytest_result["case_pass"] + pytest_result["case_fail"] + pytest_result[
+            "case_skip"]
+
+        # 将用例执行结果写入文件
+        f.write(f'{json.dumps(pytest_result)}')
+
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    """收集测试结果展示在控制台，并发送到企业微信"""
+    with open(BASE_DIR + '/outFiles/pytest_result/pytest_result.json', 'r', encoding='utf-8') as f:
+        pytest_result = json.loads(f.read())
+        total_case = pytest_result['case_count']
+        pass_case = pytest_result["case_pass"]
+        fail_case = pytest_result["case_fail"]
+        skip_case = pytest_result["case_skip"]
+        error_case = pytest_result["case_error"]
+        pass_rate = round((pytest_result["case_pass"] + pytest_result["case_skip"]) / pytest_result['case_count'] * 100,
+                          2)
+        run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
+    print("******用例执行结果统计******")
+    print(f"总用例数：{total_case}条")
+    print(f"通过：{pass_case}条")
+    print(f"失败：{fail_case}条")
+    print(f"跳过：{skip_case}条")
+    print(f"报错：{error_case}条")
+    print(f"用例通过率：{pass_rate}%")
+    print(f"用时：{run_time}s")
+    desc = """
+本次执行情况如下：
+总用例数为：{}
+通过用例数：<font color=\"info\">{}条</font>
+失败用例数：<font color=\"warning\">{}条</font>
+错误用例数：{}
+跳过用例数：{}
+通过率为：{} %
+用时：{}s
+""".format(total_case, pass_case, fail_case, error_case, skip_case, pass_rate, run_time)
+    # 执行结果发送企业微信
+    # RobotSender.send_enterprise_wechat(
+    #     'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c', desc)
 
 # @pytest.mark.optionalhook
 # def pytest_html_results_table_html(report, data):
