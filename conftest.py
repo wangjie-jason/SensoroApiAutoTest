@@ -33,8 +33,10 @@ def pytest_sessionstart():
 
 def pytest_sessionfinish(session, exitstatus):
     """运行完成后生成allure报告文件，再将本地启动方式放入该目录下"""
-    # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
+    # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
     shutil.copy('./environment.properties', './Temp/environment.properties')
+    # allure报告展示运行器时所需要的数据
+    shutil.copy('./executor.json', './Temp/executor.json')
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
     os.system('allure generate ./Temp -o ./outFiles/report --clean')
     # 将本地启动脚本和查看allure报告方法放入报告目录下面

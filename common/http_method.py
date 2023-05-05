@@ -52,13 +52,13 @@ class BaseApi:
                                         data=data, json=json, files=files)
             if response.status_code == 200:
                 BaseApi.logger.info(f"发送{method.upper()}请求成功，请求接口为：{url}")
-                BaseApi.logger.info(f"响应状态码：{response.status_code}")
+                BaseApi.logger.info(f"响应状态码：{response.status_code}"+'\n' + '-' * 50 + '\n')
             else:
                 BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{url}")
                 BaseApi.logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
                 BaseApi.logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
                 BaseApi.logger.info(f"响应状态码：{response.status_code}")
-                BaseApi.logger.info(f"响应内容：{response.json()}")
+                BaseApi.logger.info(f"响应内容：{response.json()}"+'\n' + '-' * 50 + '\n')
             return response
         except Exception as e:
             BaseApi.logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')

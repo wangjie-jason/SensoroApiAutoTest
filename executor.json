@@ -1,0 +1,10 @@
+{
+  "name": "汪杰",
+  "type": "jenkins",
+  "url": "http://helloqa.com",
+  "buildOrder": 3,
+  "buildName": "allure-report_deploy#1",
+  "buildUrl": "http://helloqa.com#1",
+  "reportUrl": "http://helloqa.com#1/AllureReport",
+  "reportName": "汪杰 Allure Report"
+}
