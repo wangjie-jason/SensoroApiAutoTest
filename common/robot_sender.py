@@ -24,16 +24,16 @@ BUILD_NUMBER = get_env_from_jenkins("BUILD_NUMBER")  # Jenkins构建编号
 
 
 class EnterpriseWechatNotification:
-    def __init__(self, hook: list):
+    def __init__(self, hook_urls: list):
         # 企业微信群机器人的hook地址，一个机器人就一个，多个就定义多个，可以写死，也可以写在配置类中
-        self.hook_url_list = [f"https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={i}" for i in hook]
+        self.hook_urls = hook_urls
         # allure生成报告的地址，Jenkins执行时会用到，Windows暂未配置allure地址
         self.allure_url = f"http://192.168.1.122:8088/jenkins/job/{ProjectName}/{BUILD_NUMBER}/allure/"
         self.header = {'Content-Type': 'application/json'}
 
     def send_msg(self, result=''):
         """发送企业微信消息通知"""
-        global payload
+        global content
         linux_content = f"""** 【{ProjectName}】**
 > 项目名称:{ProjectName}
 > 构件编号:#{BUILD_NUMBER}
@@ -46,41 +46,43 @@ class EnterpriseWechatNotification:
 > 测试环境:{platform.system()}
 {result}"""
         if platform.system() == "Linux" or "Darwin":
-            payload = {
-                "msgtype": "markdown",
-                "markdown": {
-                    "content": linux_content
-                }
-            }
+            content = linux_content
         elif platform.system() == "Windows":
-            payload = {
-                "msgtype": "markdown",
-                "markdown": {
-                    "content": windows_content
-                }
-            }
-        for hook_url in self.hook_url_list:
-            requests.post(url=hook_url, headers=self.header, data=json.dumps(payload))
+            content = windows_content
+
+        payload = {
+            "msgtype": "markdown",
+            "markdown": {
+                "content": content,
+            },
+        }
+
+        for hook_url in self.hook_urls:
+            response = requests.post(url=hook_url, headers=self.header, data=json.dumps(payload))
+            result = response.json()
+            if result["errcode"] == 0:
+                print("消息发送成功")
+            else:
+                print(f"消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
 
 
 class RobotSender:
 
     @staticmethod
-    def send_enterprise_wechat(token, msg):
+    def send_enterprise_wechat(url, msg):
         """发送到企业微信群"""
-        url = token
+        url = url
         headers = {"Content-Type": "application/json"}
 
         data = {
-            "touser": "@all",
             "msgtype": "markdown",
             "markdown": {
-                "content": msg
+                "content": msg,
+                "mentioned_list": ["wangjie", "@all"],
             },
-            "safe": 0
         }
 
-        response = requests.post(url, headers=headers, data=json.dumps(data))
+        response = requests.post(url, headers=headers, json=data)
         result = response.json()
 
         if result["errcode"] == 0:
@@ -95,4 +97,4 @@ if __name__ == '__main__':
           '通过率：\n' \
           '执行结果：\n'
     RobotSender().send_enterprise_wechat(
-        'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c', '呀哈哈')
+        'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c', msg)
