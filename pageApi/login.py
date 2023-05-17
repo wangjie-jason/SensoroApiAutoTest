@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-from common.http_method import BaseApi
+from common.base_api import BaseApi
 from utils.time_utils import TimeUtil
 
 

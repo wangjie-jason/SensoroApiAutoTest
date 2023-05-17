@@ -5,7 +5,7 @@
 # @File : device_center.py
 # @project : SensoroApi
 
-from common.http_method import BaseApi
+from common.base_api import BaseApi
 
 
 class DeviceCenter(BaseApi):

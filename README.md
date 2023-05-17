@@ -13,7 +13,7 @@
 ├── Temp						allure报告临时存放目录
 ├── common						公共方法类存放目录
 │     ├── base_log.py					日志记录器
-│     ├── http_method.py				基础类，对请求方法进行二次封装
+│     ├── base_api.py				        基础类，对请求方法进行二次封装
 │     ├── lins_environment_enums.py			项目环境枚举
 │     ├── mail_sender.py				发送邮件方法
 │     └── settings.py					项目配置文件

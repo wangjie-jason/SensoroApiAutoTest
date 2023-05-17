@@ -7,7 +7,7 @@
 import allure
 import pytest
 
-from common.http_method import BaseApi
+from common.base_api import BaseApi
 from pageApi.alarms import Alarms
 from utils.time_utils import TimeUtil
 

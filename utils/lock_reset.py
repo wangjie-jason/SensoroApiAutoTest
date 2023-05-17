@@ -4,7 +4,7 @@
 # @Author : wangjie
 # @File : lock_reset.py
 # @project : SensoroApi
-from common.http_method import BaseApi
+from common.base_api import BaseApi
 from pageApi.login import Login
 
 

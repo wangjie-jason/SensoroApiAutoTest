@@ -9,6 +9,7 @@ from common.lins_environment_enums import Environment
 
 
 class EntryPoint:
+    """配置类，存放项目各个环境的默认配置"""
     _ENVIRONMENT_CONFIGS = {
         Environment.DEV: {
             'URL': "https://lins-dev1-api.sensoro.com",
@@ -50,18 +51,21 @@ class EntryPoint:
 
     @classmethod
     def URL(cls, env=None):
+        """获取项目默认URL"""
         if env is None:
             env = ENV
         return cls._ENVIRONMENT_CONFIGS[env]['URL']
 
     @classmethod
     def DEFAULT_HEADERS(cls, env=None):
+        """获取项目默认headers"""
         if env is None:
             env = ENV
         return cls._ENVIRONMENT_CONFIGS[env]['DEFAULT_HEADERS']
 
     @classmethod
     def DB_CONFIG(cls, env=None):
+        """获取项目默认数据库配置"""
         if env is None:
             env = ENV
         return cls._ENVIRONMENT_CONFIGS[env]['DB_CONFIG']

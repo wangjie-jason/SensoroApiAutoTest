@@ -11,7 +11,7 @@ import allure
 import pytest
 from py.xml import html
 
-from common.http_method import BaseApi
+from common.base_api import BaseApi
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from pageApi.login import Login

@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # @Time : 2023/3/27 14:17
 # @Author : wangjie
-# @File : http_method.py
+# @File : base_api.py
 # @project : SensoroApi
 import base64
 import json
