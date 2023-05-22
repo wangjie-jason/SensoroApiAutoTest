@@ -30,8 +30,8 @@ class TestAlarms:
             'endTime': TimeUtil.get_seven_days_ago_time_unix()
         }
         r = Alarms().get_alarms_list(headers=headers, params=params)
-        alarms_id = BaseApi.get_json(r)['data']['list'][0]['id']
-        set_global_data('alarms_id', alarms_id)
+        alarm_id = BaseApi.get_json(r)['data']['list'][0]['id']
+        set_global_data('alarm_id', alarm_id)
         message = BaseApi.get_json(r)['message']
         assert message == 'SUCCESS'
 
@@ -41,8 +41,8 @@ class TestAlarms:
     def test_get_alarms_details(self, get_token_v2, get_global_data):
         """获取预警详情"""
         headers = {'Authorization': f'Bearer {get_token_v2}'}
-        alarms_id = get_global_data('alarms_id')
-        print('取出来的alarms_id：', alarms_id)
-        r = Alarms().get_alarms_details(alarms_id, headers=headers)
+        alarm_id = get_global_data('alarm_id')
+        print('取出来的alarms_id：', alarm_id)
+        r = Alarms().get_alarms_details(alarm_id, headers=headers)
         message = BaseApi.get_json(r)['message']
         assert message == 'SUCCESS'

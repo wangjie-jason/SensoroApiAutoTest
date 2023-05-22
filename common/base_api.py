@@ -12,6 +12,7 @@ import requests
 from requests import PreparedRequest
 from common.base_log import Logger
 from configs.lins_environment import EntryPoint
+from utils.time_utils import TimeUtil
 
 
 class BaseApi:
@@ -39,6 +40,19 @@ class BaseApi:
         return method.lower()
 
     @staticmethod
+    def _get_params(params):
+        """获取请求方法"""
+        params = params or {}
+        params = {
+            "page": 1,
+            "size": 20,
+            'startTime': TimeUtil.get_current_time_unix(),
+            'endTime': TimeUtil.get_seven_days_ago_time_unix(),
+            **params
+        }
+        return params
+
+    @staticmethod
     def request(method, address, headers=None, params=None, data=None, json=None, files=None) -> requests.Response:
         """发送http请求，返回response对象"""
         # 处理请求参数
@@ -51,14 +65,14 @@ class BaseApi:
             response = requests.request(method=method, url=url, headers=headers, params=params,
                                         data=data, json=json, files=files)
             if response.status_code == 200:
-                BaseApi.logger.info(f"发送{method.upper()}请求成功，请求接口为：{url}")
-                BaseApi.logger.info(f"响应状态码：{response.status_code}"+'\n' + '-' * 50 + '\n')
+                BaseApi.logger.info(f"发送{method.upper()}请求成功，请求接口为：{response.request.url}")
+                BaseApi.logger.info(f"响应状态码：{response.status_code}" + '\n' + '-' * 50 + '\n')
             else:
-                BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{url}")
+                BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{response.request.url}")
                 BaseApi.logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
                 BaseApi.logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
                 BaseApi.logger.info(f"响应状态码：{response.status_code}")
-                BaseApi.logger.info(f"响应内容：{response.json()}"+'\n' + '-' * 50 + '\n')
+                BaseApi.logger.info(f"响应内容：{response.json()}" + '\n' + '-' * 50 + '\n')
             return response
         except Exception as e:
             BaseApi.logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
@@ -67,6 +81,8 @@ class BaseApi:
     @staticmethod
     def get(address, params=None, headers=None) -> requests.Response:
         """发送get请求，返回response对象"""
+        # get请求会默认带上查询范围的参数
+        params = BaseApi._get_params(params)
         return BaseApi.request(method='get', address=address, params=params, headers=headers)
 
     @staticmethod
