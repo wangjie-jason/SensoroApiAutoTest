@@ -2,8 +2,7 @@
 /venv/
 .idea/
 __*__/
-Temp
-/Temp/
+/Temp/*
 /outFiles/report/*
 /outFiles/logs/*
 /outFiles/screenShot/*
