@@ -61,9 +61,9 @@ def pytest_configure(config):
     # 添加项目名称
     config._metadata["项目名称"] = "lins接口自动化测试"
     # 删除Java_Home
-    config._metadata.pop("JAVA_HOME")
+    # config._metadata.pop("JAVA_HOME")
     # 删除Plugins
-    config._metadata.pop("Plugins")
+    # config._metadata.pop("Plugins")
 
 
 @pytest.mark.optionalhook

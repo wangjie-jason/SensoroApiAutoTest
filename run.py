@@ -8,6 +8,7 @@ import pytest
 
 from common.mail_sender import MailSender
 from common.settings import IS_SEND
+from configs.dir_path_config import BASE_DIR
 from utils.get_yaml_data import get_yaml_data
 
 if __name__ == '__main__':
@@ -16,8 +17,8 @@ if __name__ == '__main__':
         # '-q',  # 代表 "quiet"，即安静模式，它可以将 pytest 的输出精简化，只输出测试用例的执行结果，而不会输出额外的信息，如测试用例的名称、执行时间等等
         '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出
         'testCase/',  # 执行用例的目录
-        '--alluredir', './Temp', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
-        '--html=./outFiles/pytest_report/report.html',  # 指定pytest-html报告的存放位置
+        '--alluredir', f'{BASE_DIR}/Temp', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
+        f'--html={BASE_DIR}/outFiles/pytest_report/report.html',  # 指定pytest-html报告的存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
         '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
         '-p', 'no:logging',  # 表示禁用logging插件，使报告中不显示log信息，只会显示stderr和stdoyt信息,避免log和stderr重复。
