@@ -10,6 +10,7 @@ import os.path
 import time
 
 from common.settings import LOG_DEBUG
+from configs.dir_path_config import BASE_DIR
 
 
 class Logger:
@@ -40,7 +41,7 @@ class Logger:
                 dir_name = time.strftime('%Y-%m-%d')
                 file_name = time.strftime('%Y-%m-%d %H:%M:%S') + '-' + 'log.log'
                 if not os.path.exists(os.path.join(file_path, dir_name)):
-                    os.mkdir(os.path.join(file_path, dir_name))
+                    os.makedirs(os.path.join(file_path, dir_name))
                 cls._log_path = os.path.join(file_path, dir_name, file_name)
 
             # 创建FileHandler,用于写入日志
