@@ -4,10 +4,11 @@
 __*__/
 Temp
 /Temp/
-/outFiles/report/
-/outFiles/logs/
-/outFiles/screenShot/
-/outFiles/pytest_result/
+/outFiles/report/*
+/outFiles/logs/*
+/outFiles/screenShot/*
+/outFiles/pytest_result/*
+/outFiles/pytest_report/*
 /.pytest_cache/
 
 .DS_Store
