@@ -132,7 +132,10 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     """收集测试结果展示在控制台，并发送到企业微信"""
-    with open(BASE_DIR + '/outFiles/pytest_result/pytest_result.json', 'r', encoding='utf-8') as f:
+    result_dir = BASE_DIR + '/outFiles/pytest_result'
+    if not os.path.exists(result_dir):
+        os.makedirs(result_dir, exist_ok=True)
+    with open(result_dir + '/pytest_result.json', 'r', encoding='utf-8') as f:
         pytest_result = json.loads(f.read())
         total_case = pytest_result['case_count']
         pass_case = pytest_result["case_pass"]
