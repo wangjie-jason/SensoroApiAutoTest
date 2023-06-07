@@ -13,7 +13,6 @@ import time
 import pytest
 from py.xml import html
 
-from common.robot_sender import RobotSender, EnterpriseWechatNotification
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from configs.lins_environment import EntryPoint
@@ -37,15 +36,15 @@ def pytest_sessionstart():
 
 def pytest_sessionfinish(session, exitstatus):
     """运行完成后生成allure报告文件，再将本地启动方式放入该目录下"""
-    # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    shutil.copy(BASE_DIR + '/environment.properties', BASE_DIR + '/Temp/environment.properties')
-    # allure报告展示运行器时所需要的数据
-    shutil.copy(BASE_DIR + '/executor.json', BASE_DIR + '/Temp/executor.json')
-    # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
-    os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/report --clean')
-    # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/report/open_report.sh')
-    shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
+    # # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
+    # shutil.copy(BASE_DIR + '/environment.properties', BASE_DIR + '/Temp/environment.properties')
+    # # allure报告展示运行器时所需要的数据
+    # shutil.copy(BASE_DIR + '/executor.json', BASE_DIR + '/Temp/executor.json')
+    # # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
+    # os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/report --clean')
+    # # 将本地启动脚本和查看allure报告方法放入报告目录下面
+    # shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/report/open_report.sh')
+    # shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
 
 
 def pytest_collection_modifyitems(items) -> None:

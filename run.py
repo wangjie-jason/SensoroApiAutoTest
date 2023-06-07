@@ -8,7 +8,7 @@ import pytest
 
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
-from common.settings import IS_SEND
+from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT
 from configs.dir_path_config import BASE_DIR
 from utils.get_yaml_data import get_yaml_data
 
@@ -29,17 +29,24 @@ if __name__ == '__main__':
         # '-m smoke',  # 只运行mark标记为smoke的测试用例
     ])
 
-    # 这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    # shutil.copy('./environment.properties', './Temp/environment.properties')
+    ###################发送allure报告
+    # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
+    shutil.copy(BASE_DIR + '/environment.properties', BASE_DIR + '/Temp/environment.properties')
+    # allure报告展示运行器时所需要的数据
+    shutil.copy(BASE_DIR + '/executor.json', BASE_DIR + '/Temp/executor.json')
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
-    # os.system('allure generate ./Temp -o ./outFiles/report --clean')
+    os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/report --clean')
+    # 将本地启动脚本和查看allure报告方法放入报告目录下面
+    shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/report/open_report.sh')
+    shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
 
     # 发送企业微信群聊
-    EnterpriseWechatNotification(
-        ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_msg()
+    if IS_SEND_WECHAT:
+        EnterpriseWechatNotification(
+            ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_msg()
 
     # 发送邮件
-    if IS_SEND:  # 判断是否需要发送邮件
+    if IS_SEND_EMAIL:  # 判断是否需要发送邮件
         file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html'
         with open(file_path, 'rb') as f:
             text_to_send = f.read()

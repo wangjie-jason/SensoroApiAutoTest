@@ -11,7 +11,10 @@ from common.lins_environment_enums import Environment
 ENV = Environment.TEST
 
 # 设置是否需要发送邮件：Ture发送，False不发送
-IS_SEND = False
+IS_SEND_EMAIL = False
+
+# 设置是否需要发送邮件：Ture发送，False不发送
+IS_SEND_WECHAT = True
 
 # 设置是否开启debug日志
 LOG_DEBUG = False
