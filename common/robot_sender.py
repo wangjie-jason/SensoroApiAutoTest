@@ -6,9 +6,7 @@
 # @project : SensoroApi
 
 import os
-import json
 import requests
-import platform
 
 from common.settings import ENV
 from utils.get_local_ip import get_host_ip
@@ -23,6 +21,8 @@ def get_env_from_jenkins(name, base=''):
 ProjectName = get_env_from_jenkins("JOB_NAME")  # Jenkins构建项目名称
 BUILD_URL = get_env_from_jenkins("BUILD_URL")  # Jenkins构建项目URL
 BUILD_NUMBER = get_env_from_jenkins("BUILD_NUMBER")  # Jenkins构建编号
+ALLURE_URL = BUILD_URL+'allure/'
+print(ALLURE_URL)
 
 
 class EnterpriseWechatNotification:
@@ -31,8 +31,8 @@ class EnterpriseWechatNotification:
     def __init__(self, hook_urls: list):
         # 企业微信群机器人的hook地址，一个机器人就一个，多个就定义多个，可以写死，也可以写在配置类中
         self.hook_urls = hook_urls
-        # allure生成报告的地址，Jenkins执行时会用到，Windows暂未配置allure地址
-        self.allure_url = f"http://{get_host_ip()}:8080/jenkins/job/{ProjectName}/{BUILD_NUMBER}/allure/"
+        # # allure生成报告的地址，Jenkins执行时会用到，Windows暂未配置allure地址
+        # self.allure_url = f"http://{get_host_ip()}:8080/jenkins/job/{ProjectName}/{BUILD_NUMBER}/allure/"
         self.header = {'Content-Type': 'application/json'}
         self.pytest_result = report_data_handle.pytest_json_report_case_count()
 
@@ -52,7 +52,7 @@ class EnterpriseWechatNotification:
         > 报错用例数为：<font color=\"error\">{self.pytest_result['error_case']}条</font>
         > 通过率为：<font color=\"info\">{self.pytest_result['pass_rate']}%</font>
         > 用例执行时间为：<font color=\"info\">{self.pytest_result['case_duration']}s</font>
-        > [报告链接]({self.allure_url})
+        > [报告链接]({ALLURE_URL})
         > [控制台链接]({BUILD_URL})
         {msg}
         """
@@ -62,6 +62,8 @@ class EnterpriseWechatNotification:
             "markdown": {
                 "content": content,
                 "mentioned_list": ["汪杰", "@all"],
+                "mentioned_mobile_list": ['13718395478']
+
             },
         }
 
@@ -87,6 +89,7 @@ class RobotSender:
             "markdown": {
                 "content": msg,
                 "mentioned_list": ["汪杰", "@all"],
+                "mentioned_mobile_list": []
             },
         }
 
@@ -94,9 +97,9 @@ class RobotSender:
         result = response.json()
 
         if result["errcode"] == 0:
-            print("消息发送成功")
+            print("企业微信消息发送成功")
         else:
-            print(f"消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
+            print(f"企业微信消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
 
 
 if __name__ == '__main__':
