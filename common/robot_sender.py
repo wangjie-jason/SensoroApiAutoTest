@@ -39,7 +39,7 @@ class EnterpriseWechatNotification:
     def send_msg(self, msg=''):
         """发送企业微信消息通知"""
         content = f"""
-        ******用例执行结果统计******：
+        ******用例执行结果统计******
         > 项目名称:{ProjectName}
         > 构件编号:#{BUILD_NUMBER}
         > 测试环境:{ENV.name}
