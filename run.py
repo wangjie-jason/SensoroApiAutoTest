@@ -7,6 +7,7 @@ import shutil
 import pytest
 
 from common.mail_sender import MailSender
+from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND
 from configs.dir_path_config import BASE_DIR
 from utils.get_yaml_data import get_yaml_data
@@ -32,6 +33,10 @@ if __name__ == '__main__':
     # shutil.copy('./environment.properties', './Temp/environment.properties')
     # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
     # os.system('allure generate ./Temp -o ./outFiles/report --clean')
+
+    # 发送企业微信群聊
+    EnterpriseWechatNotification(
+        ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_msg()
 
     # 发送邮件
     if IS_SEND:  # 判断是否需要发送邮件

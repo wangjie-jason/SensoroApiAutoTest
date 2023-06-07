@@ -13,10 +13,11 @@ import time
 import pytest
 from py.xml import html
 
-from common.robot_sender import RobotSender
+from common.robot_sender import RobotSender, EnterpriseWechatNotification
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from configs.lins_environment import EntryPoint
+from utils.report_data_handle import report_data_handle
 
 
 def pytest_sessionstart():
@@ -107,43 +108,27 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
-    """收集测试结果展示在控制台，并发送到企业微信"""
-    with open(BASE_DIR + '/outFiles/pytest_result/pytest_result.json', 'r', encoding='utf-8') as f:
-        pytest_result = json.loads(f.read())
-        total_case = pytest_result['summary'].get("total", 0)
-        pass_case = pytest_result["summary"].get("passed", 0)
-        fail_case = pytest_result["summary"].get("failed", 0)
-        skip_case = pytest_result["summary"].get("skipped", 0)
-        xfail_case = pytest_result["summary"].get("xfailed", 0)
-        xpass_case = pytest_result["summary"].get("xpassed", 0)
-        error_case = pytest_result["summary"].get("error", 0)
-        pass_rate = round((pass_case + xpass_case) / total_case * 100, 2)
-        case_duration = round(pytest_result["duration"],2)
-        run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
+    """收集测试结果展示在控制台"""
+    pytest_result = report_data_handle.pytest_json_report_case_count()
+    run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
     print("******用例执行结果统计******")
-    print(f"总用例数：{total_case}条")
-    print(f"通过：{pass_case}条")
-    print(f"失败：{fail_case}条")
-    print(f"跳过：{skip_case}条")
-    print(f"预期失败：{xfail_case}条")
-    print(f"预期通过：{xpass_case}条")
-    print(f"报错：{error_case}条")
-    print(f"用例通过率：{pass_rate}%")
-    print(f"用例执行时间：{case_duration}s")
+    print(f"总用例数：{pytest_result['total_case']}条")
+    print(f"通过：{pytest_result['pass_case']}条")
+    print(f"失败：{pytest_result['fail_case']}条")
+    print(f"跳过：{pytest_result['skip_case']}条")
+    print(f"预期失败：{pytest_result['xfail_case']}条")
+    print(f"预期通过：{pytest_result['xpass_case']}条")
+    print(f"报错：{pytest_result['error_case']}条")
+    print(f"用例通过率：{pytest_result['pass_rate']}%")
+    print(f"用例执行时间：{pytest_result['case_duration']}s")
     print(f"总用时(算上了生成报告的时间)：{run_time}s")
-    desc = f"""
-本次执行情况如下：
-总用例数为：<font color=\"info\">{total_case}条</font>
-通过用例数为：<font color=\"info\">{pass_case}条</font>
-失败用例数为：<font color=\"warning\">{fail_case}条</font>
-跳过用例数为：<font color=\"comment\">{skip_case}条</font>
-通过率为：<font color=\"info\">{pass_rate}%</font>
-用时为：<font color=\"info\">{run_time}s</font>
-"""
+
     # if fail_case >= 0:
     #     # 如果有失败case，就将执行结果发送企业微信
     #     RobotSender.send_enterprise_wechat(
     #         'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c', desc)
+    # EnterpriseWechatNotification(
+    #     ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_msg()
 
 # @pytest.mark.optionalhook
 # def pytest_html_results_table_html(report, data):
