@@ -44,8 +44,8 @@ if __name__ == '__main__':
     if IS_SEND_WECHAT:
         EnterpriseWechatNotification(
             [
-                'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_markdown(
-            "<<@汪杰>>")
+                'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=3c5089f8-79b3-4ddd-9d55-f64464f838f9']).send_markdown(
+            "<@汪杰>")
 
     # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件

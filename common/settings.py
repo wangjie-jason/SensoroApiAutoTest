@@ -13,7 +13,7 @@ ENV = Environment.TEST
 # 设置是否需要发送邮件：Ture发送，False不发送
 IS_SEND_EMAIL = False
 
-# 设置是否需要发送邮件：Ture发送，False不发送
+# 设置是否需要发送企业微信消息：Ture发送，False不发送
 IS_SEND_WECHAT = True
 
 # 设置是否开启debug日志

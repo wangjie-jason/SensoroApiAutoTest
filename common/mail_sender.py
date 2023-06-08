@@ -9,7 +9,7 @@ from email.header import Header
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from common.base_log import Logger
+from common.base_log import logger
 
 
 class MailSender:
@@ -81,7 +81,6 @@ class MailSender:
         return self
 
     def send(self):
-        logger = Logger().get_logger()
         logger.info("开始发送邮件")
         try:
             # 使用with可以加入超时等待30s，并且发送完成后自动关闭链接，省去了smtp_obj.quit()步骤

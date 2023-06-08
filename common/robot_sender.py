@@ -8,7 +8,7 @@
 import os
 import requests
 
-from common.base_log import Logger
+from common.base_log import logger
 from common.exceptions import SendMessageError, ValueTypeError
 from common.settings import ENV
 from utils.report_data_handle import report_data_handle
@@ -113,7 +113,6 @@ class EnterpriseWechatNotification:
 
     def _send_msg(self, payload):
         """发送企业微信消息通知"""
-        logger = Logger().get_logger()
 
         payload = payload
 

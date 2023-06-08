@@ -122,12 +122,6 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     print(f"用例执行时间：{pytest_result['case_duration']}s")
     print(f"总用时(算上了生成报告的时间)：{run_time}s")
 
-    # if fail_case >= 0:
-    #     # 如果有失败case，就将执行结果发送企业微信
-    #     RobotSender.send_enterprise_wechat(
-    #         'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c', desc)
-    # EnterpriseWechatNotification(
-    #     ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_msg()
 
 # @pytest.mark.optionalhook
 # def pytest_html_results_table_html(report, data):

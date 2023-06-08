@@ -10,7 +10,7 @@ import json
 import py3curl
 import requests
 from requests import PreparedRequest
-from common.base_log import Logger
+from common.base_log import logger
 from configs.lins_environment import EntryPoint
 from utils.time_utils import TimeUtil
 
@@ -20,7 +20,6 @@ class BaseApi:
 
     host = EntryPoint.URL()
     default_headers = EntryPoint.DEFAULT_HEADERS()
-    logger = Logger().get_logger()
 
     @staticmethod
     def _get_url(address: str) -> str:
@@ -65,17 +64,17 @@ class BaseApi:
             response = requests.request(method=method, url=url, headers=headers, params=params,
                                         data=data, json=json, files=files)
             if response.status_code == 200:
-                BaseApi.logger.info(f"发送{method.upper()}请求成功，请求接口为：{response.request.url}")
-                BaseApi.logger.info(f"响应状态码：{response.status_code}" + '\n' + '-' * 50 + '\n')
+                logger.info(f"发送{method.upper()}请求成功，请求接口为：{response.request.url}")
+                logger.info(f"响应状态码：{response.status_code}" + '\n' + '-' * 50 + '\n')
             else:
-                BaseApi.logger.info(f"发送{method.upper()}请求失败，请求接口为：{response.request.url}")
-                BaseApi.logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
-                BaseApi.logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
-                BaseApi.logger.info(f"响应状态码：{response.status_code}")
-                BaseApi.logger.info(f"响应内容：{response.json()}" + '\n' + '-' * 50 + '\n')
+                logger.info(f"发送{method.upper()}请求失败，请求接口为：{response.request.url}")
+                logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
+                logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
+                logger.info(f"响应状态码：{response.status_code}")
+                logger.info(f"响应内容：{response.json()}" + '\n' + '-' * 50 + '\n')
             return response
         except Exception as e:
-            BaseApi.logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
+            logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
             raise e
 
     @staticmethod
@@ -147,7 +146,7 @@ class BaseApi:
             curl = py3curl.request_to_curl(response.request)
             return curl
         except Exception as e:
-            return BaseApi.logger.info(f"请求中可能存在二进制文件，不建议转成curl,错误信息：{e}")
+            return logger.info(f"请求中可能存在二进制文件，不建议转成curl,错误信息：{e}")
 
 
 if __name__ == '__main__':

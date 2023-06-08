@@ -69,6 +69,7 @@ class Logger:
             return cls._logger_instance
 
 
+logger = Logger().get_logger()
+
 if __name__ == '__main__':
-    logger = Logger().get_logger()
-    logger.debug('测试日志')
+    logger.info("测试日志")
