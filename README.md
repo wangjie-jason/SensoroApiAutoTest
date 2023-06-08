@@ -3,6 +3,7 @@
 ## 环境准备
 
 ### 技术栈：python+pytest+requests+allure+pytest-html
+
 - 选择语言：python>=3.8
 - 编程工具选型：pycharm
 - 测试框架选型：pytest
@@ -78,80 +79,50 @@
 
 - 按照上述原则，采用PO设计模式及pytest测试框架，设计项目结构如下：
 
-```python
-- common  # 包文件，公共模块，存放一些通用方法
-- base_api.py
--
-
-
-class BaseApi()  # 基类
-    - 方法1：发送请求
-    - 方法2：增
-    - 方法3：删
-    - 方法4：改
-    - 方法5：查
-
-
-- pageApi  # 包文件，存放业务层代码
-- login.py  # 登陆模块
--
-
-
-class Login(BaseApi)  # 继承基类里的BaseApi
-    - 方法1：发送登陆请求
-    - 方法2：发送登出请求
-
-
-- logout.py  # 登出模块
--
-
-
-class Logout(BaseApi)
-
-
-- configs  # 包文件，存放配置
-- lins_environment.py
--
-
-
-class EntryPoint  # 用于切换测试环境
-    - 方法1：获取项目URL
-    - 方法2：获取项目默认headers
-    - 方法3：获取项目默认数据库配置
-
-
-- datas  # 文件夹，存放数据/测试用例
-- xxx.xls
-- xxx.yaml
-- testCase  # 包文件，存放测试用例代码,注意符合pytest命名规范
-- test_login.py
--
-
-
-class Test_login
-    - 方法1：test_login01
-    - 方法2：test_login02
-
-
-- test_logout.py
-- -
-
-
-class Test_logout
-    - 方法1：test_logout01
-    - 方法2：test_logout02
-
-
-- outFiles  # 文件夹，输出文件
-- logs  # 存放项目每次运行产生的log文件
-- report  # 存放报告
-- screenShot  # 存放截图
-- utils  # 包文件，工具类
-- handle_data.py
-- handle_excel.py
-- handle_path.py
-- handle_yaml.py
-- run.py  # python文件，配置及执行测试入口
+```
+- common  #包文件，公共模块，存放一些通用方法
+    - base_api.py
+        - class BaseApi()#基类
+            - 方法1：发送请求
+            - 方法2：增
+            - 方法3：删
+            - 方法4：改
+            - 方法5：查
+- pageApi  #包文件，存放业务层代码
+    - login.py #登陆模块
+        - class Login(BaseApi) #继承基类里的BaseApi
+            - 方法1：发送登陆请求
+            - 方法2：发送登出请求
+    - logout.py #登出模块
+        - class Logout(BaseApi)
+- configs  #包文件，存放配置
+    - lins_environment.py 
+    	- class EntryPoint #用于切换测试环境
+        	- 方法1：获取项目URL
+        	- 方法2：获取项目默认headers
+        	- 方法3：获取项目默认数据库配置 
+- datas #文件夹，存放数据/测试用例
+    - xxx.xls
+    - xxx.yaml
+- testCase #包文件，存放测试用例代码,注意符合pytest命名规范
+    - test_login.py
+        - class Test_login
+            - 方法1：test_login01
+            - 方法2：test_login02
+    - test_logout.py
+        - class Test_logout
+            - 方法1：test_logout01
+            - 方法2：test_logout02
+- outFiles #文件夹，输出文件
+    - logs #存放项目每次运行产生的log文件
+    - report #存放报告
+    - screenShot #存放截图
+- utils #包文件，工具类
+    - handle_data.py 
+    - handle_excel.py
+    - handle_path.py
+    - handle_yaml.py
+- run.py #python文件，配置及执行测试入口
 ```
 
 ### 2.使用实例
