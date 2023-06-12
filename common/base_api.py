@@ -67,11 +67,11 @@ class BaseApi:
                 logger.info(f"发送{method.upper()}请求成功，请求接口为：{response.request.url}")
                 logger.info(f"响应状态码：{response.status_code}" + '\n' + '-' * 50 + '\n')
             else:
-                logger.info(f"发送{method.upper()}请求失败，请求接口为：{response.request.url}")
-                logger.info(f"请求内容：{BaseApi.get_request_info(response)}")
-                logger.info(f'请求curl命令：{BaseApi.request_to_curl(response)}')
-                logger.info(f"响应状态码：{response.status_code}")
-                logger.info(f"响应内容：{response.json()}" + '\n' + '-' * 50 + '\n')
+                logger.error(f"发送{method.upper()}请求失败，请求接口为：{response.request.url}")
+                logger.error(f"请求内容：{BaseApi.get_request_info(response)}")
+                logger.error(f'请求curl命令：{BaseApi.request_to_curl(response)}')
+                logger.error(f"响应状态码：{response.status_code}")
+                logger.error(f"响应内容：{response.json()}" + '\n' + '-' * 50 + '\n')
             return response
         except Exception as e:
             logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
@@ -146,7 +146,7 @@ class BaseApi:
             curl = py3curl.request_to_curl(response.request)
             return curl
         except Exception as e:
-            return logger.info(f"请求中可能存在二进制文件，不建议转成curl,错误信息：{e}")
+            return logger.error(f"请求中可能存在二进制文件，不建议转成curl,错误信息：{e}")
 
 
 if __name__ == '__main__':
