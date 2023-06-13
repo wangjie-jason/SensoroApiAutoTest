@@ -125,7 +125,7 @@ class EnterpriseWechatNotification:
                 logger.info("企业微信消息发送成功")
             else:
                 logger.error(f'企业微信「{payload["msgtype"]}类型」消息发送失败：{response.json()}')
-                raise SendMessageError(f"企业微信「MarkDown类型」消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
+                raise SendMessageError(f"企业微信「{payload['msgtype']}类型」消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
 
 
 if __name__ == '__main__':
