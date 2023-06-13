@@ -9,6 +9,7 @@ import psycopg2.pool
 import pymysql
 from dbutils.pooled_db import PooledDB
 
+from common.base_log import logger
 from configs.lins_environment import EntryPoint
 
 
@@ -26,9 +27,9 @@ class Postgresql:
             # 创建连接池
             self.pool = psycopg2.pool.SimpleConnectionPool(
                 self.minconn, self.maxconn, **self.db_config)
-            print("Database connected successfully")
+            logger.info("数据库连接成功")
         except psycopg2.Error as e:
-            print(f"Error connecting to database: {e}")
+            logger.error(f"连接数据库错误: {e}")
 
     def execute_query(self, query):
         conn = None
@@ -38,9 +39,9 @@ class Postgresql:
                 with conn.cursor() as cur:
                     cur.execute(query)
                     conn.commit()
-                    print("Query executed successfully")
+                    logger.info("查询执行成功")
         except psycopg2.Error as e:
-            print(f"Error executing query: {e}")
+            logger.error(f"执行查询错误: {e}")
         finally:
             if conn:
                 self.pool.putconn(conn)  # 将连接归还到连接池
@@ -53,9 +54,10 @@ class Postgresql:
                 with conn.cursor() as cur:
                     cur.execute(query)
                     results = cur.fetchall()
+                    logger.info(f"查询执行成功,查询结果为：{results}")
                     return results
         except psycopg2.Error as e:
-            print(f"Error executing query: {e}")
+            logger.error(f"执行查询错误: {e}")
             return None
         finally:
             if conn:
@@ -64,7 +66,7 @@ class Postgresql:
     def disconnect(self):
         if self.pool:
             self.pool.closeall()
-            print("Database disconnected")
+            logger.info("数据库断开连接")
 
     def __enter__(self):
         self.connect()
@@ -94,9 +96,9 @@ class MySQL:
                 cursorclass=pymysql.cursors.DictCursor,  # 使查询的结构返回为字典格式，默认为元组格式
                 **self.db_config
             )
-            print("Database connected successfully")
+            logger.info("数据库连接成功")
         except pymysql.Error as e:
-            print(f"Error connecting to database: {e}")
+            logger.error(f"连接数据库错误: {e}")
 
     def execute_query(self, query):
         try:
@@ -105,9 +107,9 @@ class MySQL:
                 with conn.cursor() as cur:
                     cur.execute(query)
                     conn.commit()
-                    print("Query executed successfully")
+                    logger.info("查询执行成功")
         except pymysql.Error as e:
-            print(f"Error executing query: {e}")
+            logger.error(f"执行查询错误: {e}")
 
     def execute_query_with_result(self, query):
         try:
@@ -116,15 +118,16 @@ class MySQL:
                 with conn.cursor() as cur:
                     cur.execute(query)
                     results = cur.fetchall()
+                    logger.info(f"查询执行成功,查询结果为：{results}")
                     return results
         except psycopg2.Error as e:
-            print(f"Error executing query: {e}")
+            logger.error(f"执行查询错误: {e}")
             return None
 
     def disconnect(self):
         if self.pool:
             self.pool.close()
-            print("Database disconnected")
+            logger.info("数据库断开连接")
 
     def __enter__(self):
         self.connect()

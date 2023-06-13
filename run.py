@@ -22,7 +22,7 @@ if __name__ == '__main__':
         '--json-report', '--json-report-summary',  # 生成简化版json报告
         f'--json-report-file={BASE_DIR}/outFiles/pytest_result/pytest_result.json',  # 指定json报告存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
-        '--capture=sys',  # 仅捕获stderr，将stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
+        '--capture=fd',  # 捕获stderr和stdout输出到终端，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
         '-p', 'no:logging',  # 表示禁用logging插件，使报告中不显示log信息，只会显示stderr和stdoyt信息,避免log和stderr重复。
         '-p', 'no:sugar',  # 禁用pytest-sugar美化控制台结果
         # '-k not test_login.py',  # 不执行该文件里的case
