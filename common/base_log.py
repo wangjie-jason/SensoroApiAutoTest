@@ -10,7 +10,6 @@ import os.path
 import time
 
 from common.settings import LOG_DEBUG
-from configs.dir_path_config import BASE_DIR
 
 
 class Logger:
@@ -45,7 +44,7 @@ class Logger:
                 cls._log_path = os.path.join(file_path, dir_name, file_name)
 
             # 创建FileHandler,用于写入日志
-            fh = logging.FileHandler(cls._log_path)
+            fh = logging.FileHandler(cls._log_path, encoding='utf-8')
             fh.setFormatter(format_)
             fh.setLevel(logging.INFO)
 
