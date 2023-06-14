@@ -12,6 +12,24 @@ import time
 from common.settings import LOG_DEBUG
 
 
+class ColoredFormatter(logging.Formatter):
+    """ 设置日志颜色 """
+    COLOR_CODES = {
+        'DEBUG': '\033[1;34m',  # Blue
+        'INFO': '\033[1;32m',  # Green
+        'WARNING': '\033[1;33m',  # Yellow
+        'ERROR': '\033[1;31m',  # Red
+        'CRITICAL': '\033[1;41m'  # Red (background)
+    }
+
+    def format(self, record):
+        levelname = record.levelname
+        msg = super().format(record)
+        color_code = self.COLOR_CODES.get(levelname, '')
+        reset_code = '\033[0m'  # Reset color
+        return f'{color_code}{msg}{reset_code}'
+
+
 class Logger:
     """用于全局记录log"""
     _logger_instance = None
@@ -29,7 +47,12 @@ class Logger:
             logger.setLevel(logging.INFO)
 
             # 设置日志输入格式
-            format_ = logging.Formatter(
+            # 设置写入文件时的格式
+            formatter_file = logging.Formatter(
+                '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
+            )
+            # 设置终端上显示带颜色的格式
+            formatter_stream = ColoredFormatter(
                 '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
             )
 
@@ -45,12 +68,12 @@ class Logger:
 
             # 创建FileHandler,用于写入日志
             fh = logging.FileHandler(cls._log_path, encoding='utf-8')
-            fh.setFormatter(format_)
+            fh.setFormatter(formatter_file)
             fh.setLevel(logging.INFO)
 
             # 创建StreamHandler,用于输出到控制台
             ch = logging.StreamHandler()
-            ch.setFormatter(format_)
+            ch.setFormatter(formatter_stream)
             ch.setLevel(logging.INFO)
 
             # 添加输出
@@ -71,4 +94,8 @@ class Logger:
 logger = Logger().get_logger()
 
 if __name__ == '__main__':
+    logger.debug("测试日志")
     logger.info("测试日志")
+    logger.warning("测试日志")
+    logger.error("测试日志")
+    logger.critical("测试日志")
