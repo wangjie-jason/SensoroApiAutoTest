@@ -12,12 +12,13 @@ import pytest
 from py.xml import html
 
 from common.base_api import BaseApi
+from common.exceptions import ValueNotFoundError
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from pageApi.login import Login
 
 # 定义一个全局变量，用于存储提取的参数内容
-global_data = {}
+_global_data = {}
 
 
 @pytest.fixture(scope="session", autouse=False)
@@ -27,13 +28,13 @@ def set_global_data():
     :return:
     """
 
-    def _set_global_data(key, value):
-        global_data[key] = value
-        allure.attach(str(f"'{key}':'{value}'"), '设置变量：', allure.attachment_type.TEXT)
-        allure.attach(str(global_data), '当前可使用的全局变量：', allure.attachment_type.TEXT)
+    def _set_global_data(cache_name, value):
+        _global_data[cache_name] = value
+        allure.attach(str(f"'{cache_name}':'{value}'"), '设置变量：', allure.attachment_type.TEXT)
+        allure.attach(str(_global_data), '当前可使用的全局变量：', allure.attachment_type.TEXT)
 
     yield _set_global_data
-    global_data.clear()
+    _global_data.clear()
 
 
 @pytest.fixture(scope="session", autouse=False)
@@ -43,9 +44,14 @@ def get_global_data():
     :return:
     """
 
-    def _get_global_data(key):
-        allure.attach(str(f"{key}:{global_data.get(key, None)}"), '取出来的变量：', allure.attachment_type.TEXT)
-        return global_data.get(key, None)
+    def _get_global_data(cache_data):
+        try:
+            allure.attach(str(f"{cache_data}:{_global_data.get(cache_data, None)}"), '取出来的变量：',
+                          allure.attachment_type.TEXT)
+            return _global_data[cache_data]
+        except KeyError:
+            allure.attach(str(_global_data), '当前可使用的全局变量：', allure.attachment_type.TEXT)
+            raise ValueNotFoundError(f"{cache_data}的缓存数据未找到，请检查是否将该数据存入缓存中")
 
     return _get_global_data
 
