@@ -17,10 +17,10 @@ class Postgresql:
     """连接Postgresql数据库"""
 
     def __init__(self, db_config, minconn=1, maxconn=10):
-        self.db_config = db_config
-        self.minconn = minconn
-        self.maxconn = maxconn
-        self.pool = None
+        self.db_config = db_config  # 数据库配置信息
+        self.minconn = minconn  # 连接池最小连接数
+        self.maxconn = maxconn  # 连接池最大连接数
+        self.pool = None  # 连接池对象
 
     def connect(self):
         try:
@@ -31,48 +31,61 @@ class Postgresql:
         except psycopg2.Error as e:
             logger.error(f"连接数据库错误: {e}")
 
-    def execute_query(self, query):
+    def execute_sql(self, sql):
+        """
+        执行新增、修改、删除sql
+        :param sql: sql语句
+        :return:
+        """
         conn = None
         try:
             # 从连接池中获取1个连接
             with self.pool.getconn() as conn:
                 with conn.cursor() as cur:
-                    cur.execute(query)
+                    cur.execute(sql)
                     conn.commit()
-                    logger.info("查询执行成功")
+                    logger.info("执行sql成功")
         except psycopg2.Error as e:
-            logger.error(f"执行查询错误: {e}")
+            logger.error(f"执行sql错误: {e}")
         finally:
             if conn:
                 self.pool.putconn(conn)  # 将连接归还到连接池
 
-    def execute_query_with_result(self, query):
+    def execute_query_with_result(self, sql):
+        """
+        执行查询sql并获取返回结果
+        :param sql: 查询sql
+        :return:
+        """
         conn = None
         try:
             # 从连接池中获取1个连接
             with self.pool.getconn() as conn:
                 with conn.cursor() as cur:
-                    cur.execute(query)
+                    cur.execute(sql)
                     results = cur.fetchall()
-                    logger.info(f"查询执行成功,查询结果为：{results}")
+                    logger.info(f"执行sql成功,查询结果为：{results}")
                     return results
         except psycopg2.Error as e:
-            logger.error(f"执行查询错误: {e}")
+            logger.error(f"执行sql错误: {e}")
             return None
         finally:
             if conn:
                 self.pool.putconn(conn)  # 将连接归还到连接池
 
     def disconnect(self):
+        """断开数据库连接"""
         if self.pool:
             self.pool.closeall()
             logger.info("数据库断开连接")
 
     def __enter__(self):
+        """进入上下文环境时执行的操作"""
         self.connect()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文环境时执行的操作"""
         self.disconnect()
 
 
@@ -80,12 +93,13 @@ class MySQL:
     """连接MySQL数据库"""
 
     def __init__(self, db_config, minconn=1, maxconn=10):
-        self.db_config = db_config
-        self.minconn = minconn
-        self.maxconn = maxconn
-        self.pool = None
+        self.db_config = db_config  # 数据库配置信息
+        self.minconn = minconn  # 连接池最小连接数
+        self.maxconn = maxconn  # 连接池最大连接数
+        self.pool = None  # 连接池对象
 
     def connect(self):
+        """链接数据库"""
         try:
             # 创建连接池
             self.pool = PooledDB(
@@ -100,40 +114,53 @@ class MySQL:
         except pymysql.Error as e:
             logger.error(f"连接数据库错误: {e}")
 
-    def execute_query(self, query):
+    def execute_sql(self, sql):
+        """
+        执行新增、修改、删除sql
+        :param sql: sql语句
+        :return:
+        """
         try:
             # 从连接池中获取1个连接
             with self.pool.connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute(query)
+                    cur.execute(sql)
                     conn.commit()
-                    logger.info("查询执行成功")
+                    logger.info("执行sql成功")
         except pymysql.Error as e:
-            logger.error(f"执行查询错误: {e}")
+            logger.error(f"执行sql错误: {e}")
 
-    def execute_query_with_result(self, query):
+    def execute_query_with_result(self, sql):
+        """
+        执行查询sql并获取返回结果
+        :param sql: 查询sql
+        :return:
+        """
         try:
             # 从连接池中获取1个连接
             with self.pool.connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute(query)
+                    cur.execute(sql)
                     results = cur.fetchall()
-                    logger.info(f"查询执行成功,查询结果为：{results}")
+                    logger.info(f"执行sql成功,查询结果为：{results}")
                     return results
         except psycopg2.Error as e:
-            logger.error(f"执行查询错误: {e}")
+            logger.error(f"执行sql错误: {e}")
             return None
 
     def disconnect(self):
+        """断开数据库连接"""
         if self.pool:
             self.pool.close()
             logger.info("数据库断开连接")
 
     def __enter__(self):
+        """进入上下文环境时执行的操作"""
         self.connect()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文环境时执行的操作"""
         self.disconnect()
 
 
