@@ -41,11 +41,11 @@ if __name__ == '__main__':
     shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
 
     # 发送企业微信群聊
-    # if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
-    #     EnterpriseWechatNotification(
-    #         [
-    #             'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_markdown(
-    #         "<@汪杰>")
+    if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
+        EnterpriseWechatNotification(
+            [
+                'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=50ab5cc5-7b5d-4ed0-a95b-ddd5daeeec5c']).send_markdown(
+            "<@汪杰>")
 
     # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
