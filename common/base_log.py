@@ -9,6 +9,8 @@ import logging
 import os.path
 import time
 
+import colorlog
+
 from common.settings import LOG_DEBUG
 
 
@@ -49,12 +51,13 @@ class Logger:
             # 设置日志输入格式
             # 设置写入文件时的格式
             formatter_file = logging.Formatter(
-                '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
+                '%(levelname)-8s%(asctime)s-%(filename)s[line:%(lineno)d]：%(message)s', '%Y-%m-%d %H:%m:%S'
             )
             # 设置终端上显示带颜色的格式
-            formatter_stream = ColoredFormatter(
-                '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s-%(message)s'
-            )
+            # formatter_stream = ColoredFormatter(
+            #     '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s：%(message)s', '%Y-%m-%d %H:%m:%S'
+            # )
+            formatter_stream = cls.log_color()
 
             # 设置日志存储路径
             if not cls._log_path:
@@ -89,6 +92,23 @@ class Logger:
             cls._logger_instance = logger
 
             return cls._logger_instance
+
+    @classmethod
+    def log_color(cls):
+        """ 设置日志颜色 """
+        log_colors_config = {
+            'DEBUG': 'cyan',
+            'INFO': 'green',
+            'WARNING': 'yellow',
+            'ERROR': 'red',
+            'CRITICAL': 'bold_red,bg_bold_white',
+        }
+
+        formatter = colorlog.ColoredFormatter(
+            '%(log_color)s%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s：%(message)s', '%Y-%m-%d %H:%m:%S',
+            log_colors=log_colors_config
+        )
+        return formatter
 
 
 logger = Logger().get_logger()

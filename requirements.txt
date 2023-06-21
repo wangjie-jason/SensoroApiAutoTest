@@ -13,3 +13,4 @@ DBUtils==3.0.2  # 是Python的一个用于实现数据库连接池的模块
 cryptography==40.0.2 # 在使用MySQL8.0的SHA256密码或缓存SHA2密码身份验证时依赖的包
 pytest-sugar==0.9.7 # pytest测试用例显示进度条的包
 pytest-json-report==1.5.0 # pytest生成json格式的报告
+colorlog==6.7.0 # 控制日志颜色的包
