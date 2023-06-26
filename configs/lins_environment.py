@@ -4,18 +4,18 @@
 # @Author : wangjie
 # @File : lins_environment.py
 # @project : SensoroApi
+from utils.command_parser import command_parser
 from common.settings import ENV
-from common.lins_environment_enums import Environment
 
 
 class EntryPoint:
     """配置类，存放项目各个环境的默认配置"""
     _ENVIRONMENT_CONFIGS = {
-        Environment.DEV: {
+        'dev': {
             'URL': "https://lins-dev1-api.sensoro.com",
             'DEFAULT_HEADERS': {},
         },
-        Environment.TEST: {
+        'test': {
             'URL': "https://lins-test1-api.sensoro.com",
             'DEFAULT_HEADERS': {
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -39,35 +39,39 @@ class EntryPoint:
                 # 'cursorclass': pymysql.cursors.DictCursor
             }
         },
-        Environment.PROD: {
+        'prod': {
             'URL': "https://lins-api.sensoro.com",
             'DEFAULT_HEADERS': {},
         },
-        Environment.DIANJUN: {
+        'dianjun': {
             'URL': "https://aicity-api.dianjun.sensoro.vip",
             'DEFAULT_HEADERS': {},
         }
     }
 
+    # 获取命令行参数中指定的运行环境，如果没有的话就用settings中指定的环境
+    args = command_parser()
+    env = args.env.lower() if args.env else None
+
     @classmethod
-    def URL(cls, env=None):
+    def URL(cls, env=env):
         """获取项目默认URL"""
         if env is None:
-            env = ENV
+            env = ENV.value
         return cls._ENVIRONMENT_CONFIGS[env]['URL']
 
     @classmethod
-    def DEFAULT_HEADERS(cls, env=None):
+    def DEFAULT_HEADERS(cls, env=env):
         """获取项目默认headers"""
         if env is None:
-            env = ENV
+            env = ENV.value
         return cls._ENVIRONMENT_CONFIGS[env]['DEFAULT_HEADERS']
 
     @classmethod
-    def DB_CONFIG(cls, env=None):
+    def DB_CONFIG(cls, env=env):
         """获取项目默认数据库配置"""
         if env is None:
-            env = ENV
+            env = ENV.value
         return cls._ENVIRONMENT_CONFIGS[env]['DB_CONFIG']
 
 

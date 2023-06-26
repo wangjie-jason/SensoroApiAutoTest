@@ -1,11 +1,21 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
+"""
+运行方式说明：
+  > python3 run.py  (默认在test环境运行测试用例)
+  > python3 run.py -env DEV/TEST/PROD/DIANJUN 在对应环境运行测试用例
+  > python3 run.py --send-wechat True/False 指定是否需要发送企业微信群消息
+  > python3 run.py --send-email True/False 指定是否需要发送邮件
+"""
+
 import os
 import shutil
 
 import pytest
 
+from common.base_log import logger
+from utils.command_parser import command_parser
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT
@@ -13,6 +23,21 @@ from configs.dir_path_config import BASE_DIR
 from utils.get_yaml_data import get_yaml_data
 
 if __name__ == '__main__':
+    logger.info("""
+                             _    _         _      _____         _
+              __ _ _ __ (_)  / \\  _   _| |_ __|_   _|__  ___| |_
+             / _` | "_ \\| | / _ \\| | | | __/ _ \\| |/ _ \\/ __| __|
+            | (_| | |_) | |/ ___ \\ |_| | || (_) | |  __/\\__ \\ |_
+             \\__,_| .__/|_/_/   \\_\\__,_|\\__\\___/|_|\\___||___/\\__|
+                  |_|
+                  Starting      ...     ...     ...
+                """)
+
+    # 获取命令行参数中指定的通知状态，如果没有的话就用settings中指定的通知状态
+    args = command_parser()
+    IS_SEND_EMAIL = eval(args.send_email) if args.send_email else IS_SEND_EMAIL
+    IS_SEND_WECHAT = eval(args.send_wechat) if args.send_wechat else IS_SEND_WECHAT
+
     pytest.main([
         # '-q',  # 代表 "quiet"，即安静模式，它可以将 pytest 的输出精简化，只输出测试用例的执行结果，而不会输出额外的信息，如测试用例的名称、执行时间等等
         # '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出

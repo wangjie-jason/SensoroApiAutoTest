@@ -14,7 +14,7 @@ ENV = Environment.TEST
 IS_SEND_EMAIL = False
 
 # 设置是否需要发送企业微信消息：Ture发送，False不发送
-IS_SEND_WECHAT = True
+IS_SEND_WECHAT = False
 
 # 设置是否开启debug日志
 LOG_DEBUG = False
