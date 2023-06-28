@@ -10,7 +10,7 @@ import requests
 from common.base_log import logger
 from common.exceptions import SendMessageError, ValueTypeError
 from common.settings import ENV
-from utils.report_data_handle import report_data_handle
+from utils.reportdatahandle import ReportDataHandle
 
 
 def get_env_from_jenkins(name, base=''):
@@ -31,7 +31,7 @@ class EnterpriseWechatNotification:
         # 企业微信群机器人的hook地址，一个机器人就一个，多个就定义多个，可以写死，也可以写在配置类中
         self.hook_urls = hook_urls
         self.header = {'Content-Type': 'application/json'}
-        self.pytest_result = report_data_handle.pytest_json_report_case_count()
+        self.pytest_result = ReportDataHandle.pytest_json_report_case_count()
 
     def send_text(self, content, mentioned_mobile_list=None):
         """

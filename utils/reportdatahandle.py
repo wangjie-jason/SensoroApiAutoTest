@@ -9,7 +9,7 @@ import json
 from configs.dir_path_config import BASE_DIR
 
 
-class report_data_handle:
+class ReportDataHandle:
 
     @staticmethod
     # TODO：完善allure报告的统计
@@ -44,4 +44,4 @@ class report_data_handle:
 
 
 if __name__ == '__main__':
-    print(report_data_handle.pytest_json_report_case_count())
+    print(ReportDataHandle.pytest_json_report_case_count())
