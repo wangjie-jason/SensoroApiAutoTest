@@ -4,12 +4,12 @@ import allure
 import pytest
 
 from pageApi.login import Login
-from utils.get_yaml_data import get_yaml_data
+from utils.yaml_handle import YamlHandle
 
 
-@allure.feature("登录模块测试用例")
+@allure.feature("登录模块")
 class TestLogin:
-    data_smsCode = get_yaml_data('datas/smsCode.yaml')
+    data_smsCode = YamlHandle('datas/smsCode.yaml').read_yaml()
     params = [(item['case_title'], item['phone'], item['expected']) for item in data_smsCode]
 
     @allure.story("测试获取验证码")
@@ -24,16 +24,16 @@ class TestLogin:
         r = Login().get_sendSms(phone)
         assert r.json()['message'] == message
 
-    data_login = get_yaml_data('datas/login.yaml')
-    params = [(item['case_title'],item['phone'], item['smsCode'], item['expected']) for item in data_login]
+    data_login = YamlHandle('datas/login.yaml').read_yaml()
+    params = [(item['case_title'], item['phone'], item['smsCode'], item['expected']) for item in data_login]
 
     @allure.story("测试登录")
     @allure.title('{case_title}')
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.run(order=2)
     @pytest.mark.parametrize('case_title,phone,smsCode,message', params)
-    @pytest.mark.dependency(depends=["get_smsCode"],scope='class')
-    def test_login(self,case_title, phone, smsCode, message):
+    @pytest.mark.dependency(depends=["get_smsCode"], scope='class')
+    def test_login(self, case_title, phone, smsCode, message):
         """登录测试"""
         r = Login().login_app_v2(phone, smsCode)
         assert r.json()['message'] == message

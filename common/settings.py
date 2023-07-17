@@ -5,7 +5,7 @@
 # @File : settings.py
 # @project : SensoroApi
 
-from common.lins_environment_enums import Environment
+from common.models import Environment
 
 # 设置运行的环境变量
 ENV = Environment.TEST

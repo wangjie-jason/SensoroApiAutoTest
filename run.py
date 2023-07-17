@@ -20,7 +20,7 @@ from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT
 from configs.dir_path_config import BASE_DIR
-from utils.get_yaml_data import get_yaml_data
+from utils.yaml_handle import YamlHandle
 
 if __name__ == '__main__':
     logger.info("""
@@ -78,7 +78,7 @@ if __name__ == '__main__':
         with open(file_path, 'rb') as f:
             text_to_send = f.read()
 
-        config = get_yaml_data('configs/mail_config.yaml')
+        config = YamlHandle('configs/mail_config.yaml').read_yaml()
         ms = MailSender(
             mail_subject=config['mail_subject'],
             sender_mail_address=config['sender_mail_address'],

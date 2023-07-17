@@ -12,7 +12,8 @@ from pageApi.alarms import Alarms
 from utils.time_utils import TimeUtil
 
 
-@allure.feature("事件中心预警模块测试用例")
+@allure.epic("预警模块")
+@allure.feature("事件中心预警模块")
 class TestAlarms:
     """测试预警"""
 

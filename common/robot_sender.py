@@ -21,7 +21,7 @@ def get_env_from_jenkins(name, base=''):
 ProjectName = get_env_from_jenkins("JOB_NAME")  # Jenkins构建项目名称
 BUILD_URL = get_env_from_jenkins("BUILD_URL")  # Jenkins构建项目URL
 BUILD_NUMBER = get_env_from_jenkins("BUILD_NUMBER")  # Jenkins构建编号
-ALLURE_URL = BUILD_URL + 'allure/'
+ALLURE_URL = BUILD_URL + 'allure/'  # Jenkins构建的allure报告地址
 
 
 class EnterpriseWechatNotification:
