@@ -21,3 +21,17 @@ PAGE_API_DIR = os.path.join(BASE_DIR, 'pageApi')
 TEST_CASE_DIR = os.path.join(BASE_DIR, 'testCase')
 # utils目录的路径
 UTILS_DIR = os.path.join(BASE_DIR, 'utils')
+# outFiles目录的路径
+OUT_FILES_DIR = os.path.join(BASE_DIR, 'outFiles')
+# logs目录的路径
+LOGS_DIR = os.path.join(OUT_FILES_DIR, 'logs')
+# pytest_report目录的路径
+PYTEST_REPORT_DIR = os.path.join(OUT_FILES_DIR, 'pytest_report')
+# pytest_result目录的路径
+PYTEST_RESULT_DIR = os.path.join(OUT_FILES_DIR, 'pytest_result')
+# report目录的路径
+REPORT_DIR = os.path.join(OUT_FILES_DIR, 'report')
+# screeShot目录的路径
+SCREENSHOT_DIR = os.path.join(OUT_FILES_DIR, 'screeShot')
+# Temp目录的路径
+TEMP_DIR = os.path.join(OUT_FILES_DIR, 'Temp')

@@ -43,7 +43,7 @@ if __name__ == '__main__':
         # '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出
         'testCase/',  # 执行用例的目录
         '--alluredir', f'{BASE_DIR}/Temp', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
-        f'--html={BASE_DIR}/outFiles/pytest_report/report.html',  # 指定pytest-html报告的存放位置
+        f'--html={BASE_DIR}/outFiles/pytest_report/pytest_report.html',  # 指定pytest-html报告的存放位置
         '--json-report', '--json-report-summary',  # 生成简化版json报告
         f'--json-report-file={BASE_DIR}/outFiles/pytest_result/pytest_result.json',  # 指定json报告存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
@@ -59,11 +59,11 @@ if __name__ == '__main__':
     shutil.copy(BASE_DIR + '/environment.properties', BASE_DIR + '/Temp/environment.properties')
     # allure报告展示运行器时所需要的数据
     shutil.copy(BASE_DIR + '/executor.json', BASE_DIR + '/Temp/executor.json')
-    # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
-    os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/report --clean')
+    # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
+    os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/allure_report --clean')
     # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/report/open_report.sh')
-    shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
+    shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/allure_report/open_report.sh')
+    shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/allure_report/查看allure报告方法')
 
     # 发送企业微信群聊
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
-        file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html'
+        file_path = '/Users/wangjie/SensoroApi/outFiles/pytest_report/pytest_report.html'
         with open(file_path, 'rb') as f:
             text_to_send = f.read()
 
