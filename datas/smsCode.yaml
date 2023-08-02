@@ -1,5 +1,5 @@
 - case_title: '手机号正确，获取验证码成功'
-  phone: '13800000000'
+  phone: '13800000111'
   expected: 'SUCCESS'
 
 - case_title: '手机号格式不正确，获取验证码失败'

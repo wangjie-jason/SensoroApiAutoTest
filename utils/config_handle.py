@@ -17,8 +17,6 @@ class CinfigHandle:
         """
         :param dir_file_name: 项目下文件所在目录名及文件名，如：configs/lins_environment.ini
         """
-        # path = os.path.dirname(os.path.abspath(__file__))
-        # file_path = os.path.join(path, '../configs', file_name)
         self.file_path = os.path.join(BASE_DIR, dir_file_name)
 
     def get_config(self):

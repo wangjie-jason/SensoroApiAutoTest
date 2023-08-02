@@ -62,9 +62,9 @@ def get_token():
     """获取登录V1的token"""
     logger.info("开始用例前置操作")
     # 登录前需要先获取验证码
-    Login().get_sendSms('13800000000')
+    Login().get_sendSms('13800000111')
     # 调登录接口，获取登录接口的token¬
-    login_response = Login().login_v1('13800000000', '138000')
+    login_response = Login().login_v1('13800000111', '123456')
     token = BaseApi.get_json(login_response)['data']['token']
     logger.info("结束用例前置操作")
     return token
@@ -75,9 +75,9 @@ def get_token_v2():
     """获取登录V2的Ai视频管理项目的token"""
     logger.info("开始用例前置操作")
     # 登录前需要先获取验证码
-    Login().get_sendSms('13800000000')
+    Login().get_sendSms('13800000111')
     # 调登录接口，获取登录接口的token
-    login_response = Login().login_app_v2('13800000000', '138000')
+    login_response = Login().login_app_v2('13800000111', '123456')
     login_token = BaseApi.get_json(login_response)['data']['token']
     # 调切换租户的接口，获取切换到指定租户的token
     headers = {'Authorization': f'Bearer {login_token}'}

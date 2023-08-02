@@ -9,7 +9,7 @@ class Login(BaseApi):
 
     def get_sendSms(self, phone):
         """获取手机号验证码"""
-        address = '/auth/v2/session/sendSms'
+        address = '/auth/v2/xxxxxx'
         json = {
             'mobile': phone,
             'region': 'CN'}
@@ -18,7 +18,7 @@ class Login(BaseApi):
 
     def login_scom_v1(self, phone, sms_code):
         """登录V1权限"""
-        address = '/auth/v1/loginByMobile'
+        address = '/auth/v2/xxxxxx'
         json = {
             'sessionId': "018pT9kOhM2HyUciiIhkMNQW3X22EydkN2ZSG3_h26UhsRJPOUCUAJfFzae-5_k_cU0Auw03ocNqlFM_dWbIWZE1OCFecobl9BvRfCBJTS1_lypbdxU97CpNssyX9kcqkv",
             'sig': "05XqrtZ0EaFgmmqIQes-s-CAiu5y6YBKaSb9AKSL5UbzpDSilBMvhSwiXdbW4r0pATPpuHcErPtBVQb4T02lxA-qXfhyddfcu1iWhmGu9QsPK57UVcRnFNnulf2Qcn6OK7F4X3BvT9lmcJ1pFVxew7PyNaG1nrqsFKgXWTIfKDE5txdIp6Dpd_xDkUZUaCuDHKFZO3KxUTrusHohfcRFSf3vTfA5EQEfyztOrWkZW-NGoUjgPgQvLzTpWSOm2JCTNmfoCOZltk2IX8EXfWk-56-z0AFHvU-jDkqi0udtdeDrveaNYC7kddMKqCOML4fNgMQwi6wQHVvY6Rh5yNKBcihg",
@@ -33,7 +33,7 @@ class Login(BaseApi):
 
     def login_v1(self, phone, sms_code):
         """登录V1权限"""
-        address = '/auth/v1/session/web/loginByMobile'
+        address = '/auth/v2/xxxxxx'
         json = {
             'captcha': {
                 'sessionId': "018pT9kOhM2HyUciiIhkMNQW3X22EydkN2ZSG3_h26UhsRJPOUCUAJfFzae-5_k_cU0Auw03ocNqlFM_dWbIWZE1OCFecobl9BvRfCBJTS1_lypbdxU97CpNssyX9kcqkv",
@@ -51,7 +51,7 @@ class Login(BaseApi):
 
     def login_web_v2(self, phone, sms_code):
         """web端登录V2权限"""
-        address = '/auth/v2/session/web/loginByMobile'
+        address = '/auth/v2/xxxxxx'
         json = {
             'captcha': {
                 'sessionId': "01uh69nEbJA4gnC1yiS5LNOePBWemi7wYog-qD50OnEDRPgh15wKaVtlJFxynu2MQ3xcbKGBE9ETqkqRJRNcIhokCZDw5Epmxq9IavDJIbvWScEjAMjGLU-fLJtRgL6m-VZjKCQ55yX5tnEwClRn43Pu68Ae4vHV-mvtMNo6yB768",
@@ -70,7 +70,7 @@ class Login(BaseApi):
 
     def login_app_v2(self, phone, sms_code):
         """移动端登录V2权限"""
-        address = '/auth/v2/session/app/loginByMobile'
+        address = '/auth/v2/xxxxxx'
         json = {
             'mobile': phone,
             'smsCode': sms_code,
@@ -80,14 +80,14 @@ class Login(BaseApi):
 
     def select_merchant(self, params=None, headers=None):
         """选择项目,切换scom时使用"""
-        address = '/auth/v1/selectMerchant'
+        address = '/auth/v1/xxxxxx'
         params = params
         headers = headers
         return self.get(address=address, params=params, headers=headers)
 
     def select_tenant(self, tenantId, projectId, headers=None):
         """切换租户/项目"""
-        address = '/auth/v2/session/select'
+        address = '/auth/v2/xxxxxx'
         headers = headers
         json = {
             "tenantId": tenantId,
@@ -97,7 +97,7 @@ class Login(BaseApi):
 
 
 if __name__ == '__main__':
-    # Login().get_sendSms('13800000000')
-    # print(BaseApi.get_json(Login().login_app_v2('13800000000', '138000'))['data']['token'])
+    # Login().get_sendSms('13800000111')
+    # print(BaseApi.get_json(Login().login_app_v2('13800000111', '123456'))['data']['token'])
     r = Login().select_tenant('1622903542623612930', '1622903550156582913')
     print(BaseApi.request_to_curl(r))

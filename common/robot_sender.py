@@ -130,5 +130,5 @@ class EnterpriseWechatNotification:
 
 if __name__ == '__main__':
     EnterpriseWechatNotification(
-        ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=3c5089f8-79b3-4ddd-9d55-f64464f838f9']).send_markdown(
+        ['hook_url']).send_markdown(
         '<@汪杰>')

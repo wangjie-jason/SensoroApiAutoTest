@@ -96,6 +96,6 @@ class MailSender:
 
 
 if __name__ == '__main__':
-    MailSender('测试邮件发送', 'wangjie@sensoro.com', 'wangjie@sensoro.com', 'PeeuobDpukzEcD54',
-               ['wangjie@sensoro.com'], 'smtp.exmail.qq.com', 465).attach_text(
+    MailSender('测试邮件发送', 'xxxxx@xxxx.com', 'xxxxx@xxxx.com', 'xxxxxxx',
+               ['xxxxx@xxxx.com'], 'smtp.exmail.qq.com', 465).attach_text(
         '测试邮件').attach_file('/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html').send()

@@ -12,21 +12,14 @@ class EntryPoint:
     """配置类，存放项目各个环境的默认配置"""
     _ENVIRONMENT_CONFIGS = {
         'dev': {
-            'URL': "https://lins-dev1-api.sensoro.com",
+            'URL': "https://dev.com",
             'DEFAULT_HEADERS': {},
         },
         'test': {
-            'URL': "https://lins-test1-api.sensoro.com",
+            'URL': "https://test.com",
             'DEFAULT_HEADERS': {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'accept-language': 'zh-CN,zh;q=0.9',
-                'x-lins-view': 'all',
-                'x-lins-projectid': '1622903550156582913',
-                'x-lins-tenantid': '1622903542623612930',
-                'x-lins-platform': 'aicity',
-                # 租户为"tenantId": "1542055215455092737",
-                # 'authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4IiwiYXZhdGFySWQiOiIxNTQyMDU1Mjg0MDIzNTc0NTMwIiwibWVyY2hhbnRJZCI6IjE1NDIwNTUyMTU1MTM4MTI5OTMiLCJuaWNrbmFtZSI6IuaxquadsCIsInRlbmFudElkIjoiMTU0MjA1NTIxNTQ1NTA5MjczNyIsImV4cCI6MTcxMTc5MTA1NCwidXNlcklkIjoiMTU0MjA1NTI4NDAyMzU3NDUzMCIsImlhdCI6MTY4MTIwNDUwOCwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCJ9.66XK7rg6cDYMRgULdLooBWoAx2BenWkJjOt8lbqQ1LQDcmh1RlW4LsjMWUXdIhcxTQzgkvfgR1wo2QRgdK-OTg',
-                # 租户为"tenantId": "1622903542623612930",
                 'authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4IiwiYXZhdGFySWQiOiIxNjIyOTA1ODE5MTk5NTQ5NDQxIiwibWVyY2hhbnRJZCI6IjE2MjI5MDM1NDI3Mjg0NzA1MjkiLCJuaWNrbmFtZSI6IuaxquadsCIsInRlbmFudElkIjoiMTYyMjkwMzU0MjYyMzYxMjkzMCIsImV4cCI6MTcxNTg0NjIxOSwidXNlcklkIjoiMTYyMjkwNTgxOTE5OTU0OTQ0MSIsImlhdCI6MTY4MzYxOTAxOSwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCJ9.wUV6NxBzG5dgpslNz2NUlpEehSfkbWaNMFYsYOrdO01gg4OfLbZrYOQDWdew2_LjnmORD_toPfLpL6_OawvEPg',
             },
             'DB_CONFIG': {
@@ -40,11 +33,11 @@ class EntryPoint:
             }
         },
         'prod': {
-            'URL': "https://lins-api.sensoro.com",
+            'URL': "",
             'DEFAULT_HEADERS': {},
         },
         'dianjun': {
-            'URL': "https://aicity-api.dianjun.sensoro.vip",
+            'URL': "",
             'DEFAULT_HEADERS': {},
         }
     }
