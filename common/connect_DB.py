@@ -166,11 +166,11 @@ class MySQL:
 
 if __name__ == '__main__':
     # db_config = {
-    #     "host": "pg-cluster-lins.postgres",
-    #     "port": 5432,
+    #     "host": "xxxxxxxx",
+    #     "port": xxxx,
     #     "database": "postgres",
-    #     "user": "lins",
-    #     "password": "lins"
+    #     "user": "xxxx",
+    #     "password": "xxxx"
     # }
     #
     # with Postgresql(db_config) as db:
