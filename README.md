@@ -21,7 +21,7 @@
 
 ### 技术栈：python+pytest+requests+allure+pytest-html
 
-- 选择语言：python>=3.8
+- 选择语言：python>=3.10
 - 编程工具选型：pycharm
 - 测试框架选型：pytest
 - 报告可视化方案选型：allure、pytest-html

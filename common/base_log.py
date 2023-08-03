@@ -66,7 +66,7 @@ class Logger:
                 #     os.path.join(os.path.dirname(os.path.abspath(__file__)), '../outFiles/logs'))
                 file_path = LOGS_DIR
                 dir_name = time.strftime('%Y-%m-%d')
-                file_name = time.strftime('%Y-%m-%d %H:%M:%S') + '-' + 'log.log'
+                file_name = time.strftime('%Y-%m-%d_%H-%M-%S') + '-' + 'log.log'
                 if not os.path.exists(os.path.join(file_path, dir_name)):
                     os.makedirs(os.path.join(file_path, dir_name))
                 cls._log_path = os.path.join(file_path, dir_name, file_name)
