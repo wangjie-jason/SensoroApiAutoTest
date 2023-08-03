@@ -1,15 +1,18 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+import os
+
 import allure
 import pytest
 
+from configs.dir_path_config import DATAS_DIR
 from pageApi.login import Login
 from utils.yaml_handle import YamlHandle
 
 
 @allure.feature("登录模块")
 class TestLogin:
-    data_smsCode = YamlHandle('datas/smsCode.yaml').read_yaml()
+    data_smsCode = YamlHandle(DATAS_DIR+os.sep+'smsCode.yaml').read_yaml()
     params = [(item['case_title'], item['expected']) for item in data_smsCode]
 
     @allure.story("测试获取验证码")
@@ -24,7 +27,7 @@ class TestLogin:
         r = "获取验证码成功"
         assert r == message
 
-    data_login = YamlHandle('datas/login.yaml').read_yaml()
+    data_login = YamlHandle(DATAS_DIR+os.sep+'login.yaml').read_yaml()
     params = [(item['case_title'], item['username'], item['password'], item['expected']) for item in data_login]
 
     @allure.story("测试登录")

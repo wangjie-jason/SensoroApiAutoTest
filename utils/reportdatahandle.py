@@ -5,8 +5,9 @@
 # @File : report_data_handle.py
 # @project : SensoroApi
 import json
+import os
 
-from configs.dir_path_config import BASE_DIR
+from configs.dir_path_config import BASE_DIR, PYTEST_RESULT_DIR
 
 
 class ReportDataHandle:
@@ -20,7 +21,7 @@ class ReportDataHandle:
     @staticmethod
     def pytest_json_report_case_count():
         """统计pytest_json_report报告收集的case数量"""
-        with open(BASE_DIR + '/outFiles/pytest_result/pytest_result.json', 'r', encoding='utf-8') as f:
+        with open(PYTEST_RESULT_DIR + os.sep+'pytest_result.json', 'r', encoding='utf-8') as f:
             pytest_result = json.loads(f.read())
             case_count = {}
             case_count["total_case"] = pytest_result['summary'].get("total", 0)  # 用例总数

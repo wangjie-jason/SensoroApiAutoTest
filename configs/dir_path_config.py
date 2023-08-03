@@ -29,8 +29,8 @@ LOGS_DIR = os.path.join(OUT_FILES_DIR, 'logs')
 PYTEST_REPORT_DIR = os.path.join(OUT_FILES_DIR, 'pytest_report')
 # pytest_result目录的路径
 PYTEST_RESULT_DIR = os.path.join(OUT_FILES_DIR, 'pytest_result')
-# report目录的路径
-REPORT_DIR = os.path.join(OUT_FILES_DIR, 'report')
+# allure_report目录的路径
+ALLURE_REPORT_DIR = os.path.join(OUT_FILES_DIR, 'allure_report')
 # screeShot目录的路径
 SCREENSHOT_DIR = os.path.join(OUT_FILES_DIR, 'screeShot')
 # Temp目录的路径

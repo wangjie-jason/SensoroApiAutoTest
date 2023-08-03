@@ -12,6 +12,7 @@ import time
 import colorlog
 
 from common.settings import LOG_DEBUG
+from configs.dir_path_config import LOGS_DIR
 
 
 class ColoredFormatter(logging.Formatter):
@@ -61,8 +62,9 @@ class Logger:
 
             # 设置日志存储路径
             if not cls._log_path:
-                file_path = os.path.abspath(
-                    os.path.join(os.path.dirname(os.path.abspath(__file__)), '../outFiles/logs'))
+                # file_path = os.path.abspath(
+                #     os.path.join(os.path.dirname(os.path.abspath(__file__)), '../outFiles/logs'))
+                file_path = LOGS_DIR
                 dir_name = time.strftime('%Y-%m-%d')
                 file_name = time.strftime('%Y-%m-%d %H:%M:%S') + '-' + 'log.log'
                 if not os.path.exists(os.path.join(file_path, dir_name)):
