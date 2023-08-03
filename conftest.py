@@ -40,11 +40,11 @@ def pytest_sessionfinish(session, exitstatus):
     # shutil.copy(BASE_DIR + '/environment.properties', BASE_DIR + '/Temp/environment.properties')
     # # allure报告展示运行器时所需要的数据
     # shutil.copy(BASE_DIR + '/executor.json', BASE_DIR + '/Temp/executor.json')
-    # # 使用allure generate -o 命令将./Temp目录下的临时报告导出到TestReport目录
-    # os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/report --clean')
+    # # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
+    # os.system(f'allure generate {BASE_DIR}/Temp -o {BASE_DIR}/outFiles/allure_report --clean')
     # # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    # shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/report/open_report.sh')
-    # shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/report/查看allure报告方法')
+    # shutil.copy(BASE_DIR + '/open_report.sh', BASE_DIR + '/outFiles/allure_report/open_report.sh')
+    # shutil.copy(BASE_DIR + '/查看allure报告方法', BASE_DIR + '/outFiles/allure_report/查看allure报告方法')
 
 
 def pytest_collection_modifyitems(items) -> None:
@@ -83,7 +83,7 @@ def pytest_html_results_table_header(cells):
 @pytest.mark.optionalhook
 def pytest_html_results_table_row(report, cells):
     """修改pytest-html报告中表头Description对应的内容为测试用例的描述"""
-    # cells.insert(1, html.td(report.description))  # 表头对应的内容
+    cells.insert(1, html.td(report.description))  # 表头对应的内容
     cells.pop(-1)  # 删除link列
 
 
