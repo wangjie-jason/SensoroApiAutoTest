@@ -7,6 +7,7 @@
 
 import logging
 import os.path
+import sys
 import time
 
 import colorlog
@@ -66,7 +67,10 @@ class Logger:
                 #     os.path.join(os.path.dirname(os.path.abspath(__file__)), '../outFiles/logs'))
                 file_path = LOGS_DIR
                 dir_name = time.strftime('%Y-%m-%d')
-                file_name = time.strftime('%Y-%m-%d_%H-%M-%S') + '-' + 'log.log'
+                if sys.platform in ('win32', 'win64'):  # 兼容window文件命名时不支持":"的方式
+                    file_name = time.strftime('%Y-%m-%d_%H点%M分%S秒') + '-' + 'log.log'
+                else:
+                    file_name = time.strftime('%Y-%m-%d_%H:%M:%S') + '-' + 'log.log'
                 if not os.path.exists(os.path.join(file_path, dir_name)):
                     os.makedirs(os.path.join(file_path, dir_name))
                 cls._log_path = os.path.join(file_path, dir_name, file_name)
