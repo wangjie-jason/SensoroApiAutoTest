@@ -23,7 +23,7 @@ def command_parser():
                         help='指定运行环境')
 
     # 解析命令行参数
-    args = parser.parse_args()
+    args,unknown_args = parser.parse_known_args()
 
     return args
 

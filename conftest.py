@@ -59,7 +59,7 @@ def pytest_collection_modifyitems(items) -> None:
 def pytest_configure(config):
     """修改pytest-html报告中Environment项目展示的信息"""
     # 添加项目名称
-    config._metadata["项目名称"] = "lins接口自动化测试"
+    # config._metadata["项目名称"] = "lins接口自动化测试"
     # 删除Java_Home
     # config._metadata.pop("JAVA_HOME")
     # 删除Plugins
@@ -83,7 +83,7 @@ def pytest_html_results_table_header(cells):
 @pytest.mark.optionalhook
 def pytest_html_results_table_row(report, cells):
     """修改pytest-html报告中表头Description对应的内容为测试用例的描述"""
-    cells.insert(1, html.td(report.description))  # 表头对应的内容
+    # cells.insert(1, html.td(report.description))  # 表头对应的内容
     cells.pop(-1)  # 删除link列
 
 

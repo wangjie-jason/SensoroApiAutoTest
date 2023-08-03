@@ -16,11 +16,11 @@ class EntryPoint:
             'DEFAULT_HEADERS': {},
         },
         'test': {
-            'URL': "https://test.com",
+            'URL': "https://www.wanandroid.com",
             'DEFAULT_HEADERS': {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'accept-language': 'zh-CN,zh;q=0.9',
-                'authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4IiwiYXZhdGFySWQiOiIxNjIyOTA1ODE5MTk5NTQ5NDQxIiwibWVyY2hhbnRJZCI6IjE2MjI5MDM1NDI3Mjg0NzA1MjkiLCJuaWNrbmFtZSI6IuaxquadsCIsInRlbmFudElkIjoiMTYyMjkwMzU0MjYyMzYxMjkzMCIsImV4cCI6MTcxNTg0NjIxOSwidXNlcklkIjoiMTYyMjkwNTgxOTE5OTU0OTQ0MSIsImlhdCI6MTY4MzYxOTAxOSwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCJ9.wUV6NxBzG5dgpslNz2NUlpEehSfkbWaNMFYsYOrdO01gg4OfLbZrYOQDWdew2_LjnmORD_toPfLpL6_OawvEPg',
+                # 'authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJhY2NvdW50SWQiOiIxNDc3NTQyMDEwNTk2NDc4OTc4IiwiYXZhdGFySWQiOiIxNjIyOTA1ODE5MTk5NTQ5NDQxIiwibWVyY2hhbnRJZCI6IjE2MjI5MDM1NDI3Mjg0NzA1MjkiLCJuaWNrbmFtZSI6IuaxquadsCIsInRlbmFudElkIjoiMTYyMjkwMzU0MjYyMzYxMjkzMCIsImV4cCI6MTcxNTg0NjIxOSwidXNlcklkIjoiMTYyMjkwNTgxOTE5OTU0OTQ0MSIsImlhdCI6MTY4MzYxOTAxOSwidXNlcm5hbWUiOiIrODYxMzcxODM5NTQ3OCJ9.wUV6NxBzG5dgpslNz2NUlpEehSfkbWaNMFYsYOrdO01gg4OfLbZrYOQDWdew2_LjnmORD_toPfLpL6_OawvEPg',
             },
             'DB_CONFIG': {
                 'host': 'localhost',
