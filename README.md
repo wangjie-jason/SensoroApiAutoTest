@@ -21,7 +21,7 @@
 
 ### 技术栈：python+pytest+requests+allure+pytest-html
 
-- 选择语言：python>=3.10
+- 选择语言：python>=3.10（如果是3.10以下版本的话，需要删除base_api.py中的函数返回数据格式限制，否则会存在写法不兼容问题）
 - 编程工具选型：pycharm
 - 测试框架选型：pytest
 - 报告可视化方案选型：allure、pytest-html
@@ -32,7 +32,10 @@
 
 * 获取源码后，在pycharm终端运行以下代码，即可一键安装项目依赖：
     * ```pip3 install -r requirements.txt```
-
+      * 注：如果是window系统报错 ```UnicodeDecodeError: 'gbk' codec can't decode byte 0xaa in position 65: illegal multibyte sequence```，则需要先在终端执行下方的命令，将终端编码格式改为utf-8，再执行上方install命令，即可解决编码问题
+      * ``` chcp 65001    ```
+    * 或者直接使用pycharm自带的提示功能安装依赖包，推荐这种！！！
+    ![img.png](img.png)
 ## 项目结构
 
 ```
