@@ -16,3 +16,4 @@ pytest-json-report==1.5.0 # pytest生成json格式的报告
 colorlog==6.7.0 # 控制日志颜色的包
 pydantic==2.0.1 # 用于数据验证和序列化的Python库
 openpyxl==3.1.2 # 操作excel的库
+Faker==19.2.0 # 用于生成伪造数据的Python库
