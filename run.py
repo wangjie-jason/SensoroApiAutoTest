@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     pytest.main([
         # '-q',  # 代表 "quiet"，即安静模式，它可以将 pytest 的输出精简化，只输出测试用例的执行结果，而不会输出额外的信息，如测试用例的名称、执行时间等等
-        # '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出
+        '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出
         'testCase/',  # 执行用例的目录
         '--alluredir', f'{TEMP_DIR}', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
         f'--html={os.path.join(PYTEST_REPORT_DIR, "pytest_report.html")}',  # 指定pytest-html报告的存放位置

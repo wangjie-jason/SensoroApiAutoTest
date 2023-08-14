@@ -18,3 +18,6 @@ IS_SEND_WECHAT = False
 
 # 设置是否开启debug日志
 LOG_DEBUG = False
+
+# 设置是否开启控制台日志
+LOG_CONSOLE = True

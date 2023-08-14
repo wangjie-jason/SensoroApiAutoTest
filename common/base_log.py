@@ -12,26 +12,8 @@ import time
 
 import colorlog
 
-from common.settings import LOG_DEBUG
+from common.settings import LOG_DEBUG, LOG_CONSOLE
 from configs.dir_path_config import LOGS_DIR
-
-
-class ColoredFormatter(logging.Formatter):
-    """ 设置日志颜色 """
-    COLOR_CODES = {
-        'DEBUG': '\033[1;34m',  # Blue
-        'INFO': '\033[1;32m',  # Green
-        'WARNING': '\033[1;33m',  # Yellow
-        'ERROR': '\033[1;31m',  # Red
-        'CRITICAL': '\033[1;41m'  # Red (background)
-    }
-
-    def format(self, record):
-        levelname = record.levelname
-        msg = super().format(record)
-        color_code = self.COLOR_CODES.get(levelname, '')
-        reset_code = '\033[0m'  # Reset color
-        return f'{color_code}{msg}{reset_code}'
 
 
 class Logger:
@@ -50,54 +32,71 @@ class Logger:
             # 设置日志默认可输出的最低等级
             logger.setLevel(logging.INFO)
 
-            # 设置日志输入格式
+            # 设置日志输出格式
             # 设置写入文件时的格式
             formatter_file = logging.Formatter(
-                '%(levelname)-8s%(asctime)s-%(filename)s[line:%(lineno)d]：%(message)s', '%Y-%m-%d %H:%m:%S'
+                '%(levelname)-9s%(asctime)s-%(filename)s[line:%(lineno)d]：%(message)s', '%Y-%m-%d %H:%m:%S'
             )
             # 设置终端上显示带颜色的格式
-            # formatter_stream = ColoredFormatter(
-            #     '%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s：%(message)s', '%Y-%m-%d %H:%m:%S'
-            # )
             formatter_stream = cls.log_color()
 
             # 设置日志存储路径
             if not cls._log_path:
-                # file_path = os.path.abspath(
-                #     os.path.join(os.path.dirname(os.path.abspath(__file__)), '../outFiles/logs'))
-                file_path = LOGS_DIR
-                dir_name = time.strftime('%Y-%m-%d')
-                if sys.platform in ('win32', 'win64'):  # 兼容window文件命名时不支持":"的方式
-                    file_name = time.strftime('%Y-%m-%d_%H点%M分%S秒') + '-' + 'log.log'
-                else:
-                    file_name = time.strftime('%Y-%m-%d_%H:%M:%S') + '-' + 'log.log'
-                if not os.path.exists(os.path.join(file_path, dir_name)):
-                    os.makedirs(os.path.join(file_path, dir_name))
-                cls._log_path = os.path.join(file_path, dir_name, file_name)
+                cls._log_path = cls.generate_log_path()
 
             # 创建FileHandler,用于写入日志
-            fh = logging.FileHandler(cls._log_path, encoding='utf-8')
-            fh.setFormatter(formatter_file)
-            fh.setLevel(logging.INFO)
+            fh = cls.create_file_handler(formatter_file)
 
             # 创建StreamHandler,用于输出到控制台
-            ch = logging.StreamHandler()
-            ch.setFormatter(formatter_stream)
-            ch.setLevel(logging.INFO)
+            ch = cls.create_console_handler(formatter_stream)
 
             # 添加输出
             logger.addHandler(ch)
             logger.addHandler(fh)
 
             # 控制日志级别
-            if LOG_DEBUG:
-                logger.setLevel(logging.DEBUG)
-                ch.setLevel(logging.DEBUG)
-                fh.setLevel(logging.DEBUG)
+            cls.configure_log_levels(logger, ch, fh)
 
+            # 将创建的日志记录器实例赋值给类变量 _logger_instance，以实现单例模式
             cls._logger_instance = logger
 
             return cls._logger_instance
+
+    @classmethod
+    def generate_log_path(cls):
+        log_dir_today = os.path.join(LOGS_DIR, time.strftime('%Y-%m-%d'))
+        if not os.path.exists(log_dir_today):
+            os.makedirs(log_dir_today)
+        now = time.strftime('%Y-%m-%d_%H:%M:%S')
+        if sys.platform in ('win32', 'win64'):  # 兼容window文件命名时不支持":"的方式
+            separator = '_'
+        else:
+            separator = ':'
+        return os.path.join(log_dir_today, f"{now.replace(':', separator)}-log.log")
+
+    @classmethod
+    def create_file_handler(cls, formatter):
+        fh = logging.FileHandler(cls._log_path, encoding='utf-8')
+        fh.setFormatter(formatter)
+        fh.setLevel(logging.INFO)
+        return fh
+
+    @classmethod
+    def create_console_handler(cls, formatter):
+        if LOG_CONSOLE:
+            ch = logging.StreamHandler()
+            ch.setFormatter(formatter)
+            ch.setLevel(logging.INFO)
+            return ch
+        else:
+            return logging.NullHandler()
+
+    @classmethod
+    def configure_log_levels(cls, logger, ch, fh):
+        level = logging.DEBUG if LOG_DEBUG else logging.INFO
+        logger.setLevel(level)
+        fh.setLevel(level)
+        ch.setLevel(level)
 
     @classmethod
     def log_color(cls):
@@ -111,7 +110,7 @@ class Logger:
         }
 
         formatter = colorlog.ColoredFormatter(
-            '%(log_color)s%(asctime)s-%(filename)s[line:%(lineno)d]-%(levelname)s：%(message)s', '%Y-%m-%d %H:%m:%S',
+            '%(log_color)s%(levelname)-9s%(asctime)s-%(filename)s[line:%(lineno)d]：%(message)s', '%Y-%m-%d %H:%m:%S',
             log_colors=log_colors_config
         )
         return formatter
