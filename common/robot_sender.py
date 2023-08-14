@@ -69,13 +69,13 @@ class EnterpriseWechatNotification:
                 > 测试环境:{ENV.name}
                 > 总用例数：<font color=\"info\">{self.pytest_result['total_case']}条</font>
                 > 通过用例数：<font color=\"info\">{self.pytest_result['pass_case']}条</font>
-                > 失败用例数：<font color=\"warning\">{self.pytest_result['fail_case']}条</font>
-                > 报错用例数：<font color=\"warning\">{self.pytest_result['error_case']}条</font>
-                > 跳过用例数：<font color=\"comment\">{self.pytest_result['skip_case']}条</font>
+                > 失败用例数：<font color=\"red\">{self.pytest_result['fail_case']}条</font>
+                > 报错用例数：<font color=\"red\">{self.pytest_result['error_case']}条</font>
+                > 跳过用例数：<font color=\"warning\">{self.pytest_result['skip_case']}条</font>
                 > 预期失败用例数：<font color=\"comment\">{self.pytest_result['xfail_case']}条</font>
                 > 预期通过用例数：<font color=\"comment\">{self.pytest_result['xpass_case']}条</font>
                 > 通过率：<font color=\"info\">{self.pytest_result['pass_rate']}%</font>
-                > 用例执行时间：<font color=\"info\">{self.pytest_result['case_duration']}s</font>
+                > 用例执行时长：<font color=\"info\">{self.pytest_result['case_duration']}s</font>
                 > 测试报告，点击查看>>[测试报告入口]({ALLURE_URL})
                 > 构建详情，点击查看>>[控制台入口]({BUILD_URL})
                 > {content}"""
