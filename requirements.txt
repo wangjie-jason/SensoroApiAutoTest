@@ -1,19 +1,42 @@
-pytest==7.1.2
-PyYAML==6.0
-requests==2.27.1
+allure-pytest==2.13.2
+allure-python-commons==2.13.2
+annotated-types==0.5.0
+attrs==23.1.0
+certifi==2023.7.22
+cffi==1.15.1
+charset-normalizer==3.2.0
+colorlog==6.7.0  # 控制日志颜色的包
+cryptography==41.0.3  # 在使用MySQL8.0的SHA256密码或缓存SHA2密码身份验证时依赖的包
+DBUtils==3.0.3  # 是Python的一个用于实现数据库连接池的模块
+et-xmlfile==1.1.0
+exceptiongroup==1.1.3
+Faker==19.3.0 # 用于生成伪造数据的Python库l
+idna==3.4
+iniconfig==2.0.0
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+openpyxl==3.1.2  # 操作excel的库
+packaging==23.1
+pluggy==1.2.0
+psycopg2-binary==2.9.7  # 用于链接PostgreSQL数据库的包
 py3curl==1.1.3 # 自己写的一个Python库，它可以将Python中的requests请求转换为cURL命令，方便开发人员在终端中进行调试和测试。
-allure-pytest==2.9.45
-pytest_ordering==0.6 #pytest控制用例执行顺序的包
-pytest-dependency # 控制pytest用例依赖的包
-pytest-rerunfailures==10.2  # 控制pytest用例失败重跑的插件
-pytest-html==3.1.1  # pytest展示报告
-psycopg2-binary==2.9.6 # 用于链接PostgreSQL数据库的包
-pymysql==1.0.3
-DBUtils==3.0.2  # 是Python的一个用于实现数据库连接池的模块
-cryptography==40.0.2 # 在使用MySQL8.0的SHA256密码或缓存SHA2密码身份验证时依赖的包
-pytest-sugar==0.9.7 # pytest测试用例显示进度条的包
-pytest-json-report==1.5.0 # pytest生成json格式的报告
-colorlog==6.7.0 # 控制日志颜色的包
-pydantic==2.0.1 # 用于数据验证和序列化的Python库
-openpyxl==3.1.2 # 操作excel的库
-Faker==19.2.0 # 用于生成伪造数据的Python库
+pycparser==2.21
+pydantic==2.1.1  # 用于数据验证和序列化的Python库
+pydantic_core==2.4.0
+PyMySQL==1.1.0
+pytest==7.4.0
+pytest-dependency==0.5.1 # 控制pytest用例依赖的包
+pytest-html==4.0.0rc6  # pytest展示报告
+pytest-json-report==1.5.0  # pytest生成json格式的报告
+pytest-metadata==3.0.0
+pytest-ordering==0.6 #pytest控制用例执行顺序的包
+pytest-rerunfailures==12.0  # 控制pytest用例失败重跑的插件
+pytest-sugar==0.9.7  # pytest测试用例显示进度条的包
+python-dateutil==2.8.2
+PyYAML==6.0.1
+requests==2.31.0
+six==1.16.0
+termcolor==2.3.0
+tomli==2.0.1
+typing_extensions==4.7.1
+urllib3==2.0.4

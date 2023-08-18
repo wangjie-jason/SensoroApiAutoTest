@@ -121,23 +121,17 @@ class FileHandle:
         """
         复制一个文件到另一个目录
         :param: src_file_path: 源文件路径
-        :param: dest_dir_path: 目标文件夹路径
+        :param: dest_dir_path: 目标文件夹路径或文件路径，不写文件名则保持源文件名，写了则重命名
 
         """
         # 判断源文件路径是否存在
         if not os.path.isfile(src_file_path):
-            return "源文件路径不存在"
-
-        # 判断目标文件夹路径是否存在，不存在则创建
-        if not os.path.isdir(dest_dir_path):
-            os.makedirs(dest_dir_path)
-
+            raise FileNotFoundError(f"源文件路径不存在：{src_file_path}")
         # 复制文件
         try:
             shutil.copy(src_file_path, dest_dir_path)
-            print("复制成功")
         except Exception as e:
-            raise f"复制失败：{e}"
+            raise
 
     @staticmethod
     def get_file_field(file_path):
@@ -164,5 +158,7 @@ class FileHandle:
         relative_path = os.path.relpath(os.path.abspath(file_path), os.path.abspath(directory_path))
         # 如果相对路径中包含文件名，则去除文件名部分并返回
         return os.path.dirname(relative_path)
+
+
 if __name__ == '__main__':
     print(FileHandle.get_files('/Users/wangjie/SensoroApi/configs'))

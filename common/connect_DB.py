@@ -30,6 +30,7 @@ class Postgresql:
             logger.info("数据库连接成功")
         except psycopg2.Error as e:
             logger.error(f"连接数据库错误: {e}")
+            raise
 
     def execute_sql(self, sql):
         """
@@ -68,7 +69,6 @@ class Postgresql:
                     return results
         except psycopg2.Error as e:
             logger.error(f"执行sql错误: {e}")
-            return None
         finally:
             if conn:
                 self.pool.putconn(conn)  # 将连接归还到连接池
@@ -113,6 +113,7 @@ class MySQL:
             logger.info("数据库连接成功")
         except pymysql.Error as e:
             logger.error(f"连接数据库错误: {e}")
+            raise
 
     def execute_sql(self, sql):
         """
@@ -146,7 +147,6 @@ class MySQL:
                     return results
         except psycopg2.Error as e:
             logger.error(f"执行sql错误: {e}")
-            return None
 
     def disconnect(self):
         """断开数据库连接"""

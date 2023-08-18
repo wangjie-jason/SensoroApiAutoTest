@@ -15,6 +15,7 @@ from requests import PreparedRequest
 from requests.structures import CaseInsensitiveDict
 
 from common.base_log import logger
+from common.exceptions import ValueNotFoundError
 from configs.lins_environment import EntryPoint
 from utils.time_utils import TimeUtil
 
@@ -121,7 +122,7 @@ class BaseApi:
             json_data = response.json()
             return json_data
         else:
-            raise Exception('请求返回结果为空')
+            raise ValueNotFoundError('请求返回结果为空，无法获取响应')
 
     @staticmethod
     def get_text(response: requests.Response) -> str:

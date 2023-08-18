@@ -10,6 +10,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from common.base_log import logger
+from common.exceptions import SendMessageError
 
 
 class MailSender:
@@ -91,8 +92,10 @@ class MailSender:
             logger.info("发送邮件成功")
         except smtplib.SMTPException as e:
             logger.error("Error: 无法发送邮件,失败原因:{}".format(e))
+            raise SendMessageError(f'发送电子邮件时发生错误:{e}')
         except Exception as e:
             logger.error("Error: 无法发送邮件,失败原因:{}".format(e))
+            raise
 
 
 if __name__ == '__main__':

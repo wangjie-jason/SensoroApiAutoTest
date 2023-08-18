@@ -10,7 +10,6 @@
 """
 
 import os
-import shutil
 
 import pytest
 
@@ -21,6 +20,7 @@ from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT
 from configs.dir_path_config import BASE_DIR, TEMP_DIR, ALLURE_REPORT_DIR, PYTEST_REPORT_DIR, CONFIGS_DIR, \
     PYTEST_RESULT_DIR
+from utils.file_handle import FileHandle
 from utils.yaml_handle import YamlHandle
 
 if __name__ == '__main__':
@@ -57,14 +57,14 @@ if __name__ == '__main__':
 
     ###################发送allure报告
     # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    shutil.copy(BASE_DIR + os.sep + 'environment.properties', TEMP_DIR + os.sep + 'environment.properties')
+    FileHandle.copy_file(BASE_DIR + os.sep + 'environment.properties', TEMP_DIR)
     # allure报告展示运行器时所需要的数据
-    shutil.copy(BASE_DIR + os.sep + 'executor.json', TEMP_DIR + os.sep + 'executor.json')
+    FileHandle.copy_file(BASE_DIR + os.sep + 'executor.json', TEMP_DIR)
     # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
     os.system(f'allure generate {TEMP_DIR} -o {ALLURE_REPORT_DIR} --clean')
     # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    shutil.copy(BASE_DIR + os.sep + 'open_report.sh', ALLURE_REPORT_DIR + os.sep + 'open_report.sh')
-    shutil.copy(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR + os.sep + '查看allure报告方法')
+    FileHandle.copy_file(BASE_DIR + os.sep + 'open_report.sh', ALLURE_REPORT_DIR)
+    FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
     # 发送企业微信群聊
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
