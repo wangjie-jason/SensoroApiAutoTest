@@ -23,20 +23,26 @@ from utils.time_utils import TimeUtil
 class BaseApi:
     """基础类，对请求方法进行二次封装"""
 
-    host = EntryPoint.URL()
-    default_headers = EntryPoint.DEFAULT_HEADERS()
-
     @staticmethod
     def _make_url(address: str) -> str:
         """整理拼接URL"""
-        return BaseApi.host + address
+        # 如果address是以http开头的，则直接使用该address，不与host进行拼接
+        if address.lower().startswith("http"):
+            return address
+        # 确保host不以/结尾
+        host = EntryPoint.URL().rstrip("/")
+        # 确保address是以/开头
+        address = "/" + address.lstrip("/")
+
+        return f"{host}{address}"
 
     @staticmethod
     def _make_headers(headers) -> dict[Any, Any]:
         """对请求头进行预处理"""
+        default_headers = EntryPoint.DEFAULT_HEADERS()
         headers = headers or {}
-        headers = {**BaseApi.default_headers, **headers}
-        return headers
+        merged_headers = {**default_headers, **headers}
+        return merged_headers
 
     @staticmethod
     def _make_method(method) -> str:
