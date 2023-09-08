@@ -16,18 +16,17 @@ from common.exceptions import SendMessageError
 class MailSender:
     """发送邮件功能"""
 
-    def __init__(self, mail_subject, sender_mail_address, sender_username, sender_password, receiver_mail_list,
+    def __init__(self, mail_subject, sender_username, sender_password, receiver_mail_list,
                  smtp_domain, smtp_port):
-        self.subject = mail_subject
-        self.sender_mail_address = sender_mail_address
-        self.sender_username = sender_username
-        self.sender_password = sender_password
-        self.receiver_mail_list = receiver_mail_list
-        self.smtp_domain = smtp_domain
-        self.smtp_port = smtp_port
+        self.subject = mail_subject  # 邮件标题
+        self.sender_username = sender_username  # 发件人邮箱
+        self.sender_password = sender_password  # 发件人邮箱授权码
+        self.receiver_mail_list = receiver_mail_list  # 收件人邮箱
+        self.smtp_domain = smtp_domain  # 发送邮箱的域名
+        self.smtp_port = smtp_port  # 发送邮箱的端口号
 
         self.message = MIMEMultipart()
-        self.message['From'] = Header(self.sender_mail_address, 'utf-8')
+        self.message['From'] = Header(self.sender_username, 'utf-8')
         self.message['To'] = ';'.join(self.receiver_mail_list)
         self.message['subject'] = Header(self.subject, 'utf-8')
 
@@ -67,9 +66,9 @@ class MailSender:
                 return key
         return 'application/octet-stream'  # 一切未知类型
 
-    def attach_text(self, text_to_send):
+    def attach_text(self, content):
         """添加邮件正文内容"""
-        self.message.attach(MIMEText(text_to_send, 'html', 'utf-8'))
+        self.message.attach(MIMEText(content, 'html', 'utf-8'))
         return self
 
     def attach_file(self, file_path):
@@ -87,7 +86,7 @@ class MailSender:
             # 使用with可以加入超时等待30s，并且发送完成后自动关闭链接，省去了smtp_obj.quit()步骤
             with smtplib.SMTP_SSL(self.smtp_domain, self.smtp_port, timeout=30) as smtp_obj:
                 smtp_obj.login(self.sender_username, self.sender_password)
-                smtp_obj.sendmail(from_addr=self.sender_mail_address, to_addrs=self.receiver_mail_list,
+                smtp_obj.sendmail(from_addr=self.sender_username, to_addrs=self.receiver_mail_list,
                                   msg=self.message.as_string())
             logger.info("发送邮件成功")
         except smtplib.SMTPException as e:
@@ -99,6 +98,6 @@ class MailSender:
 
 
 if __name__ == '__main__':
-    MailSender('测试邮件发送', 'xxxxx@xxxx.com', 'xxxxx@xxxx.com', 'xxxxxxx',
+    MailSender('测试邮件发送', 'xxxxx@xxxx.com', 'xxxxxxx',
                ['xxxxx@xxxx.com'], 'smtp.exmail.qq.com', 465).attach_text(
         '测试邮件').attach_file('/Users/wangjie/SensoroApi/outFiles/pytest_report/report.html').send()

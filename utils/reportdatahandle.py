@@ -8,6 +8,7 @@ import json
 import os
 
 from configs.dir_path_config import BASE_DIR, PYTEST_RESULT_DIR
+from utils.time_utils import TimeUtil
 
 
 class ReportDataHandle:
@@ -21,7 +22,7 @@ class ReportDataHandle:
     @staticmethod
     def pytest_json_report_case_count():
         """统计pytest_json_report报告收集的case数量"""
-        with open(PYTEST_RESULT_DIR + os.sep+'pytest_result.json', 'r', encoding='utf-8') as f:
+        with open(PYTEST_RESULT_DIR + os.sep + 'pytest_result.json', 'r', encoding='utf-8') as f:
             pytest_result = json.loads(f.read())
             case_count = {}
             case_count["total_case"] = pytest_result['summary'].get("total", 0)  # 用例总数
@@ -40,6 +41,7 @@ class ReportDataHandle:
                 # 如果未运行用例，则成功率为 0.0
                 case_count["pass_rate"] = 0.0
             case_count["case_duration"] = round(pytest_result["duration"], 2)  # 用例运行时间
+            case_count["case_start_time"] = TimeUtil.unix_time_to_str(int('%.f' % pytest_result["created"]))  # 用例开始时间
 
             return case_count
 

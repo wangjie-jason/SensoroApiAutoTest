@@ -17,11 +17,10 @@ from common.base_log import logger
 from utils.command_parser import command_parser
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
-from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT
-from configs.dir_path_config import BASE_DIR, TEMP_DIR, ALLURE_REPORT_DIR, PYTEST_REPORT_DIR, CONFIGS_DIR, \
-    PYTEST_RESULT_DIR
+from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
+    email_config
+from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR
 from utils.file_handle import FileHandle
-from utils.yaml_handle import YamlHandle
 
 if __name__ == '__main__':
     logger.info("""
@@ -45,9 +44,9 @@ if __name__ == '__main__':
         'testCase/',  # 执行用例的目录
         '--alluredir', f'{TEMP_DIR}', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
         f'--html={os.path.join(PYTEST_REPORT_DIR, "pytest_report.html")}',  # 指定pytest-html报告的存放位置
+        '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
         '--json-report', '--json-report-summary',  # 生成简化版json报告
         f'--json-report-file={os.path.join(PYTEST_RESULT_DIR, "pytest_result.json")}',  # 指定json报告存放位置
-        '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
         '--capture=no',  # 捕获stderr和stdout，这里是使pytest-html中失败的case展示错误日志，会导致case中的print不打印
         # '-p', 'no:logging',  # 表示禁用logging插件，使报告中不显示log信息，只会显示stderr和stdoyt信息,避免log和stderr重复。
         '-p', 'no:sugar',  # 禁用pytest-sugar美化控制台结果
@@ -68,25 +67,22 @@ if __name__ == '__main__':
 
     # 发送企业微信群聊
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
-        EnterpriseWechatNotification(
-            [
-                'hook_url']).send_markdown(
-            "<@汪杰>")
+        EnterpriseWechatNotification(wechat_webhook_url).send_markdown(wechat_content)
 
-    # 发送邮件
+        # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
         file_path = PYTEST_REPORT_DIR + os.sep + 'pytest_report.html'
-        with open(file_path, 'rb') as f:
-            text_to_send = f.read()
+        # with open(file_path, 'rb') as f:
+        #     text_to_send = f.read()
 
-        config = YamlHandle(CONFIGS_DIR + os.sep + 'mail_config.yaml').read_yaml()
+        # config = YamlHandle(CONFIGS_DIR + os.sep + 'mail_config.yaml').read_yaml()
+        config = email_config
         ms = MailSender(
             mail_subject=config['mail_subject'],
-            sender_mail_address=config['sender_mail_address'],
             sender_username=config['sender_username'],
             sender_password=config['sender_password'],
             receiver_mail_list=config['receiver_mail_list'],
             smtp_domain=config['smtp_domain'],
             smtp_port=config['smtp_port'],
         )
-        ms.attach_text(text_to_send).attach_file(file_path).send()
+        ms.attach_text(email_content).attach_file(file_path).send()
