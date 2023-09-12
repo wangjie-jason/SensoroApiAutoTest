@@ -75,9 +75,9 @@ wechat_webhook_url = ["https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx
 
 # 企业微信通知内容
 wechat_content = """******用例执行结果统计******
-                > 项目名称:$%s
+                > 项目名称:%s
                 > 构件编号:#%s
-                > 测试环境:$%s
+                > 测试环境:%s
                 > 总用例数：<font color=\"info\">${total_case}条</font>
                 > 通过用例数：<font color=\"info\">${pass_case}条</font>
                 > 失败用例数：<font color=\"red\">${fail_case}条</font>
