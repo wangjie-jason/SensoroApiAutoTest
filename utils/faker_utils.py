@@ -9,7 +9,7 @@ import random
 from faker import Faker
 
 
-class FakerUtiles:
+class FakerUtils:
 
     def __init__(self):
         self.faker = Faker(locale='zh_CN')
@@ -75,6 +75,6 @@ class FakerUtiles:
 
 
 if __name__ == '__main__':
-    s = FakerUtiles().random_IDcard()
+    s = FakerUtils().random_IDcard()
     print(s)
     print(type(s))

@@ -20,7 +20,9 @@ from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
     email_config
 from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR
+from utils.data_handle import DataProcessor
 from utils.file_handle import FileHandle
+from utils.reportdatahandle import ReportDataHandle
 
 if __name__ == '__main__':
     logger.info("""
@@ -66,23 +68,13 @@ if __name__ == '__main__':
     FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
     # 发送企业微信群聊
+    pytest_result = ReportDataHandle.pytest_json_report_case_count()
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
-        EnterpriseWechatNotification(wechat_webhook_url).send_markdown(wechat_content)
+        EnterpriseWechatNotification(wechat_webhook_url).send_markdown(
+            DataProcessor().process_data(wechat_content, pytest_result))
 
-        # 发送邮件
+    # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
         file_path = PYTEST_REPORT_DIR + os.sep + 'pytest_report.html'
-        # with open(file_path, 'rb') as f:
-        #     text_to_send = f.read()
-
-        # config = YamlHandle(CONFIGS_DIR + os.sep + 'mail_config.yaml').read_yaml()
-        config = email_config
-        ms = MailSender(
-            mail_subject=config['mail_subject'],
-            sender_username=config['sender_username'],
-            sender_password=config['sender_password'],
-            receiver_mail_list=config['receiver_mail_list'],
-            smtp_domain=config['smtp_domain'],
-            smtp_port=config['smtp_port'],
-        )
-        ms.attach_text(email_content).attach_file(file_path).send()
+        ms = MailSender(**email_config)
+        ms.attach_text(DataProcessor().process_data(email_content, pytest_result)).attach_file(file_path).send()

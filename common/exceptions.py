@@ -46,3 +46,7 @@ class SendMessageError(MyBaseFailure):
 
 class ValueNotFoundError(MyBaseFailure):
     pass
+
+
+class DataProcessorFuncError(MyBaseFailure):
+    pass
