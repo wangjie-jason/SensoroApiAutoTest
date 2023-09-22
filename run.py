@@ -10,10 +10,12 @@
 """
 
 import os
+from dataclasses import asdict
 
 import pytest
 
 from common.base_log import logger
+from common.models import TestMetrics
 from utils.command_parser import command_parser
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
@@ -22,7 +24,7 @@ from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, w
 from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR
 from utils.data_handle import DataProcessor
 from utils.file_handle import FileHandle
-from utils.reportdatahandle import ReportDataHandle
+from utils.report_data_handle import ReportDataHandle
 
 if __name__ == '__main__':
     logger.info("""
@@ -68,7 +70,7 @@ if __name__ == '__main__':
     FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
     # 发送企业微信群聊
-    pytest_result = ReportDataHandle.pytest_json_report_case_count()
+    pytest_result = asdict(TestMetrics(**ReportDataHandle.pytest_json_report_case_count()))
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
         EnterpriseWechatNotification(wechat_webhook_url).send_markdown(
             DataProcessor().process_data(wechat_content, pytest_result))

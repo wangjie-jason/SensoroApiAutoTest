@@ -25,7 +25,7 @@ IS_SEND_EMAIL = False
 IS_SEND_WECHAT = False
 
 # 设置是否开启debug日志
-LOG_DEBUG = True
+LOG_DEBUG = False
 
 # 设置是否开启控制台日志
 LOG_CONSOLE = True
@@ -46,20 +46,20 @@ email_config = {
 email_content = """
            各位同事, 大家好:<br>
 
-           自动化用例于 <strong>${case_start_time}</strong> 开始运行，运行时长：<strong>${case_duration}s</strong>， 目前已执行完成。<br>
+           自动化用例于 <strong>${start_time}</strong> 开始运行，运行时长：<strong>${duration}s</strong>， 目前已执行完成。<br>
            ---------------------------------------------------------------------------------------------------------------<br>
            项目名称：<strong>%s</strong> <br>
            构件编号：<strong>#%s</strong><br>
            项目环境：<strong>%s</strong><br>
            ---------------------------------------------------------------------------------------------------------------<br>
            执行结果如下:<br>
-           &nbsp;&nbsp;用例运行总数:<strong> ${total_case}条</strong><br>
-           &nbsp;&nbsp;通过用例数（passed）: <strong><font color="green" >${pass_case}条</font></strong><br>
-           &nbsp;&nbsp;失败用例数（failed）: <strong><font color="red" >${fail_case}条</font></strong><br>
-           &nbsp;&nbsp;报错用例数（error）: <strong><font color="orange" >${error_case}条</font></strong><br>
-           &nbsp;&nbsp;跳过用例数（skipped）: <strong><font color="grey" >${skip_case}条</font></strong><br>
-           &nbsp;&nbsp;预期失败用例数（xfail）: <strong><font color="grey" >${xfail_case}条</font></strong><br>
-           &nbsp;&nbsp;预期通过用例数（xpass）: <strong><font color="grey" >${xpass_case}条</font></strong><br>
+           &nbsp;&nbsp;用例运行总数:<strong> ${total}条</strong><br>
+           &nbsp;&nbsp;通过用例数（passed）: <strong><font color="green" >${passed}条</font></strong><br>
+           &nbsp;&nbsp;失败用例数（failed）: <strong><font color="red" >${failed}条</font></strong><br>
+           &nbsp;&nbsp;报错用例数（error）: <strong><font color="orange" >${error}条</font></strong><br>
+           &nbsp;&nbsp;跳过用例数（skipped）: <strong><font color="grey" >${skipped}条</font></strong><br>
+           &nbsp;&nbsp;预期失败用例数（xfail）: <strong><font color="grey" >${xfailed}条</font></strong><br>
+           &nbsp;&nbsp;预期通过用例数（xpass）: <strong><font color="grey" >${xpassed}条</font></strong><br>
            &nbsp;&nbsp;通过率: <strong><font color="green" >${pass_rate}%%</font></strong><br>
            &nbsp;&nbsp;测试报告，点击查看: <a href='%s'>[测试报告入口]</a><br> 
            &nbsp;&nbsp;构建详情，点击查看: <a href='%s'>[控制台入口]</a><br>
@@ -78,16 +78,16 @@ wechat_content = """******用例执行结果统计******
                 > 项目名称:%s
                 > 构件编号:#%s
                 > 测试环境:%s
-                > 总用例数：<font color=\"info\">${total_case}条</font>
-                > 通过用例数：<font color=\"info\">${pass_case}条</font>
-                > 失败用例数：<font color=\"red\">${fail_case}条</font>
-                > 报错用例数：<font color=\"red\">${error_case}条</font>
-                > 跳过用例数：<font color=\"warning\">${skip_case}条</font>
-                > 预期失败用例数：<font color=\"comment\">${xfail_case}条</font>
-                > 预期通过用例数：<font color=\"comment\">${xpass_case}条</font>
+                > 总用例数：<font color=\"info\">${total}条</font>
+                > 通过用例数：<font color=\"info\">${passed}条</font>
+                > 失败用例数：<font color=\"red\">${failed}条</font>
+                > 报错用例数：<font color=\"red\">${error}条</font>
+                > 跳过用例数：<font color=\"warning\">${skipped}条</font>
+                > 预期失败用例数：<font color=\"comment\">${xfailed}条</font>
+                > 预期通过用例数：<font color=\"comment\">${xpassed}条</font>
                 > 通过率：<font color=\"info\">${pass_rate}%%</font>
-                > 用例开始时间:<font color=\"info\">${case_start_time}</font>
-                > 用例执行时长：<font color=\"info\">${case_duration}s</font>
+                > 用例开始时间:<font color=\"info\">${start_time}</font>
+                > 用例执行时长：<font color=\"info\">${duration}s</font>
                 > 测试报告，点击查看>>[测试报告入口](%s)
                 > 构建详情，点击查看>>[控制台入口](%s)
                 > <@汪杰>""" % (ProjectName, BUILD_NUMBER, ENV.name, ALLURE_URL, BUILD_URL)

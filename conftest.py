@@ -6,15 +6,15 @@
 # @project : SensoroApi
 import os.path
 import platform
-import shutil
 import time
 
 import pytest
 
+from common.models import TestMetrics
 from common.settings import ENV
 from configs.dir_path_config import BASE_DIR
 from configs.lins_environment import EntryPoint
-from utils.reportdatahandle import ReportDataHandle
+from utils.report_data_handle import ReportDataHandle
 
 
 def pytest_sessionstart():
@@ -101,16 +101,17 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     """收集测试结果展示在控制台"""
-    pytest_result = ReportDataHandle.pytest_json_report_case_count()
+    pytest_result = TestMetrics(**ReportDataHandle.pytest_json_report_case_count())
     run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
     print("******用例执行结果统计******")
-    print(f"总用例数：{pytest_result['total_case']}条")
-    print(f"通过：{pytest_result['pass_case']}条")
-    print(f"失败：{pytest_result['fail_case']}条")
-    print(f"跳过：{pytest_result['skip_case']}条")
-    print(f"预期失败：{pytest_result['xfail_case']}条")
-    print(f"预期通过：{pytest_result['xpass_case']}条")
-    print(f"报错：{pytest_result['error_case']}条")
-    print(f"用例通过率：{pytest_result['pass_rate']}%")
-    print(f"用例执行时间：{pytest_result['case_duration']}s")
+    print(f"总用例数：{pytest_result.total}条")
+    print(f"通过：{pytest_result.passed}条")
+    print(f"失败：{pytest_result.failed}条")
+    print(f"跳过：{pytest_result.skipped}条")
+    print(f"预期失败：{pytest_result.xfailed}条")
+    print(f"预期通过：{pytest_result.xpassed}条")
+    print(f"报错：{pytest_result.error}条")
+    print(f"用例通过率：{pytest_result.pass_rate}%")
+    print(f"用例开始时间：{pytest_result.start_time}")
+    print(f"用例执行时间：{pytest_result.duration}s")
     print(f"总用时(算上了生成报告的时间)：{run_time}s")
