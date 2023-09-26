@@ -47,19 +47,19 @@ email_content = """
            各位同事, 大家好:<br>
 
            自动化用例于 <strong>${start_time}</strong> 开始运行，运行时长：<strong>${duration}s</strong>， 目前已执行完成。<br>
-           ---------------------------------------------------------------------------------------------------------------<br>
+           --------------------------------------------------------------------------------------------------------<br>
            项目名称：<strong>%s</strong> <br>
            构件编号：<strong>#%s</strong><br>
            项目环境：<strong>%s</strong><br>
-           ---------------------------------------------------------------------------------------------------------------<br>
+           --------------------------------------------------------------------------------------------------------<br>
            执行结果如下:<br>
            &nbsp;&nbsp;用例运行总数:<strong> ${total}条</strong><br>
            &nbsp;&nbsp;通过用例数（passed）: <strong><font color="green" >${passed}条</font></strong><br>
            &nbsp;&nbsp;失败用例数（failed）: <strong><font color="red" >${failed}条</font></strong><br>
            &nbsp;&nbsp;报错用例数（error）: <strong><font color="orange" >${error}条</font></strong><br>
            &nbsp;&nbsp;跳过用例数（skipped）: <strong><font color="grey" >${skipped}条</font></strong><br>
-           &nbsp;&nbsp;预期失败用例数（xfail）: <strong><font color="grey" >${xfailed}条</font></strong><br>
-           &nbsp;&nbsp;预期通过用例数（xpass）: <strong><font color="grey" >${xpassed}条</font></strong><br>
+           &nbsp;&nbsp;预期失败用例数（xfailed）: <strong><font color="grey" >${xfailed}条</font></strong><br>
+           &nbsp;&nbsp;预期通过用例数（xpassed）: <strong><font color="grey" >${xpassed}条</font></strong><br>
            &nbsp;&nbsp;通过率: <strong><font color="green" >${pass_rate}%%</font></strong><br>
            &nbsp;&nbsp;测试报告，点击查看: <a href='%s'>[测试报告入口]</a><br> 
            &nbsp;&nbsp;构建详情，点击查看: <a href='%s'>[控制台入口]</a><br>

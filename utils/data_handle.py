@@ -5,6 +5,7 @@
 # @File : data_handle.py
 # @project : SensoroApiAutoTest
 import ast
+import random
 import re
 from string import Template
 from typing import Any
@@ -25,7 +26,6 @@ class DataProcessor:
         """
         if source is None:
             source = {}
-        data = self.eval_data(data)
         if isinstance(data, str):
             data = self.process_string(data, source)
         elif isinstance(data, list):
@@ -55,8 +55,7 @@ class DataProcessor:
         s = Template(s).safe_substitute(source)
         for func in re.findall('\\${(.*?)}', s):
             try:
-                func_result = eval(func)
-                s = s.replace('${%s}' % func, repr(func_result) if isinstance(func_result, str) else str(func_result))
+                s = s.replace('${%s}' % func, str(eval(func)), 1)
             except NameError:
                 # 处理未定义的变量或函数
                 raise DataProcessorFuncError(
@@ -65,20 +64,23 @@ class DataProcessor:
                 # 处理其他异常情况
                 raise DataProcessorFuncError(
                     f'方法执行错误：{func}, 报错信息：{e}')
-
         return self.eval_data(s)
 
 
-# 示例用法
 if __name__ == "__main__":
     data_processor = DataProcessor()
+
+    # ----------------------------------以下是各种测试数据---------------------------------------------
+    # 用于替换的模板
     source_data = {
         "name": "John",
         "age": 30,
         "random_int": FakerUtils().random_int()
     }
+
+    # 字典内进行模板替换，并且执行自定义方法,结果区分int和str类型,返回格式：{'message': "Hello, 吕亮! Your age is 30. Random number_int: 1515.Random number_str: '2637'", 'nested_data': ["This is John's data.", {'message': 'Age: 30.', 'nested_list': ['More data: 677.']}]} <class 'dict'>
     input_data = {
-        "message": "Hello, ${FakerUtils().random_name()}! Your age is ${age}. Random number: ${FakerUtils().random_int()}.",
+        "message": "Hello, ${FakerUtils().random_name()}! Your age is ${age}. Random number_int: ${FakerUtils().random_int()}.Random number_str: '${FakerUtils().random_int()}'",
         "nested_data": [
             "This is ${name}'s data.",
             {
@@ -89,9 +91,17 @@ if __name__ == "__main__":
             }
         ]
     }
-    # input_data = '[[1,2,3,4],${FakerUtils().random_name()}]'
-    # input_data = '${FakerUtils().random_name()}'
+
+    # 列表内执行方法,结果区分int和str类型,返回格式：[[1, 2, '3', 4], '张龙', 125, '2275'] <class 'list'>
+    # input_data = [[1, 2, "'3'", 4], '${FakerUtils().random_name()}', '${FakerUtils().random_int()}',"'${FakerUtils().random_int()}'"]
+
+    # 字符串内进行模板替换，并执行自定义方法，返回格式：Hello, 李佳! Your age is 30. Random number: 86. <class 'str'>
     # input_data = "Hello, ${FakerUtils().random_name()}! Your age is ${age}. Random number: ${FakerUtils().random_int()}."
-    # input_data = [[1, 2, 3, 4], '${FakerUtils().random_name()}']
+
+    # 字符串内套列表，进行模板替换，并执行自定义方法，结果区分int和str类型,返回格式：['[1,2,'3',4]', 'John', '1615', 4832] <class 'list'>
+    # input_data = '["[1,2,\'3\',4]","${name}","${FakerUtils().random_int()}",${FakerUtils().random_int()}]'
+
+    # 字符串内套字典,进行模板替换，并执行自定义方法，结果区分int和str类型,返回格式：{'age': 30, 'name': 'John', 'random_name': '王红梅', 'random_str': '2309', 'random_int': 2309} <class 'dict'>
+    # input_data = "{'age':${age},'name':'${name}','random_name':'${FakerUtils().random_name()}','random_str':'${FakerUtils().random_int()}','random_int':${FakerUtils().random_int()}}"
     processed_data = data_processor.process_data(input_data, source_data)
     print(processed_data, type(processed_data))
