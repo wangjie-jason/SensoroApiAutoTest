@@ -12,7 +12,7 @@ from pageApi.login import Login
 from utils.cache_handle import CacheHandler
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session", autouse=False)
 def get_token():
     """获取登录V1的token"""
     logger.info("开始用例前置操作")
