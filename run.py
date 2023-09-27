@@ -16,6 +16,7 @@ import pytest
 
 from common.base_log import logger
 from common.models import TestMetrics
+from utils.allure_handle import AllureReportBeautiful
 from utils.command_parser import command_parser
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
@@ -58,17 +59,22 @@ if __name__ == '__main__':
         # '-m smoke',  # 只运行mark标记为smoke的测试用例
     ])
 
-    ###################发送allure报告
-    # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    FileHandle.copy_file(BASE_DIR + os.sep + 'environment.properties', TEMP_DIR)
-    # allure报告展示运行器时所需要的数据
-    FileHandle.copy_file(BASE_DIR + os.sep + 'executor.json', TEMP_DIR)
+    # ------------------------------发送allure报告----------------------------------
+    # 生成allure报告环境信息
+    AllureReportBeautiful.set_report_env_on_results()
+    # 生成allure报告执行器信息
+    AllureReportBeautiful.set_report_executer_on_results()
     # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
     os.system(f'allure generate {TEMP_DIR} -o {ALLURE_REPORT_DIR} --clean')
+    # 修改allure报告浏览器窗口标题
+    AllureReportBeautiful.set_windows_title("Sensoro自动化")
+    # 修改allure报告标题
+    AllureReportBeautiful.set_report_name("Sensoro自动化测试报告")
     # 将本地启动脚本和查看allure报告方法放入报告目录下面
     FileHandle.copy_file(BASE_DIR + os.sep + 'open_report.sh', ALLURE_REPORT_DIR)
     FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
+    # ------------------------------发送通知消息----------------------------------
     # 发送企业微信群聊
     pytest_result = asdict(TestMetrics(**ReportDataHandle.pytest_json_report_case_count()))
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信

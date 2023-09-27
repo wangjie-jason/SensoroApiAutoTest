@@ -4,45 +4,22 @@
 # @Author : wangjie
 # @File : conftest.py
 # @project : SensoroApi
-import os.path
-import platform
 import time
 
 import pytest
 
 from common.models import TestMetrics
-from common.settings import ENV
-from configs.dir_path_config import BASE_DIR
-from configs.lins_environment import EntryPoint
 from utils.report_data_handle import ReportDataHandle
 
 
 def pytest_sessionstart():
-    """在整个pytest运行过程开始之前设置allure报告的环境变量信息"""
-    allure_env = {
-        'OperatingEnvironment': ENV.name,
-        'BaseUrl': EntryPoint.URL(),
-        'PythonVersion': platform.python_version(),
-        'Platform': platform.platform(),
-        'PytestVersion': pytest.__version__,
-    }
-    allure_env_file = os.path.join(BASE_DIR, 'environment.properties')
-    with open(allure_env_file, 'w', encoding='utf-8') as f:
-        for _k, _v in allure_env.items():
-            f.write(f'{_k}={_v}\n')
+    """在整个pytest运行过程开始之前执行的操作"""
+    pass
 
 
 def pytest_sessionfinish(session, exitstatus):
-    """运行完成后生成allure报告文件，再将本地启动方式放入该目录下"""
-    # # allure报告展示environment时所需要的数据，这里是在项目根路径下创建的environment.properties文件拷贝到allure-report报告中,保证环境文件不会被清空
-    # FileHandle.copy_file(BASE_DIR + os.sep + 'environment.properties', TEMP_DIR)
-    # # allure报告展示运行器时所需要的数据
-    # FileHandle.copy_file(BASE_DIR + os.sep + 'executor.json', TEMP_DIR)
-    # # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
-    # os.system(f'allure generate {TEMP_DIR} -o {ALLURE_REPORT_DIR} --clean')
-    # # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    # FileHandle.copy_file(BASE_DIR + os.sep + 'open_report.sh', ALLURE_REPORT_DIR)
-    # FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
+    """在整个pytest session结束后执行的操作"""
+    pass
 
 
 def pytest_collection_modifyitems(items) -> None:

@@ -4,9 +4,6 @@
 # @Author : wangjie
 # @File : conftest.py
 # @project : SensoroApi
-import os.path
-import platform
-
 import allure
 import pytest
 
@@ -14,6 +11,7 @@ from common.base_api import BaseApi
 from common.base_log import logger
 from common.exceptions import ValueNotFoundError
 from pageApi.login import Login
+from utils.allure_handle import allure_attach_text
 
 # 定义一个全局变量，用于存储提取的参数内容
 _global_data = {}
@@ -28,8 +26,9 @@ def set_global_data():
 
     def _set_global_data(cache_name, value):
         _global_data[cache_name] = value
-        allure.attach(str(f"'{cache_name}':'{value}'"), '设置变量：', allure.attachment_type.TEXT)
-        allure.attach(str(_global_data), '当前可使用的全局变量：', allure.attachment_type.TEXT)
+        with allure.step("提取"):
+            allure_attach_text("设置变量", str(f"'{cache_name}':'{value}'"))
+            allure_attach_text("当前可使用的全局变量", str(_global_data))
 
     yield _set_global_data
     _global_data.clear()
@@ -44,11 +43,12 @@ def get_global_data():
 
     def _get_global_data(cache_data):
         try:
-            allure.attach(str(f"{cache_data}:{_global_data.get(cache_data, None)}"), '取出来的变量：',
-                          allure.attachment_type.TEXT)
+            with allure.step("提取"):
+                allure_attach_text("取出来的变量", str(f"{cache_data}:{_global_data.get(cache_data, None)}"))
             return _global_data[cache_data]
         except KeyError:
-            allure.attach(str(_global_data), '获取变量失败，当前可使用的全局变量：', allure.attachment_type.TEXT)
+            with allure.step("获取变量失败，当前可使用的全局变量"):
+                allure_attach_text("获取变量失败，当前可使用的全局变量", str(_global_data))
             raise ValueNotFoundError(f"{cache_data}的缓存数据未找到，请检查是否将该数据存入缓存中")
 
     return _get_global_data
