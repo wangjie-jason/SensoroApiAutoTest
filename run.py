@@ -57,6 +57,7 @@ if __name__ == '__main__':
         '-p', 'no:sugar',  # 禁用pytest-sugar美化控制台结果
         # '-k not test_login.py',  # 不执行该文件里的case
         # '-m smoke',  # 只运行mark标记为smoke的测试用例
+        '-W', 'ignore:Module already imported so cannot be rewritten'
     ])
 
     # ------------------------------发送allure报告----------------------------------

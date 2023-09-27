@@ -16,7 +16,7 @@ from utils.cache_handle import CacheHandler
 def get_token():
     """获取登录V1的token"""
     logger.info("开始用例前置操作")
-    # 调登录接口，获取登录接口的token¬
+    # 调登录接口，获取登录接口的token
     login_response = Login().login('18800000001', '123456')
     token = BaseApi.get_json(login_response)['data']['token']
     CacheHandler.set_cache('Authorization', f'Bearer {token}')
