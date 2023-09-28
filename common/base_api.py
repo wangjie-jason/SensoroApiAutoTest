@@ -16,7 +16,8 @@ from requests import PreparedRequest
 from requests.structures import CaseInsensitiveDict
 
 from common.base_log import logger
-from common.exceptions import ValueNotFoundError
+from common.exceptions import ValueNotFoundError, ValueTypeError
+from common.models import Method
 from configs.lins_environment import EntryPoint
 from utils.allure_handle import allure_attach_text, allure_attach_json
 from utils.time_utils import TimeUtil
@@ -49,7 +50,12 @@ class BaseApi:
     @staticmethod
     def _make_method(method) -> str:
         """对请求方法进行预处理"""
-        return method.lower()
+        # 检查传入的method是否在Method枚举中
+        try:
+            method_enum = Method[method.upper()]
+        except KeyError:
+            raise ValueTypeError(f"无效的HTTP请求,请检查你的请求方法是否正确：{method}")
+        return method_enum.value
 
     @staticmethod
     def _make_params(params) -> dict[str, int | Any]:

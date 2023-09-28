@@ -1,5 +1,7 @@
 # SensoroApi
-
+## 联系方式：
+对本框架有任何疑问均可加我微信咨询：wj1641540482
+![img_1.png](img_1.png)
 ## 实现功能：
 
 - 测试数据隔离, 实现数据驱动
@@ -32,10 +34,13 @@
 
 * 获取源码后，在pycharm终端运行以下代码，即可一键安装项目依赖：
     * ```pip3 install -r requirements.txt```
-      * 注：如果是window系统报错 ```UnicodeDecodeError: 'gbk' codec can't decode byte 0xaa in position 65: illegal multibyte sequence```，则需要先在终端执行下方的命令，将终端编码格式改为utf-8，再执行上方install命令，即可解决编码问题
-      * ``` chcp 65001    ```
+        *
+      注：如果是window系统报错 ```UnicodeDecodeError: 'gbk' codec can't decode byte 0xaa in position 65: illegal multibyte sequence```
+      ，则需要先在终端执行下方的命令，将终端编码格式改为utf-8，再执行上方install命令，即可解决编码问题
+        * ``` chcp 65001    ```
     * 或者直接使用pycharm自带的提示功能安装依赖包，推荐这种！！！
-    ![img.png](img.png)
+      ![img.png](img.png)
+
 ## 项目结构
 
 ```
@@ -45,9 +50,12 @@
 ├── common						公共方法类存放目录
 │     ├── base_log.py					日志记录器
 │     ├── base_api.py				        基础类，对请求方法进行二次封装
-│     ├── lins_environment_enums.py			项目环境枚举
+│     ├── models.py			                项目环境枚举
+│     ├── exceptions.py			                自定义异常
 │     ├── mail_sender.py				发送邮件方法
-│     └── settings.py					项目配置文件
+│     ├── settings.py					项目配置文件
+│     ├── connect_DB.py				        连接数据库方法
+│     └── rebot_sender.py				发送群聊通知方法
 ├── configs						项目配置信息目录
 │     ├── dir_path_config.py				项目各目录路径文件
 │     ├── lins_environment.ini				项目全局环境变量配置文件（弃用）
@@ -56,7 +64,6 @@
 ├── conftest.py						pytest共享文件，设置allure报告及其他报告的环境变量
 ├── datas						测试数据存放目录
 │     ├── login.yaml					登录测试的数据demo
-├── environment.properties				allure报告环境变量展示文件
 ├── outFiles						各种输出文件存放目录
 │     ├── logs						日志存放目录
 │     ├── pytest_report					pytest报告存放目录
@@ -73,12 +80,19 @@
 │     ├── test_alarms.py				预警测试用例demo
 │     └── test_login.py					预警测试用例demo
 └── utils						测试工具存放目录
-    ├── get_config.py					读取config配置文件的方法
-    ├── get_dir_path.py					获取项目各个文件路径的类
-    ├── get_yaml_data.py				读取yaml文件的方法
-    ├── lock_reset.py					门禁出厂
-    ├── temperature_terminal_reset.py			测温终端出厂
-    └── time_utils.py					时间转换工具类
+    ├── config_handle.py				读取config配置文件的方法
+    ├── allure_handle.py				allure相关工具
+    ├── cache_handle.py				        设置、读取缓存的工具（解决接口数据依赖）
+    ├── command_parser.py				设置命令行启动命令工具
+    ├── data_handle.py				        数据处理工具
+    ├── excel_handle.py				        excel表格处理工具
+    ├── faker_utils.py				        造假数据工具
+    ├── file_handle.py				        文件处理工具
+    ├── get_local_ip.py				        获取本机ip地址的方法
+    ├── jenkins_handle.py				获取Jenkins相关数据的工具
+    ├── report_data_handle.py				获取测试结果统计的方法
+    ├── yaml_handle.py				        yaml文件处理工具
+    └──time_utils.py					时间转换工具类
 ```
 
 ## 项目代码工程构建思路：
@@ -245,7 +259,9 @@ class TestLogin:  # 测试类名
 
 #### 2.1整体项目运行流程
 
-- 在run.py中配置需要运行的测试用例及对整个测试的一些其他配置，然后右键运行该文件
+- 方式1：在run.py中配置需要运行的测试用例及对整个测试的一些其他配置，然后直接右键运行该文件
+- 方式2：如果在Jenkins上运行，可以通过命令行启动的方式执行（此方式可以指定运行环境，是否发送通知等参数，例如：python3 run.py
+  -env TEST --send-wechat True）
 
 ```python
 pytest.main([

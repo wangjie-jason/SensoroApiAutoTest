@@ -18,7 +18,7 @@ class Environment(Enum):
 
 @dataclass
 class TestMetrics:
-    """ 用例执行数据 """
+    """ 用例结果数据 """
     total: int
     passed: int
     failed: int
@@ -31,9 +31,17 @@ class TestMetrics:
     duration: float
 
 
-if __name__ == '__main__':
-    print(Environment.DEV.name)
-    print(Environment.DEV.value)
+class Method(Enum):
+    """
+    请求方式
+    """
+    GET = "GET"
+    POST = "POST"
+    PUT = "PUT"
+    DELETE = "DELETE"
+    PATCH = "PATCH"
+    HEAD = "HEAD"
+    OPTIONS = "OPTIONS"
 
 
 @unique  # 枚举类装饰器，确保只有一个名称绑定到任何一个值。
@@ -64,3 +72,8 @@ class AllureAttachmentType(Enum):
     WEBM = "webm"
 
     PDF = "pdf"
+
+
+if __name__ == '__main__':
+    print(Environment.DEV.name)
+    print(Environment.DEV.value)
