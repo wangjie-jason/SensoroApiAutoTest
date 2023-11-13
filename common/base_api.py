@@ -65,8 +65,8 @@ class BaseApi:
         params = {
             "page": 1,
             "size": 20,
-            'startTime': TimeUtil.get_current_time_unix(),
-            'endTime': TimeUtil.get_seven_days_ago_time_unix(),
+            'startTime': TimeUtil.get_seven_days_ago_time_unix(),
+            'endTime': TimeUtil.get_current_time_unix(),
             **params
         }
         return params
