@@ -7,6 +7,7 @@
 import json
 import os
 
+from common.models import TestMetrics
 from configs.dir_path_config import PYTEST_RESULT_DIR
 from utils.time_utils import TimeUtil
 
@@ -43,7 +44,7 @@ class ReportDataHandle:
             case_count["duration"] = round(pytest_result["duration"], 2)  # 用例运行时间
             case_count["start_time"] = TimeUtil.unix_time_to_str(int('%.f' % pytest_result["created"]))  # 用例开始时间
 
-            return case_count
+            return TestMetrics(**case_count)
 
 
 if __name__ == '__main__':

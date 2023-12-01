@@ -6,8 +6,9 @@
 # @project : SensoroApi
 import base64
 import json
+import os
 import time
-from typing import Optional, Tuple, Any
+from typing import Optional, Tuple, Any, Union, Dict
 
 import allure
 import py3curl
@@ -16,10 +17,11 @@ from requests import PreparedRequest
 from requests.structures import CaseInsensitiveDict
 
 from common.base_log import logger
-from common.exceptions import ValueNotFoundError, ValueTypeError
+from common.exceptions import ValueTypeError
 from common.models import Method
 from configs.lins_environment import EntryPoint
-from utils.allure_handle import allure_attach_text, allure_attach_json
+from utils.MIME_type_classifier import get_MIME
+from utils.allure_handle import allure_attach_text, allure_attach_json, allure_attach_file
 from utils.time_utils import TimeUtil
 
 
@@ -72,12 +74,41 @@ class BaseApi:
         return params
 
     @staticmethod
+    def _make_files(files_info: Union[str, Dict[str, str]]) -> Dict[str, Tuple[str, Any, str]]:
+        """
+        对上传文件进行预处理
+        :param files_info: 支持str和dict两种传参方式，str时只需要传文件名即可，该文件字段名默认为file，如果后端要求字段名不是file，可以字典的方式传入k是字段名，v是文件路径，如：{"file":'/Users/wangjie/Desktop/111.png'}
+        :return:
+        """
+        if files_info is None:
+            return {}
+        # 类型检查
+        if not isinstance(files_info, (str, dict)):
+            raise TypeError("files_info必须是字符串或字典")
+
+        # 如果传入的是单个文件路径，转换为包含该路径的字典，并带上默认字段名file
+        if isinstance(files_info, str):
+            files_info = {'file': files_info}
+
+        # 准备上传文件的数据
+        files = {}
+        for field_name, file_path in files_info.items():
+            if not isinstance(field_name, str) or not isinstance(file_path, str):
+                raise TypeError("files_info字典中的每个条目必须是一个字符串键和一个字符串值")
+            file_name = os.path.basename(file_path)
+            files[field_name] = (file_name, open(file_path, 'rb'), get_MIME(file_path))
+            with allure.step("上传的附件"):
+                allure_attach_file(file_name, file_path)
+        return files
+
+    @staticmethod
     def request(method, address, headers=None, params=None, data=None, json_data=None, files=None) -> requests.Response:
         """发送http请求，返回response对象"""
         # 处理请求参数
         url = BaseApi._make_url(address)
         headers = BaseApi._make_headers(headers)
         method = BaseApi._make_method(method)
+        files = BaseApi._make_files(files)
 
         # 发送请求
         try:
@@ -93,7 +124,7 @@ class BaseApi:
             r_headers = response.request.headers
             r_body = BaseApi.get_request_body(response)
             r_curl = BaseApi.request_to_curl(response)
-            r_respone = response.json()
+            r_respone = BaseApi.get_json(response)
             r_duration = duration
             r_respone_status_code = response.status_code
             r_respone_headers = response.headers
@@ -154,13 +185,14 @@ class BaseApi:
                                files=files)
 
     @staticmethod
-    def get_json(response: requests.Response) -> json:
+    def get_json(response: requests.Response) -> Union[Dict[str, Any], str]:
         """获取响应结果的json格式"""
-        if response:
+        try:
             json_data = response.json()
             return json_data
-        else:
-            raise ValueNotFoundError('请求返回结果为空，无法获取响应')
+        except json.JSONDecodeError:
+            # 如果json解析失败，则返回原始响应体文本
+            return f'解码JSON失败或响应为空,返回原始响应:{response.text}'
 
     @staticmethod
     def get_text(response: requests.Response) -> str:

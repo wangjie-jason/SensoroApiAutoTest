@@ -78,7 +78,7 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     """收集测试结果展示在控制台"""
-    pytest_result = TestMetrics(**ReportDataHandle.pytest_json_report_case_count())
+    pytest_result = ReportDataHandle.pytest_json_report_case_count()
     run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
     print("******用例执行结果统计******")
     print(f"总用例数：{pytest_result.total}条")

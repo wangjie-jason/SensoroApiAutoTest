@@ -15,7 +15,6 @@ from dataclasses import asdict
 import pytest
 
 from common.base_log import logger
-from common.models import TestMetrics
 from utils.allure_handle import AllureReportBeautiful
 from utils.command_parser import command_parser
 from common.mail_sender import MailSender
@@ -77,7 +76,7 @@ if __name__ == '__main__':
 
     # ------------------------------发送通知消息----------------------------------
     # 发送企业微信群聊
-    pytest_result = asdict(TestMetrics(**ReportDataHandle.pytest_json_report_case_count()))
+    pytest_result = asdict(ReportDataHandle.pytest_json_report_case_count())
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
         EnterpriseWechatNotification(wechat_webhook_url).send_markdown(
             DataProcessor().process_data(wechat_content, pytest_result))
@@ -85,5 +84,5 @@ if __name__ == '__main__':
     # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
         file_path = PYTEST_REPORT_DIR + os.sep + 'pytest_report.html'
-        ms = MailSender(**email_config)
+        ms = MailSender(email_config)
         ms.attach_text(DataProcessor().process_data(email_content, pytest_result)).attach_file(file_path).send()
