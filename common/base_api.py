@@ -129,7 +129,7 @@ class BaseApi:
             r_respone_status_code = response.status_code
             r_respone_headers = response.headers
             _log_msg = f"\n==================================================\n" \
-                       f"请求路径：{r_uri}\n" \
+                       f"请求地址：{r_uri}\n" \
                        f"请求方式：{r_method}\n" \
                        f"请求头：{r_headers}\n" \
                        f"请求内容：{r_body}\n" \
@@ -140,7 +140,7 @@ class BaseApi:
                        f"HTTP状态码：{r_respone_status_code}\n" \
                        f"=================================================="
             with allure.step("请求内容"):
-                allure_attach_text("请求路径", f"{r_uri}")
+                allure_attach_text("请求地址", f"{r_uri}")
                 allure_attach_text("请求方式", f"{r_method}")
                 allure_attach_text("请求头", f"{r_headers}")
                 allure_attach_json("请求体", f"{r_body}")
@@ -156,7 +156,7 @@ class BaseApi:
                 logger.error(_log_msg)
             return response
         except Exception as e:
-            logger.error(f'发送{method.upper()}请求失败，请求接口为：{url}，错误信息：{e}')
+            logger.error(f'发送{method.upper()}请求失败，请求地址为：{url}，错误信息：{e}')
             raise e
 
     @staticmethod
