@@ -61,16 +61,16 @@
 ├── configs						项目配置信息目录
 │     ├── dir_path_config.py				项目各目录路径文件
 │     ├── lins_environment.ini				项目全局环境变量配置文件（弃用）
-│     ├── lins_environment.py				项目全局环境变量
-│     └── mail_config.yaml				发送邮件配置信息
+│     └── lins_environment.py				项目全局环境变量
 ├── conftest.py						pytest共享文件，设置allure报告及其他报告的环境变量
 ├── datas						测试数据存放目录
 │     ├── login.yaml					登录测试的数据demo
 ├── outFiles						各种输出文件存放目录
 │     ├── logs						日志存放目录
 │     ├── pytest_report					pytest报告存放目录
-│     ├── report					allure报告存放目录 
-│     └── screenShot					截图存放目录
+│     ├── pytest_result					pytest-json报告数据存放目录
+│     ├── allure_report					allure报告存放目录
+│     └── Temp					        allure报告原始数据存放目录
 ├── pageApi						各业务接口对象类
 │     ├── alarms.py					预警相关接口demo
 │     └── login.py					登录相关接口demo
@@ -80,7 +80,7 @@
 ├── testCase						测试用例存放目录
 │     ├── conftest.py					pytest共享文件，提供各种方法及前后置操作
 │     ├── test_alarms.py				预警测试用例demo
-│     └── test_login.py					预警测试用例demo
+│     └── test_login.py					登录测试用例demo
 └── utils						测试工具存放目录
     ├── config_handle.py				读取config配置文件的方法
     ├── allure_handle.py				allure相关工具

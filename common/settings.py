@@ -18,6 +18,15 @@ from utils.jenkins_handle import ProjectName, BUILD_NUMBER, ALLURE_URL, BUILD_UR
 # 设置运行环境
 ENV = Environment.TEST
 
+# 失败重跑次数
+rerun = 5
+
+# 失败重跑间隔时间
+reruns_delay = 5
+
+# 当用例达到最大失败数，整个测试停止执行
+max_fail = 100
+
 # 设置是否需要发送邮件：Ture发送，False不发送
 IS_SEND_EMAIL = False
 
