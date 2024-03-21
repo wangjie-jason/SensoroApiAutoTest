@@ -19,7 +19,7 @@ from utils.jenkins_handle import ProjectName, BUILD_NUMBER, ALLURE_URL, BUILD_UR
 ENV = Environment.TEST
 
 # 失败重跑次数
-rerun = 5
+rerun = 0
 
 # 失败重跑间隔时间
 reruns_delay = 5
