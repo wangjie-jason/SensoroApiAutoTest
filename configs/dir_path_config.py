@@ -19,6 +19,9 @@ CONFIGS_DIR = os.path.join(BASE_DIR, 'configs')
 # datas目录的路径
 DATAS_DIR = os.path.join(BASE_DIR, 'datas')
 
+# files目录的路径
+FILES_DIR = os.path.join(BASE_DIR, 'files')
+
 # pageApi目录的路径
 PAGE_API_DIR = os.path.join(BASE_DIR, 'pageApi')
 

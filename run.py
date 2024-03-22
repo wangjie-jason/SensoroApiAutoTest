@@ -21,7 +21,8 @@ from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
     email_config, max_fail, rerun, reruns_delay
-from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR
+from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
+    FILES_DIR
 from utils.data_handle import DataProcessor
 from utils.file_handle import FileHandle
 from utils.report_data_handle import ReportDataHandle
@@ -72,8 +73,9 @@ if __name__ == '__main__':
     # 修改allure报告标题
     AllureReportBeautiful.set_report_name("Sensoro自动化测试报告")
     # 将本地启动脚本和查看allure报告方法放入报告目录下面
-    FileHandle.copy_file(BASE_DIR + os.sep + 'open_report.sh', ALLURE_REPORT_DIR)
-    FileHandle.copy_file(BASE_DIR + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
+    allure_files = os.path.join(FILES_DIR, 'allure_files')
+    FileHandle.copy_file(allure_files + os.sep + 'open_report.sh', ALLURE_REPORT_DIR)
+    FileHandle.copy_file(allure_files + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
     # ------------------------------发送通知消息----------------------------------
     # 发送企业微信群聊
