@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # @Time : 2022/7/1 20:47
 # @Author : wangjie
-# @File : dir_path_config.py
+# @File : paths_config.py
 # @project : SensoroApi
 
 import os

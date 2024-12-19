@@ -5,7 +5,7 @@ import os
 import allure
 import pytest
 
-from configs.dir_path_config import DATAS_DIR
+from configs.paths_config import DATAS_DIR
 from pageApi.login import Login
 from utils.yaml_handle import YamlHandle
 

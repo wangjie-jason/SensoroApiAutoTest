@@ -21,7 +21,7 @@ from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
     email_config, max_fail, rerun, reruns_delay
-from configs.dir_path_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
+from configs.paths_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
     FILES_DIR
 from utils.data_handle import DataProcessor
 from utils.file_handle import FileHandle

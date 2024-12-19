@@ -5,7 +5,7 @@ import os
 import yaml
 
 from common.exceptions import ValueTypeError
-from configs.dir_path_config import BASE_DIR
+from configs.paths_config import BASE_DIR
 
 
 class YamlHandle:

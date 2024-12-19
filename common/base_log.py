@@ -13,7 +13,7 @@ import time
 import colorlog
 
 from common.settings import LOG_DEBUG, LOG_CONSOLE
-from configs.dir_path_config import LOGS_DIR
+from configs.paths_config import LOGS_DIR
 logging.getLogger('faker').setLevel(logging.ERROR)
 logging.getLogger('urllib3').setLevel(logging.ERROR)
 

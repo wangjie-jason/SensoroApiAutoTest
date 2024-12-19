@@ -7,7 +7,7 @@
 import configparser
 import os.path
 
-from configs.dir_path_config import BASE_DIR
+from configs.paths_config import BASE_DIR
 
 
 class CinfigHandle:

@@ -13,7 +13,7 @@ import pytest
 
 from common.models import AllureAttachmentType
 from common.settings import ENV
-from configs.dir_path_config import TEMP_DIR, ALLURE_REPORT_DIR
+from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
 from configs.lins_environment import EntryPoint
 
 

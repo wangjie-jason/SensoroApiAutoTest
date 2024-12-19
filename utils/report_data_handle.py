@@ -8,7 +8,7 @@ import json
 import os
 
 from common.models import TestMetrics
-from configs.dir_path_config import PYTEST_RESULT_DIR
+from configs.paths_config import PYTEST_RESULT_DIR
 from utils.time_utils import TimeUtil
 
 
