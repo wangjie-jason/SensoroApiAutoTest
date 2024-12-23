@@ -7,7 +7,6 @@
 import inspect
 
 from common.settings import ENV
-from utils.command_parser import command_parser
 
 
 class DevConfig:
@@ -44,9 +43,8 @@ class ProdConfig:
 class EnvConfig:
     """环境配置入口"""
 
-    # 获取命令行参数中指定的运行环境，如果没有的话就用settings中指定的环境
-    args = command_parser()
-    env = args.env.lower() if args.env else ENV.value
+    # 获取settings中指定的运行环境
+    _ENV = ENV
 
     # 缓存 _ENV_CONFIGS 字典
     _ENV_CONFIGS = None
@@ -57,19 +55,20 @@ class EnvConfig:
         if cls._ENV_CONFIGS is None:  # 只在第一次访问时生成
             cls._ENV_CONFIGS = {}
             for name, obj in globals().items():
-                if inspect.isclass(obj) and name.endswith('Config'):
-                    env_name = name.lower().replace('config', '')  # 自动获取环境名称（例如 DevConfig -> dev）
+                if inspect.isclass(obj) and name.endswith('Config') and name != 'EnvConfig':
+                    env_name = name.upper().replace('CONFIG', '')  # 自动获取环境名称（例如 DevConfig -> DEV）
                     cls._ENV_CONFIGS[env_name] = obj
+        return cls._ENV_CONFIGS
 
     @classmethod
     def get_config(cls):
         """获取指定环境的配置"""
         cls._generate_env_configs()  # 确保在第一次访问时生成配置字典
-        if cls.env not in cls._ENV_CONFIGS:
+        if cls._ENV not in cls._ENV_CONFIGS:
             raise ValueError(
-                f'运行的环境 "{cls.env}" 不存在，请检查运行的环境参数，目前支持的环境有：{", ".join(cls._ENV_CONFIGS.keys())}'
+                f'运行的环境 "{cls._ENV}" 不存在，请检查运行的环境参数，目前支持的环境有：{", ".join(cls._ENV_CONFIGS.keys())}'
             )
-        return cls._ENV_CONFIGS.get(cls.env)
+        return cls._ENV_CONFIGS.get(cls._ENV)
 
     @classmethod
     def URL(cls):
@@ -88,5 +87,6 @@ class EnvConfig:
 
 
 if __name__ == '__main__':
+    print(EnvConfig._generate_env_configs())
     print(EnvConfig.URL())
     print(EnvConfig.DEFAULT_HEADERS())

@@ -19,11 +19,11 @@ def command_parser():
                         help='指定是否需要发送企业微信群消息')
     parser.add_argument('-e', '--send-email', choices=['False', 'True'], type=str, default=None,
                         help='指定是否需要发送邮件')
-    parser.add_argument('-env', '--env', choices=['DEV', 'TEST', 'PROD'], type=str, default=None,
-                        help='指定运行环境')
+    parser.add_argument('-env', '--env', choices=['DEV', 'TEST', 'PROD'], type=lambda s: s.upper(), default=None,
+                        help='指定运行环境,并支持大小输入')
 
     # 解析命令行参数
-    args,unknown_args = parser.parse_known_args()
+    args, unknown_args = parser.parse_known_args()
 
     return args
 

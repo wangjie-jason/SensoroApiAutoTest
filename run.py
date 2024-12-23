@@ -15,14 +15,13 @@ from dataclasses import asdict
 import pytest
 
 from common.base_log import logger
-from utils.allure_handle import AllureReportBeautiful
-from utils.command_parser import command_parser
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
 from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
     email_config, max_fail, rerun, reruns_delay
-from configs.paths_config import BASE_DIR, TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
+from configs.paths_config import TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
     FILES_DIR
+from utils.allure_handle import AllureReportBeautiful
 from utils.data_handle import DataProcessor
 from utils.file_handle import FileHandle
 from utils.report_data_handle import ReportDataHandle
@@ -37,11 +36,6 @@ if __name__ == '__main__':
                   |_|
                   Starting      ...     ...     ...
                 """)
-
-    # 获取命令行参数中指定的通知状态，如果没有的话就用settings中指定的通知状态
-    args = command_parser()
-    IS_SEND_EMAIL = eval(args.send_email) if args.send_email else IS_SEND_EMAIL
-    IS_SEND_WECHAT = eval(args.send_wechat) if args.send_wechat else IS_SEND_WECHAT
 
     pytest.main([
         # '-q',  # 代表 "quiet"，即安静模式，它可以将 pytest 的输出精简化，只输出测试用例的执行结果，而不会输出额外的信息，如测试用例的名称、执行时间等等

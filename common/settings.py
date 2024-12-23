@@ -5,18 +5,15 @@
 # @File : settings.py
 # @project : SensoroApi
 
-from common.models import Environment
+from utils.command_parser import command_parser
 from utils.jenkins_handle import ProjectName, BUILD_NUMBER, ALLURE_URL, BUILD_URL
 
 # ------------------------------------ 通用配置 ----------------------------------------------------#
-'''
-开发环境：Environment.DEV
-测试环境：Environment.TEST
-生产环境：Environment.PROD
-点军环境：Environment.DIANJUN
-'''
-# 设置运行环境
-ENV = Environment.TEST
+# 获取命令行参数
+args = command_parser()
+
+# 设置默认运行环境，如果命令行中有 env 参数并且有效，使用命令行的值，否则使用默认值，支持的环境参考env_config中配置的环境
+ENV = (args.env or "dev").upper()
 
 # 失败重跑次数
 rerun = 0
@@ -27,11 +24,11 @@ reruns_delay = 5
 # 当用例达到最大失败数，整个测试停止执行
 max_fail = 100
 
-# 设置是否需要发送邮件：Ture发送，False不发送
-IS_SEND_EMAIL = False
+# 设置是否需要发送邮件：Ture发送，False不发送，如果命令行中有 send_email 参数并且有效，使用命令行的值，否则使用默认值
+IS_SEND_EMAIL = args.send_email == 'True' if args.send_email else False
 
-# 设置是否需要发送企业微信消息：Ture发送，False不发送
-IS_SEND_WECHAT = False
+# 设置是否需要发送企业微信消息：Ture发送，False不发送，如果命令行中有 send_wechat 参数并且有效，使用命令行的值，否则使用默认值
+IS_SEND_WECHAT = args.send_wechat == 'True' if args.send_wechat else False
 
 # 设置是否开启debug日志
 LOG_DEBUG = False
@@ -75,7 +72,7 @@ email_content = """
 
            **********************************<br>
            附件为具体的测试报告，详细情况可下载附件查看， 非相关负责人员可忽略此消息。谢谢。
-       """ % (ProjectName, BUILD_NUMBER, ENV.name, ALLURE_URL, BUILD_URL)
+       """ % (ProjectName, BUILD_NUMBER, ENV, ALLURE_URL, BUILD_URL)
 
 # ------------------------------------ 企业微信相关配置 ----------------------------------------------------#
 
@@ -99,4 +96,4 @@ wechat_content = """******用例执行结果统计******
                 > 用例执行时长：<font color=\"info\">${duration}s</font>
                 > 测试报告，点击查看>>[测试报告入口](%s)
                 > 构建详情，点击查看>>[控制台入口](%s)
-                > <@汪杰>""" % (ProjectName, BUILD_NUMBER, ENV.name, ALLURE_URL, BUILD_URL)
+                > <@汪杰>""" % (ProjectName, BUILD_NUMBER, ENV, ALLURE_URL, BUILD_URL)

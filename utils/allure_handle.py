@@ -133,7 +133,7 @@ class AllureReportBeautiful:
         """
         # 需要写入的环境信息
         allure_env = {
-            'OperatingEnvironment': ENV.name,
+            'OperatingEnvironment': ENV,
             'BaseUrl': EnvConfig.URL(),
             'PythonVersion': platform.python_version(),
             'Platform': platform.platform(),
