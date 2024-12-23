@@ -14,7 +14,7 @@ import pytest
 from common.models import AllureAttachmentType
 from common.settings import ENV
 from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
-from configs.lins_environment import EntryPoint
+from configs.env_config import EnvConfig
 
 
 def allure_title(title: str) -> None:
@@ -134,7 +134,7 @@ class AllureReportBeautiful:
         # 需要写入的环境信息
         allure_env = {
             'OperatingEnvironment': ENV.name,
-            'BaseUrl': EntryPoint.URL(),
+            'BaseUrl': EnvConfig.URL(),
             'PythonVersion': platform.python_version(),
             'Platform': platform.platform(),
             'PytestVersion': pytest.__version__,

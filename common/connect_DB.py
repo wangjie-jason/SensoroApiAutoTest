@@ -10,7 +10,7 @@ import pymysql
 from dbutils.pooled_db import PooledDB
 
 from common.base_log import logger
-from configs.lins_environment import EntryPoint
+from configs.env_config import EnvConfig
 
 
 class Postgresql:
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # with Postgresql(db_config) as db:
     #     db.execute_query("SELECT * FROM mytable")
 
-    db_config = EntryPoint.DB_CONFIG()
+    db_config = EnvConfig.DB_CONFIG()
     with MySQL(db_config) as db:
         query = "SELECT * FROM student WHERE name = '张三'"
         result = db.execute_query_with_result(query)

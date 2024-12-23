@@ -19,7 +19,7 @@ from requests.structures import CaseInsensitiveDict
 from common.base_log import logger
 from common.exceptions import ValueTypeError
 from common.models import Method
-from configs.lins_environment import EntryPoint
+from configs.env_config import EnvConfig
 from utils.MIME_type_classifier import get_MIME
 from utils.allure_handle import allure_attach_text, allure_attach_json, allure_attach_file
 from utils.time_utils import TimeUtil
@@ -35,7 +35,7 @@ class BaseApi:
         if address.lower().startswith("http"):
             return address
         # 确保host不以/结尾
-        host = EntryPoint.URL().rstrip("/")
+        host = EnvConfig.URL().rstrip("/")
         # 确保address是以/开头
         address = "/" + address.lstrip("/")
 
@@ -44,7 +44,7 @@ class BaseApi:
     @staticmethod
     def _make_headers(headers) -> dict[Any, Any]:
         """对请求头进行预处理"""
-        default_headers = EntryPoint.DEFAULT_HEADERS()
+        default_headers = EnvConfig.DEFAULT_HEADERS()
         headers = headers or {}
         merged_headers = {**default_headers, **headers}
         return merged_headers
