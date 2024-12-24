@@ -29,17 +29,17 @@ class BaseApi:
     """基础类，对请求方法进行二次封装"""
 
     @staticmethod
-    def _make_url(address: str) -> str:
+    def _make_url(path: str) -> str:
         """整理拼接URL"""
-        # 如果address是以http开头的，则直接使用该address，不与host进行拼接
-        if address.lower().startswith("http"):
-            return address
-        # 确保host不以/结尾
+        # 如果path是完整的URL，则直接返回，不与host进行拼接
+        if path.lower().startswith("http"):
+            return path
+        # 获取运行环境地址，并确保没有末尾斜杠
         host = EnvConfig.URL().rstrip("/")
-        # 确保address是以/开头
-        address = "/" + address.lstrip("/")
+        # 拼接完整URL地址，确保拼接时不会有重复的“/”
+        url = host + "/" + path.lstrip("/")
 
-        return f"{host}{address}"
+        return url
 
     @staticmethod
     def _make_headers(headers) -> dict[Any, Any]:
@@ -60,18 +60,17 @@ class BaseApi:
         return method_enum.value
 
     @staticmethod
-    def _make_params(params) -> dict[str, int | Any]:
+    def _make_params(input_params) -> dict[str, int | Any]:
         """对请求参数进行预处理"""
-        params = params or {}
         # 在请求参数里默认加上查询范围
-        params = {
+        merged_params = {
             "page": 1,
             "size": 20,
             'startTime': TimeUtil.get_seven_days_ago_time_unix(),
             'endTime': TimeUtil.get_current_time_unix(),
-            **params
+            **(input_params or {})
         }
-        return params
+        return merged_params
 
     @staticmethod
     def _make_files(files_info: Union[str, Dict[str, str]]) -> Dict[str, Tuple[str, Any, str]]:
@@ -95,15 +94,26 @@ class BaseApi:
         for field_name, file_path in files_info.items():
             if not isinstance(field_name, str) or not isinstance(file_path, str):
                 raise TypeError("files_info字典中的每个条目必须是一个字符串键和一个字符串值")
-            file_name = os.path.basename(file_path)
-            files[field_name] = (file_name, open(file_path, 'rb'), get_MIME(file_path))
-            with allure.step("上传的附件"):
-                allure_attach_file(file_name, file_path)
+
+            # 验证和清理文件路径
+            if not os.path.isfile(file_path):
+                raise FileNotFoundError(f"上传文件: {file_path} 不存在")
+
+            try:
+                file_name = os.path.basename(file_path)
+                with open(file_path, 'rb') as f:
+                    mime_type = get_MIME(file_path)
+                    files[field_name] = (file_name, f, mime_type)
+                    with allure.step("上传的附件"):
+                        allure_attach_file(file_name, file_path)
+            except Exception as e:
+                logger.error(f"上传文件 {file_path} 时出错: {e}")
+                raise
         return files
 
     @staticmethod
     def _request(method, address, headers=None, params=None, data=None, json_data=None,
-                 files=None) -> requests.Response:
+                 files=None, timeout=30) -> requests.Response:
         """发送http请求，返回response对象"""
         # 处理请求参数
         url = BaseApi._make_url(address)
@@ -114,11 +124,14 @@ class BaseApi:
         # 发送请求
         try:
             start_time = time.time()  # 记录请求开始时间
+
             # 发起请求
             response = requests.request(method=method, url=url, headers=headers, params=params,
-                                        data=data, json=json_data, files=files)
+                                        data=data, json=json_data, files=files, timeout=timeout)
+
             end_time = time.time()  # 记录请求结束时间
             duration = end_time - start_time  # 计算请求时长
+
             # 记录请求时的详情信息
             r_uri = response.request.url
             r_method = method.upper()
@@ -139,7 +152,8 @@ class BaseApi:
                        f"接口响应头:{r_respone_headers}\n" \
                        f"接口响应时长:{r_duration:.2f}秒\n" \
                        f"HTTP状态码：{r_respone_status_code}\n" \
-                       f"=================================================="
+                       f"==================================================\n\n"
+
             with allure.step("请求内容"):
                 allure_attach_text("请求地址", f"{r_uri}")
                 allure_attach_text("请求方式", f"{r_method}")
@@ -147,7 +161,7 @@ class BaseApi:
                 allure_attach_json("请求体", f"{r_body}")
                 allure_attach_text("请求curl命令", f"{r_curl}")
             with allure.step("响应内容"):
-                allure_attach_json("响应体", f"{json.dumps(r_respone, ensure_ascii=False, indent=4)}")
+                allure_attach_json("响应体", json.dumps(r_respone, ensure_ascii=False, indent=4))
                 allure_attach_text("HTTP状态码", f"{r_respone_status_code}")
                 allure_attach_text("响应头", f"{r_respone_headers}")
 
@@ -174,9 +188,9 @@ class BaseApi:
                                 files=files)
 
     @staticmethod
-    def send_delete_request(address, data=None, json=None, headers=None, files=None) -> requests.Response:
+    def send_delete_request(address, data=None, json_data=None, headers=None, files=None) -> requests.Response:
         """发送delete请求，返回response对象"""
-        return BaseApi._request(method='delete', address=address, data=data, json_data=json, headers=headers,
+        return BaseApi._request(method='delete', address=address, data=data, json_data=json_data, headers=headers,
                                 files=files)
 
     @staticmethod
