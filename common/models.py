@@ -11,13 +11,6 @@ from typing import Text, List, Union
 from pydantic import BaseModel
 
 
-class Environment(Enum):
-    DEV = 'dev'
-    TEST = 'test'
-    PROD = 'prod'
-    DIANJUN = 'dianjun'
-
-
 @dataclass
 class TestMetrics:
     """ 用例结果数据 """
@@ -114,5 +107,6 @@ class MIMEFileType(Enum):
 
 
 if __name__ == '__main__':
-    print(Environment.DEV.name)
-    print(Environment.DEV.value)
+    print(Method['GET'].value)
+    print(Method.GET.name)
+    print(Method.GET.value)

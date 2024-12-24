@@ -24,11 +24,11 @@ reruns_delay = 5
 # 当用例达到最大失败数，整个测试停止执行
 max_fail = 100
 
-# 设置是否需要发送邮件：Ture发送，False不发送，如果命令行中有 send_email 参数并且有效，使用命令行的值，否则使用默认值
-IS_SEND_EMAIL = args.send_email == 'True' if args.send_email else False
+# 设置是否需要发送邮件：Ture发送，False不发送，如果命令行中有 send_email 参数并且有效，使用命令行的值，否则使用else后的默认值
+IS_SEND_EMAIL = args.send_email == 'true' if args.send_email else False
 
-# 设置是否需要发送企业微信消息：Ture发送，False不发送，如果命令行中有 send_wechat 参数并且有效，使用命令行的值，否则使用默认值
-IS_SEND_WECHAT = args.send_wechat == 'True' if args.send_wechat else False
+# 设置是否需要发送企业微信消息：Ture发送，False不发送，如果命令行中有 send_wechat 参数并且有效，使用命令行的值，否则使用else后的默认值
+IS_SEND_WECHAT = args.send_wechat == 'true' if args.send_wechat else False
 
 # 设置是否开启debug日志
 LOG_DEBUG = False
