@@ -15,7 +15,7 @@ class Login(BaseApi):
             'password': password
         }
 
-        return self.post(address, json_data=json)
+        return self.send_post_request(address, json_data=json)
 
 
 if __name__ == '__main__':

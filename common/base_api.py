@@ -102,7 +102,8 @@ class BaseApi:
         return files
 
     @staticmethod
-    def request(method, address, headers=None, params=None, data=None, json_data=None, files=None) -> requests.Response:
+    def _request(method, address, headers=None, params=None, data=None, json_data=None,
+                 files=None) -> requests.Response:
         """发送http请求，返回response对象"""
         # 处理请求参数
         url = BaseApi._make_url(address)
@@ -160,29 +161,29 @@ class BaseApi:
             raise e
 
     @staticmethod
-    def get(address, params=None, headers=None) -> requests.Response:
+    def send_get_request(address, params=None, headers=None) -> requests.Response:
         """发送get请求，返回response对象"""
         # get请求会默认带上查询范围的参数
         params = BaseApi._make_params(params)
-        return BaseApi.request(method='get', address=address, params=params, headers=headers)
+        return BaseApi._request(method='get', address=address, params=params, headers=headers)
 
     @staticmethod
-    def post(address, data=None, json_data=None, headers=None, files=None) -> requests.Response:
+    def send_post_request(address, data=None, json_data=None, headers=None, files=None) -> requests.Response:
         """发送post请求，返回response对象"""
-        return BaseApi.request(method='post', address=address, data=data, json_data=json_data, headers=headers,
-                               files=files)
+        return BaseApi._request(method='post', address=address, data=data, json_data=json_data, headers=headers,
+                                files=files)
 
     @staticmethod
-    def delete(address, data=None, json=None, headers=None, files=None) -> requests.Response:
+    def send_delete_request(address, data=None, json=None, headers=None, files=None) -> requests.Response:
         """发送delete请求，返回response对象"""
-        return BaseApi.request(method='delete', address=address, data=data, json_data=json, headers=headers,
-                               files=files)
+        return BaseApi._request(method='delete', address=address, data=data, json_data=json, headers=headers,
+                                files=files)
 
     @staticmethod
-    def put(address, data=None, json_data=None, headers=None, files=None) -> requests.Response:
+    def send_put_request(address, data=None, json_data=None, headers=None, files=None) -> requests.Response:
         """发送put请求，返回response对象"""
-        return BaseApi.request(method='put', address=address, data=data, json_data=json_data, headers=headers,
-                               files=files)
+        return BaseApi._request(method='put', address=address, data=data, json_data=json_data, headers=headers,
+                                files=files)
 
     @staticmethod
     def get_json(response: requests.Response) -> Union[Dict[str, Any], str]:
@@ -270,5 +271,5 @@ if __name__ == '__main__':
     params = {
         'mobile': '13800000000',
         'region': 'CN'}
-    r = BaseApi.get(address, params=params)
+    r = BaseApi.send_get_request(address, params=params)
     print(BaseApi.get_request_info(r))
