@@ -13,8 +13,8 @@ import pytest
 
 from common.models import AllureAttachmentType
 from common.settings import ENV
-from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
 from configs.env_config import EnvConfig
+from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
 
 
 def allure_title(title: str) -> None:
@@ -119,11 +119,9 @@ class AllureReportBeautiful:
             params = json.load(f)
             # 修改内容
             params['reportName'] = new_name
-            # 将修改后的内容保存在dict中
-            new_params = params
         # 往summary.json中，覆盖写入新的json数据
         with open(title_filepath, 'w', encoding="utf-8") as f:
-            json.dump(new_params, f, ensure_ascii=False, indent=4)
+            json.dump(params, f, ensure_ascii=False, indent=4)
 
     @staticmethod
     def set_report_env_on_results():
@@ -164,3 +162,7 @@ class AllureReportBeautiful:
         allure_env_file = os.path.join(TEMP_DIR, 'executor.json')
         with open(allure_env_file, 'w', encoding='utf-8') as f:
             f.write(str(json.dumps(allure_executor, ensure_ascii=False, indent=4)))
+
+
+if __name__ == '__main__':
+    AllureReportBeautiful.set_report_name('测试报告1234')
