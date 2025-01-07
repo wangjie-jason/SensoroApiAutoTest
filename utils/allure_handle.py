@@ -12,8 +12,6 @@ import allure
 import pytest
 
 from common.models import AllureAttachmentType
-from common.settings import ENV
-from configs.env_config import EnvConfig
 from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
 
 
@@ -113,14 +111,16 @@ class AllureReportBeautiful:
         @return:
         """
         title_filepath = os.path.join(ALLURE_REPORT_DIR, "widgets", "summary.json")
-        # 读取summary.json中的json数据，并改写reportName
-        with open(title_filepath, 'rb') as f:
-            # 加载json文件中的内容给params
+        # 检查summary.json文件是否存在
+        if not os.path.exists(title_filepath):
+            raise FileNotFoundError(f"修改报告名称时，summary.json文件未找到： {title_filepath}")
+        # 读取summary.json中的内容
+        with open(title_filepath, 'r', encoding='utf-8') as f:
             params = json.load(f)
-            # 修改内容
-            params['reportName'] = new_name
-        # 往summary.json中，覆盖写入新的json数据
-        with open(title_filepath, 'w', encoding="utf-8") as f:
+        # 修改报告名称
+        params['reportName'] = new_name
+        # 将修改后的内容写回summary.json
+        with open(title_filepath, 'w', encoding='utf-8') as f:
             json.dump(params, f, ensure_ascii=False, indent=4)
 
     @staticmethod
@@ -129,6 +129,9 @@ class AllureReportBeautiful:
         在allure-results报告的根目录下生成一个写入了环境信息的文件：environment.properties(注意：不能放置中文，否则会出现乱码)
         @return:
         """
+        # 方法内导入，防止其他文件引用allure_handle文件时引发循环导入问题
+        from common.settings import ENV
+        from configs.env_config import EnvConfig
         # 需要写入的环境信息
         allure_env = {
             'OperatingEnvironment': ENV,
@@ -165,4 +168,4 @@ class AllureReportBeautiful:
 
 
 if __name__ == '__main__':
-    AllureReportBeautiful.set_report_name('测试报告1234')
+    AllureReportBeautiful.set_report_name('API自动化测试报告')
