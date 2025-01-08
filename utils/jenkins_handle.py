@@ -120,5 +120,4 @@ def modify_jenkins_allure_report_name_in_zip():
 
 if __name__ == '__main__':
     # change_jenkins_allure_report_name()
-
-    modified_zip = modify_jenkins_allure_report_name_in_zip()
+    modify_jenkins_allure_report_name_in_zip()
