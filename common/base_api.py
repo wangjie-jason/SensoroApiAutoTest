@@ -133,37 +133,37 @@ class BaseApi:
             duration = end_time - start_time  # 计算请求时长
 
             # 记录请求时的详情信息
-            r_uri = response.request.url
-            r_method = method.upper()
-            r_headers = response.request.headers
+            r_uri = BaseApi.get_request_url(response)
+            r_method = BaseApi.get_request_method(response)
+            r_headers = BaseApi.get_request_headers(response)
             r_body = BaseApi.get_request_body(response)
             r_curl = BaseApi.request_to_curl(response)
-            r_respone = BaseApi.get_json(response)
+            r_response = BaseApi.get_json(response)
             r_duration = duration
-            r_respone_status_code = response.status_code
-            r_respone_headers = response.headers
+            r_response_status_code = BaseApi.get_status_code(response)
+            r_response_headers = BaseApi.get_response_headers(response)
             _log_msg = f"\n==================================================\n" \
                        f"请求地址：{r_uri}\n" \
                        f"请求方式：{r_method}\n" \
                        f"请求头：{r_headers}\n" \
                        f"请求内容：{r_body}\n" \
                        f"请求curl命令：{r_curl}\n" \
-                       f"接口响应内容:{r_respone}\n" \
-                       f"接口响应头:{r_respone_headers}\n" \
+                       f"接口响应内容:{r_response}\n" \
+                       f"接口响应头:{r_response_headers}\n" \
                        f"接口响应时长:{r_duration:.2f}秒\n" \
-                       f"HTTP状态码：{r_respone_status_code}\n" \
+                       f"HTTP状态码：{r_response_status_code}\n" \
                        f"==================================================\n\n"
 
             with allure.step("请求内容"):
-                allure_attach_text("请求地址", f"{r_uri}")
-                allure_attach_text("请求方式", f"{r_method}")
-                allure_attach_text("请求头", f"{r_headers}")
-                allure_attach_json("请求体", f"{r_body}")
-                allure_attach_text("请求curl命令", f"{r_curl}")
+                allure_attach_text("请求地址", r_uri)
+                allure_attach_text("请求方式", r_method)
+                allure_attach_json("请求头", r_headers)
+                allure_attach_json("请求体", r_body)
+                allure_attach_text("请求curl命令", r_curl)
             with allure.step("响应内容"):
-                allure_attach_json("响应体", json.dumps(r_respone, ensure_ascii=False, indent=4))
-                allure_attach_text("HTTP状态码", f"{r_respone_status_code}")
-                allure_attach_text("响应头", f"{r_respone_headers}")
+                allure_attach_json("响应体", r_response)
+                allure_attach_text("HTTP状态码", f"{r_response_status_code}")
+                allure_attach_json("响应头", r_response_headers)
 
             if response.status_code == 200:
                 logger.info(_log_msg)
@@ -241,6 +241,11 @@ class BaseApi:
         headers = request.headers.copy()
         headers.pop('User-Agent', None)
         return headers
+
+    @staticmethod
+    def get_response_headers(response: requests.Response) -> CaseInsensitiveDict[str]:
+        """获取响应头"""
+        return response.headers
 
     @staticmethod
     def get_request_body(response: requests.Response) -> str | None:

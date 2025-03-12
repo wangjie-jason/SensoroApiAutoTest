@@ -10,6 +10,7 @@ import platform
 
 import allure
 import pytest
+from requests.structures import CaseInsensitiveDict
 
 from common.models import AllureAttachmentType
 from configs.paths_config import TEMP_DIR, ALLURE_REPORT_DIR
@@ -28,16 +29,40 @@ def allure_attach_text(name: str, body: str = None) -> None:
     :param body: 附件内容
     :return:
     """
+    # 确保 body 是字符串类型
+    if body is None:
+        body = "None"  # 如果 body 为 None，设置为空字符串
+    elif not isinstance(body, str):
+        body = str(body)  # 如果 body 不是字符串，强制转换为字符串
     allure.attach(body=body, name=name, attachment_type=allure.attachment_type.TEXT)
 
 
-def allure_attach_json(name: str, body: str = None) -> None:
+def allure_attach_json(name: str, body: str | dict | CaseInsensitiveDict | None = None) -> None:
     """
     allure报告添加json格式附件
     :param name: 附件名称
     :param body: 附件内容
     :return:
     """
+    # 检查是否是 CaseInsensitiveDict 类型
+    if isinstance(body, CaseInsensitiveDict):
+        body = dict(body)  # 将CaseInsensitiveDict 转换为普通字典，一般请求头或者响应头是这种格式
+    # 尝试格式化 JSON
+    try:
+        if isinstance(body, dict):
+            # 如果 body 是字典直接转换
+            body = json.dumps(body, ensure_ascii=False, indent=4)
+        elif body is None:
+            # 如果 body 为 None，设置为空字符串
+            body = "None"
+        elif isinstance(body, str):
+            # 如果是字符串，先尝试转成字典，再解析成JSON
+            body = json.dumps(json.loads(body), indent=4, ensure_ascii=False)
+        else:
+            # 其他类型，直接传原始数据
+            body = body
+    except (json.JSONDecodeError, TypeError):
+        body = body  # 解析失败，直接传原始数据
     allure.attach(body=body, name=name, attachment_type=allure.attachment_type.JSON)
 
 
@@ -71,7 +96,7 @@ def allure_attach_file(name: str, source: str):
         AllureAttachmentType.MP4: allure.attachment_type.MP4,
         AllureAttachmentType.OGG: allure.attachment_type.OGG,
         AllureAttachmentType.WEBM: allure.attachment_type.WEBM,
-        AllureAttachmentType.PDF: allure.attachment_type.PDF, }
+        AllureAttachmentType.PDF: allure.attachment_type.PDF}
     _attachment_type = attachment_type_mapping.get(getattr(AllureAttachmentType, _name.upper(), None), None)
     allure.attach.file(source=source, name=name,
                        attachment_type=_attachment_type,
