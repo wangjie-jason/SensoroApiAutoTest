@@ -64,10 +64,10 @@ class BaseApi:
         """对请求参数进行预处理"""
         # 在请求参数里默认加上查询范围
         merged_params = {
-            "page": 1,
-            "size": 20,
-            'startTime': TimeUtil.get_seven_days_ago_time_unix(),
-            'endTime': TimeUtil.get_current_time_unix(),
+            # "page": 1,
+            # "size": 20,
+            # 'startTime': TimeUtil.get_seven_days_ago_time_unix(),
+            # 'endTime': TimeUtil.get_current_time_unix(),
             **(input_params or {})
         }
         return merged_params
@@ -200,11 +200,10 @@ class BaseApi:
                                 files=files)
 
     @staticmethod
-    def get_json(response: requests.Response) -> Union[Dict[str, Any], str]:
+    def get_json(response: requests.Response) -> dict | Any:
         """获取响应结果的json格式"""
         try:
-            json_data = response.json()
-            return json_data
+            return response.json()
         except json.JSONDecodeError:
             # 如果json解析失败，则返回原始响应体文本
             return f'解码JSON失败或响应为空,返回原始响应:{response.text}'

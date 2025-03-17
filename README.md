@@ -216,7 +216,7 @@ class Login(BaseApi):  # 定义接口对象类，同一个业务的接口放在�
 @allure.feature("登录模块测试用例")  # allure报告中展示模块功能分类的标题
 class TestLogin:  # 测试类名
     # 通过get_yaml_data方法，获取datas目录下准备好的测试数据
-    data_smsCode = get_yaml_data('datas/smsCode.yaml')
+    data_smsCode = get_yaml_data('datas/sms_code.yaml')
     # 将获取的测试数据转换成列表套元组的格式：[(),(),()],每一个元组就是一组测试数据，其实可以不用进行这一步，我这里加了这一步是为了让allure报告的测试用例标题动态化
     params = [(item['case_title'], item['phone'], item['expected']) for item in data_smsCode]
 

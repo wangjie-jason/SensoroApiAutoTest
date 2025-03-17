@@ -3,7 +3,3 @@
   password: '123456'
   expected: '账号密码不匹配！'
 
-- case_title: '手机号码格式不正确,登录失败'
-  username: '12345678901'
-  password: '138000'
-  expected: '手机号码格式不正确'

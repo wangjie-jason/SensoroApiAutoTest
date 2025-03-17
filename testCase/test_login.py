@@ -12,7 +12,7 @@ from utils.yaml_handle import YamlHandle
 
 @allure.feature("登录模块")
 class TestLogin:
-    data_smsCode = YamlHandle(DATAS_DIR + os.sep + 'smsCode.yaml').read_yaml()
+    data_smsCode = YamlHandle(DATAS_DIR + os.sep + 'sms_code.yaml').read_yaml()
     params = [(item['case_title'], item['expected']) for item in data_smsCode]
 
     @allure.story("测试获取验证码")

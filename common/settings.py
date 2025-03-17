@@ -13,7 +13,7 @@ from utils.jenkins_handle import ProjectName, BUILD_NUMBER, ALLURE_URL, BUILD_UR
 args = command_parser()
 
 # 设置默认运行环境，如果命令行中有 env 参数并且有效，使用命令行的值，否则使用默认值，支持的环境参考env_config中配置的环境
-ENV = (args.env or "dev").upper()
+ENV = (args.env or "test").upper()
 
 # 失败重跑次数
 rerun = 0

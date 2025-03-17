@@ -1,13 +1,12 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 from common.base_api import BaseApi
-from utils.time_utils import TimeUtil
 
 
 class Login(BaseApi):
     """登录模块"""
 
-    def login(self, username, password):
+    def login(self, username: str, password: str):
         """获取登录权限"""
         address = '/user/login'
         json = {
