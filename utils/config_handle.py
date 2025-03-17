@@ -1,4 +1,4 @@
-# !/usr/bin/python
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
 # @Time : 2022/6/2 14:44
 # @Author : wangjie
