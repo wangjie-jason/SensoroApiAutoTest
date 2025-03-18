@@ -3,10 +3,11 @@
 from common.base_api import BaseApi
 
 
-class Login(BaseApi):
+class Login:
     """登录模块"""
 
-    def login(self, username: str, password: str):
+    @staticmethod
+    def login(username: str, password: str):
         """获取登录权限"""
         address = '/user/login'
         json = {
@@ -14,8 +15,8 @@ class Login(BaseApi):
             'password': password
         }
 
-        return self.send_post_request(address, json_data=json)
+        return BaseApi.send_post_request(address, json_data=json)
 
 
 if __name__ == '__main__':
-    r = Login().login('18800000001', '123456')
+    r = Login.login('18800000001', '123456')

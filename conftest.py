@@ -8,7 +8,6 @@ import time
 
 import pytest
 
-from common.models import TestMetrics
 from utils.report_data_handle import ReportDataHandle
 
 
