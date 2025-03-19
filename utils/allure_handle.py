@@ -73,34 +73,27 @@ def allure_attach_file(name: str, source: str):
     :param source: 文件路径，相当于传一个文件
     :return:
     """
+    # 检查文件是否存在
+    if not os.path.isfile(source):
+        raise f"文件不存在: {source}"
+
     # 获取上传附件的尾缀，判断对应的 attachment_type 枚举值
-    _name = source.split('.')[-1]
-    if _name == "txt" or _name == "uri":
-        _name = "text" if _name == "txt" else "uri_list"
-    attachment_type_mapping = {
-        AllureAttachmentType.TEXT: allure.attachment_type.TEXT,
-        AllureAttachmentType.CSV: allure.attachment_type.CSV,
-        AllureAttachmentType.TSV: allure.attachment_type.TSV,
-        AllureAttachmentType.URI_LIST: allure.attachment_type.URI_LIST,
-        AllureAttachmentType.HTML: allure.attachment_type.HTML,
-        AllureAttachmentType.XML: allure.attachment_type.XML,
-        AllureAttachmentType.JSON: allure.attachment_type.JSON,
-        AllureAttachmentType.YAML: allure.attachment_type.YAML,
-        AllureAttachmentType.PCAP: allure.attachment_type.PCAP,
-        AllureAttachmentType.PNG: allure.attachment_type.PNG,
-        AllureAttachmentType.JPG: allure.attachment_type.JPG,
-        AllureAttachmentType.SVG: allure.attachment_type.SVG,
-        AllureAttachmentType.GIF: allure.attachment_type.GIF,
-        AllureAttachmentType.BMP: allure.attachment_type.BMP,
-        AllureAttachmentType.TIFF: allure.attachment_type.TIFF,
-        AllureAttachmentType.MP4: allure.attachment_type.MP4,
-        AllureAttachmentType.OGG: allure.attachment_type.OGG,
-        AllureAttachmentType.WEBM: allure.attachment_type.WEBM,
-        AllureAttachmentType.PDF: allure.attachment_type.PDF}
-    _attachment_type = attachment_type_mapping.get(getattr(AllureAttachmentType, _name.upper(), None), None)
-    allure.attach.file(source=source, name=name,
-                       attachment_type=_attachment_type,
-                       extension=_name)
+    _name = source.split('.')[-1].lower()
+
+    # 动态生成映射字典
+    attachment_type_mapping = {enum.value.lower(): getattr(allure.attachment_type, enum.name.upper())
+                               for enum in AllureAttachmentType}
+    _attachment_type = attachment_type_mapping.get(_name, None)
+
+    try:
+        allure.attach.file(
+            source=source,
+            name=name,
+            attachment_type=_attachment_type,
+            extension=_name
+        )
+    except Exception as e:
+        raise f"上传文件 {source} 时出错: {e}"
 
 
 class AllureReportBeautiful:

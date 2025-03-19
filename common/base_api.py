@@ -22,7 +22,6 @@ from common.models import Method
 from configs.env_config import EnvConfig
 from utils.MIME_type_classifier import get_MIME
 from utils.allure_handle import allure_attach_text, allure_attach_json, allure_attach_file
-from utils.time_utils import TimeUtil
 
 
 class BaseApi:
@@ -285,9 +284,9 @@ class BaseApi:
 
 
 if __name__ == '__main__':
-    address = 'auth/v1/sendSms'
-    params = {
+    path = 'auth/v1/sendSms'
+    data = {
         'mobile': '13800000000',
         'region': 'CN'}
-    r = BaseApi.send_get_request(address, params=params)
+    r = BaseApi.send_get_request(path, params=data)
     print(BaseApi.get_request_info(r))
