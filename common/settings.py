@@ -16,7 +16,7 @@ args = command_parser()
 ENV = (args.env or "test").upper()
 
 # 失败重跑次数
-rerun = 0
+rerun = 2
 
 # 失败重跑间隔时间
 reruns_delay = 5
