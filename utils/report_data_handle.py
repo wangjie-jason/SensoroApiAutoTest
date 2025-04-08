@@ -29,6 +29,7 @@ class ReportDataHandle:
             case_count["total"] = pytest_result['summary'].get("total", 0)  # 用例总数
             case_count["passed"] = pytest_result["summary"].get("passed", 0)  # 通过用例数
             case_count["failed"] = pytest_result["summary"].get("failed", 0)  # 失败用例数
+            case_count["rerun"] = pytest_result["summary"].get("rerun", 0)  # 重试通过用例数
             case_count["skipped"] = pytest_result["summary"].get("skipped", 0)  # 跳过用例数
             case_count["xfailed"] = pytest_result["summary"].get("xfailed", 0)  # 预期失败用例数
             case_count["xpassed"] = pytest_result["summary"].get("xpassed", 0)  # 预期成功用例数
@@ -37,7 +38,7 @@ class ReportDataHandle:
             if case_count["total"] > 0:
                 # 计算成功率
                 case_count["pass_rate"] = round(
-                    (case_count["passed"] + case_count["xpassed"]) / case_count["total"] * 100, 2)
+                    (case_count["passed"] + case_count["rerun"] + case_count["xpassed"]) / case_count["total"] * 100, 2)
             else:
                 # 如果未运行用例，则成功率为 0.0
                 case_count["pass_rate"] = 0.0

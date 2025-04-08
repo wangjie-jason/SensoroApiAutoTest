@@ -82,6 +82,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     print("******用例执行结果统计******")
     print(f"总用例数：{pytest_result.total}条")
     print(f"通过：{pytest_result.passed}条")
+    print(f"重试后通过：{pytest_result.rerun}条")
     print(f"失败：{pytest_result.failed}条")
     print(f"跳过：{pytest_result.skipped}条")
     print(f"预期失败：{pytest_result.xfailed}条")

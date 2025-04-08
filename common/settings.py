@@ -61,6 +61,7 @@ email_content = """
            执行结果如下:<br>
            &nbsp;&nbsp;用例运行总数:<strong> ${total}条</strong><br>
            &nbsp;&nbsp;通过用例数（passed）: <strong><font color="green" >${passed}条</font></strong><br>
+           &nbsp;&nbsp;重试通过用例数（rerun）: <strong><font color="green" >${rerun}条</font></strong><br>
            &nbsp;&nbsp;失败用例数（failed）: <strong><font color="red" >${failed}条</font></strong><br>
            &nbsp;&nbsp;报错用例数（error）: <strong><font color="orange" >${error}条</font></strong><br>
            &nbsp;&nbsp;跳过用例数（skipped）: <strong><font color="grey" >${skipped}条</font></strong><br>
@@ -86,6 +87,7 @@ wechat_content = """******用例执行结果统计******
                 > 测试环境:%s
                 > 总用例数：<font color=\"info\">${total}条</font>
                 > 通过用例数：<font color=\"info\">${passed}条</font>
+                > 重试通过用例数：<font color=\"info\">${rerun}条</font>
                 > 失败用例数：<font color=\"red\">${failed}条</font>
                 > 报错用例数：<font color=\"red\">${error}条</font>
                 > 跳过用例数：<font color=\"warning\">${skipped}条</font>

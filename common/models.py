@@ -16,6 +16,7 @@ class TestMetrics:
     """ 用例结果数据 """
     total: int
     passed: int
+    rerun: int
     failed: int
     skipped: int
     xfailed: int
