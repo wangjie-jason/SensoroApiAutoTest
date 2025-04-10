@@ -17,8 +17,8 @@ import pytest
 from common.base_log import logger
 from common.mail_sender import MailSender
 from common.robot_sender import EnterpriseWechatNotification
-from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, wechat_webhook_url, wechat_content, email_content, \
-    email_config, max_fail, rerun, reruns_delay
+from common.settings import IS_SEND_EMAIL, IS_SEND_WECHAT, WECHAT_WEBHOOK_URLS, WECHAT_CONTENT, EMAIL_CONTENT, \
+    EMAIL_CONFIG, MAX_FAIL_COUNT, RERUN_COUNT, RERUN_DELAY_SECONDS
 from configs.paths_config import TEMP_DIR, PYTEST_REPORT_DIR, PYTEST_RESULT_DIR, ALLURE_REPORT_DIR, \
     FILES_DIR
 from utils.allure_handle import AllureReportBeautiful
@@ -41,7 +41,8 @@ if __name__ == '__main__':
         # '-q',  # 代表 "quiet"，即安静模式，它可以将 pytest 的输出精简化，只输出测试用例的执行结果，而不会输出额外的信息，如测试用例的名称、执行时间等等
         '-vs',  # 指定输出用例执行信息，并打印程序中的print/logging输出
         'testCase/',  # 执行用例的目录
-        f"--maxfail={max_fail}", f"--reruns={rerun}", f"--reruns-delay={reruns_delay}",  # 指定最大失败次数、重运行次数和重运行间隔时间
+        f"--maxfail={MAX_FAIL_COUNT}",  # 指定最大失败次数
+        f"--reruns={RERUN_COUNT}", f"--reruns-delay={RERUN_DELAY_SECONDS}",  # 指定重运行次数和重运行间隔时间
         '--alluredir', f'{TEMP_DIR}', '--clean-alluredir',  # 先清空旧的alluredir目录，再将生成Allure原始报告需要的数据,并存放在 /Temp 目录
         f'--html={os.path.join(PYTEST_REPORT_DIR, "pytest_report.html")}',  # 指定pytest-html报告的存放位置
         '--self-contained-html',  # 将css样式合并到pytest-html报告文件中，便于发送邮件
@@ -72,14 +73,16 @@ if __name__ == '__main__':
     FileHandle.copy_file(allure_files + os.sep + '查看allure报告方法', ALLURE_REPORT_DIR)
 
     # ------------------------------发送通知消息----------------------------------
-    # 发送企业微信群聊
+    # 获取pytest-json报告数据
     pytest_result = asdict(ReportDataHandle.pytest_json_report_case_count())
+
+    # 发送企业微信群聊
     if IS_SEND_WECHAT:  # 判断是否需要发送企业微信
-        EnterpriseWechatNotification(wechat_webhook_url).send_markdown(
-            DataProcessor().process_data(wechat_content, pytest_result))
+        EnterpriseWechatNotification(WECHAT_WEBHOOK_URLS).send_markdown(
+            DataProcessor().process_data(WECHAT_CONTENT, pytest_result))
 
     # 发送邮件
     if IS_SEND_EMAIL:  # 判断是否需要发送邮件
         file_path = PYTEST_REPORT_DIR + os.sep + 'pytest_report.html'
-        ms = MailSender(email_config)
-        ms.attach_text(DataProcessor().process_data(email_content, pytest_result)).attach_file(file_path).send()
+        ms = MailSender(EMAIL_CONFIG)
+        ms.attach_text(DataProcessor().process_data(EMAIL_CONTENT, pytest_result)).attach_file(file_path).send()
