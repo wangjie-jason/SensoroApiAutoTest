@@ -3,7 +3,7 @@
 # @Time : 2023/6/21 20:24
 # @Author : wangjie
 # @File : command_parser.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 
 import argparse

@@ -3,7 +3,7 @@
 # @Time : 2022/6/1 16:20
 # @Author : wangjie
 # @File : mail_sender.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 import smtplib
 from email.header import Header
 from email.mime.application import MIMEApplication

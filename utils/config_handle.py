@@ -3,7 +3,7 @@
 # @Time : 2022/6/2 14:44
 # @Author : wangjie
 # @File : config_handle.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 import configparser
 import os.path
 

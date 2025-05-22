@@ -3,7 +3,7 @@
 # @Time : 2022/7/7 11:40
 # @Author : wangjie
 # @File : env_config.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 import inspect
 
 from common.settings import ENV

@@ -3,7 +3,7 @@
 # @Time : 2023/5/5 11:48
 # @Author : wangjie
 # @File : robot_sender.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 import requests
 from common.base_log import logger

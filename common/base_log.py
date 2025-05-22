@@ -3,7 +3,7 @@
 # @Time : 2022/5/24 20:53
 # @Author : wangjie
 # @File : base_log.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 import logging
 import os.path

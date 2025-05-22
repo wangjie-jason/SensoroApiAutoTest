@@ -3,7 +3,7 @@
 # @Time : 2023/6/7 17:33
 # @Author : wangjie
 # @File : exceptions.py.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 """自定义报错"""
 

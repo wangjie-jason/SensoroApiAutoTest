@@ -3,7 +3,7 @@
 # @Time : 2022/7/7 15:23
 # @Author : wangjie
 # @File : models.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 from dataclasses import dataclass
 from enum import Enum, unique
 from typing import Text, List, Union

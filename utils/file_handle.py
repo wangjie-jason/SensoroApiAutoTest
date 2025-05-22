@@ -3,7 +3,7 @@
 # @Time : 2023/7/5 18:06
 # @Author : wangjie
 # @File : file_handle.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 
 # 标准库导入
@@ -161,4 +161,4 @@ class FileHandle:
 
 
 if __name__ == '__main__':
-    print(FileHandle.get_files('/Users/wangjie/SensoroApi/configs'))
+    print(FileHandle.get_files('/Users/wangjie/SensoroApiAutoTest/configs'))

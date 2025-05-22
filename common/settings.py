@@ -3,7 +3,7 @@
 # @Time : 2022/7/7 11:45
 # @Author : wangjie
 # @File : settings.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 from utils.command_parser import command_parser
 from utils.jenkins_handle import ProjectName, BUILD_NUMBER, ALLURE_URL, BUILD_URL

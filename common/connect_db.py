@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 # @Time : 2023/4/21 10:36
 # @Author : wangjie
-# @File : connect_DB.py
-# @project : SensoroApi
+# @File : connect_db.py
+# @project : SensoroApiAutoTest
 import psycopg2
 import psycopg2.pool
 import pymysql

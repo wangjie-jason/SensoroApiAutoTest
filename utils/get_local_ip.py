@@ -3,7 +3,7 @@
 # @Time : 2023/6/7 14:48
 # @Author : wangjie
 # @File : get_local_ip.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 
 
 import socket

@@ -3,7 +3,7 @@
 # @Time : 2023/3/27 14:17
 # @Author : wangjie
 # @File : base_api.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 import base64
 import json
 import os

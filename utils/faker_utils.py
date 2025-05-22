@@ -3,7 +3,7 @@
 # @Time : 2023/8/7 11:14
 # @Author : wangjie
 # @File : faker_utils.py
-# @project : SensoroApi
+# @project : SensoroApiAutoTest
 import random
 
 from faker import Faker
