@@ -30,21 +30,22 @@ class CacheHandler:
             allure_attach_json("当前可使用的缓存", json.dumps(_global_data, ensure_ascii=False, indent=4))
 
     @staticmethod
-    def get_cache(cache_data):
+    def get_cache(cache_name):
         """
         从全局变量_global_data中取值
         :return:
         """
 
         try:
+            cache_data = _global_data[cache_name]
             with allure.step("提取缓存成功"):
-                allure_attach_text("取出缓存", str(f"{cache_data}:{_global_data.get(cache_data, None)}"))
-            return _global_data[cache_data]
+                allure_attach_text("取出缓存", str(f"{cache_name}:{_global_data.get(cache_name, None)}"))
+            return cache_data
         except KeyError:
             with allure.step("提取缓存失败"):
                 allure_attach_json("提取缓存失败，当前可使用的缓存",
                                    json.dumps(_global_data, ensure_ascii=False, indent=4))
-            raise ValueNotFoundError(f"{cache_data}的缓存数据未找到，请检查是否将该数据存入缓存中")
+            raise ValueNotFoundError(f"{cache_name}的缓存数据未找到，请检查是否将该数据存入缓存中")
 
 
 if __name__ == '__main__':
