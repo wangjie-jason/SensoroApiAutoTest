@@ -41,6 +41,208 @@
     * 或者直接使用pycharm自带的提示功能安装依赖包，推荐这种！！！
       ![安装提示.png](files/images/安装提示.png)
 
+
+## 快速开始
+
+### 5 分钟上手指南
+
+**步骤 1：配置测试环境**
+
+打开 `configs/env_config.py` 文件，修改测试环境的 URL 和默认请求头：
+
+```python
+class TestConfig:
+    """测试环境配置"""
+    URL = "https://your-test-api.com"  # 修改为你的测试环境地址
+    DEFAULT_HEADERS = {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'accept-language': 'zh-CN,zh;q=0.9',
+    }
+```
+
+**步骤 2：准备测试数据**
+
+在 `datas` 目录下创建 YAML 格式的测试数据文件，例如 `login.yaml`：
+
+```yaml
+- case_title: '登录成功'
+  username: 'test_user'
+  password: '123456'
+  expected: 'SUCCESS'
+
+- case_title: '密码错误'
+  username: 'test_user'
+  password: 'wrong_password'
+  expected: '密码错误'
+```
+
+**步骤 3：编写测试用例**
+
+在 `testCase` 目录下创建测试文件，例如 `test_login.py`：
+
+```python
+import allure
+import pytest
+from pageApi.login import Login
+from common.base_api import BaseApi
+
+@allure.feature("登录模块")
+class TestLogin:
+    @allure.story("登录接口测试")
+    def test_login(self):
+        """测试登录功能"""
+        response = Login.login_app_v2(phone='13800000000', sms_code='123456')
+        assert response.status_code == 200
+```
+
+**步骤 4：运行测试**
+
+在项目根目录执行以下命令运行测试：
+
+```bash
+# 方式 1：直接运行（默认 TEST 环境）
+python3 run.py
+
+# 方式 2：指定环境运行
+python3 run.py -env DEV
+
+# 方式 3：指定环境并发送通知
+python3 run.py -env TEST --send-wechat true --send-email true
+```
+
+**步骤 5：查看报告**
+
+测试完成后，报告将生成在以下位置：
+- Allure 报告：`outFiles/allure_report/index.html`
+- Pytest HTML 报告：`outFiles/pytest_report/pytest_report.html`
+
+打开浏览器访问报告文件即可查看测试结果。
+
+## 命令行参数详解
+
+`run.py` 支持多种命令行参数，方便在不同场景下灵活使用：
+
+### 基本用法
+
+```bash
+python3 run.py [参数选项]
+```
+
+### 参数列表
+
+| 参数 | 简写 | 必填 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `--env` | `-env` | 否 | TEST | 指定运行环境，可选值：DEV/TEST/PROD |
+| `--send-wechat` | `-w` | 否 | False | 是否发送企业微信通知，可选值：true/false |
+| `--send-email` | `-e` | 否 | True | 是否发送邮件通知，可选值：true/false |
+
+### 使用示例
+
+```bash
+# 1. 默认方式运行（TEST 环境，不发送通知）
+python3 run.py
+
+# 2. 在开发环境运行
+python3 run.py -env DEV
+
+# 3. 在生产环境运行并发送企业微信通知
+python3 run.py -env PROD --send-wechat true
+
+# 4. 在测试环境运行并发送邮件通知
+python3 run.py -env TEST --send-email true
+
+# 5. 同时发送企业微信和邮件通知
+python3 run.py -env TEST --send-wechat true --send-email true
+
+# 6. 参数大小写不敏感
+python3 run.py -env dev --send-wechat TRUE
+```
+
+### 注意事项
+
+- 环境参数只支持：DEV（开发）、TEST（测试）、PROD（生产）
+- 通知参数只接受：true 或 false（不区分大小写）
+- 未指定环境时，默认在 TEST 环境运行
+- 未指定通知参数时，企业微信默认不发送，邮件默认发送
+
+## 环境配置说明
+
+### 1. 环境配置文件
+
+项目支持多环境配置，所有环境配置都在 `configs/env_config.py` 文件中管理。
+
+### 2. 配置项说明
+
+每个环境配置类包含以下核心配置项：
+
+```python
+class TestConfig:
+    """测试环境配置"""
+    
+    # 接口基础 URL
+    URL = "https://www.wanandroid.com"
+    
+    # 默认请求头
+    DEFAULT_HEADERS = {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'accept-language': 'zh-CN,zh;q=0.9',
+        'authorization': 'Bearer YOUR_TOKEN_HERE',  # 如需认证可在此配置
+    }
+    
+    # 数据库配置（用于数据库断言）
+    DB_CONFIG = {
+        'host': 'localhost',      # 数据库主机
+        'port': 3306,             # 数据库端口
+        'user': 'root',           # 数据库用户名
+        'password': '',           # 数据库密码
+        'db': 'autotest',         # 数据库名称
+        'charset': 'utf8',        # 字符集
+    }
+```
+
+### 3. 添加新环境
+
+如需添加新的环境（如预发布环境），只需在 `env_config.py` 中添加对应的配置类：
+
+```python
+class PreConfig:
+    """预发布环境配置"""
+    URL = "https://pre.your-domain.com"
+    DEFAULT_HEADERS = {
+        'Content-Type': 'application/json;charset=UTF-8',
+    }
+    DB_CONFIG = {
+        'host': 'pre-db.example.com',
+        'port': 3306,
+        'user': 'test_user',
+        'password': 'your_password',
+        'db': 'your_database',
+        'charset': 'utf8',
+    }
+```
+
+### 4. 切换环境
+
+- **方式 1**：通过命令行参数切换（推荐）
+  ```bash
+  python3 run.py -env DEV    # 开发环境
+  python3 run.py -env TEST   # 测试环境
+  python3 run.py -env PROD   # 生产环境
+  ```
+
+- **方式 2**：修改 `common/settings.py` 中的 `ENV` 变量
+  ```python
+  ENV = 'DEV'  # 修改为需要的环境
+  ```
+
+### 5. 环境隔离特性
+
+- 不同环境的配置完全独立，互不影响
+- 每次运行只能选择一个环境
+- 环境切换无需修改代码，只需更改配置或命令行参数
+- 支持动态读取环境变量，便于 CI/CD 集成
+
+
 ## 项目结构
 
 ```
