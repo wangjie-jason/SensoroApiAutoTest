@@ -47,12 +47,14 @@ def allure_attach_json(name: str, body: str | dict | CaseInsensitiveDict | None 
     try:
         if isinstance(body, dict):
             body = json.dumps(body, ensure_ascii=False, indent=4)
+        elif isinstance(body, list):
+            body = json.dumps(body, ensure_ascii=False, indent=4)
         elif body is None:
             body = "None"
         elif isinstance(body, str):
             body = json.dumps(json.loads(body), indent=4, ensure_ascii=False)
         else:
-            body = body
+            body = json.dumps(body, ensure_ascii=False, indent=4)
     except (json.JSONDecodeError, TypeError):
         body = body
     allure.attach(body=body, name=name, attachment_type=allure.attachment_type.JSON)
