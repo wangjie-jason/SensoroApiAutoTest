@@ -4,7 +4,7 @@
 # @Author : wangjie
 # @File : MIME_type_classifier.py
 # @project : SensoroApiAutoTest
-from common.models import MIMEFileType
+from core.models import MIMEFileType
 
 d = {
     'image/png': ['png'],
@@ -35,7 +35,7 @@ d = {
 }
 
 
-def get_MIME(file_name):
+def get_MIME(file_name: str) -> str:
     """
     多用途互联网邮件扩展类型,根据文件后缀匹配文件类型并返回相应的 MIME 类型。
     :param file_name:文件名或者文件路径
@@ -54,5 +54,3 @@ def get_MIME(file_name):
 if __name__ == '__main__':
     mime_type = get_MIME('example.png')
     print(mime_type)
-
-

@@ -1,0 +1,65 @@
+project:
+  name: API Automation Test Demo
+  default_env: TEST
+
+runtime:
+  max_fail_count: 100
+  rerun_count: 1
+  rerun_delay_seconds: 3
+  log_level: INFO
+  console_log: True
+
+notifications:
+  email:
+    enabled: False
+    email_config:
+      mail_subject: API 自动化测试报告
+      sender_username: your-email@example.com
+      sender_password: your-password
+      receiver_mail_list: ['your-email@example.com']
+      smtp_domain: smtp.example.com
+      smtp_port: 465
+    content_template: |
+      各位同事, 大家好:<br><br>
+
+      自动化用例于 <strong>${start_time}</strong> 开始运行，运行时长：<strong>${duration}s</strong>，目前已执行完成。<br>
+      ----------------------------------------------------------------------------------<br>
+      项目名称：<strong>${JenkinsUtil.get_project_name()}</strong> <br>
+      构件编号：<strong>#${JenkinsUtil.get_build_number()}</strong><br>
+      项目环境：<strong>${config.current_env()}</strong><br>
+      ----------------------------------------------------------------------------------<br>
+      执行结果如下:<br>
+      用例运行总数:<strong> ${total}条</strong><br>
+      通过用例数（passed）: <strong><font color="green">${passed}条</font></strong><br>
+      重试通过用例数（rerun）: <strong><font color="green">${rerun}条</font></strong><br>
+      失败用例数（failed）: <strong><font color="red">${failed}条</font></strong><br>
+      报错用例数（error）: <strong><font color="orange">${error}条</font></strong><br>
+      跳过用例数（skipped）: <strong><font color="grey">${skipped}条</font></strong><br>
+      预期失败用例数（xfailed）: <strong><font color="grey">${xfailed}条</font></strong><br>
+      预期通过用例数（xpassed）: <strong><font color="grey">${xpassed}条</font></strong><br>
+      通过率: <strong><font color="green">${pass_rate}%%</font></strong><br>
+      测试报告，点击查看: <a href='${JenkinsUtil.get_allure_url()}'>[测试报告入口]</a><br>
+      构建详情，点击查看: <a href='${JenkinsUtil.get_build_url()}'>[控制台入口]</a><br><br>
+      **********************************<br>
+      附件为具体的测试报告，详细情况可下载附件查看，非相关负责人员可忽略此消息。谢谢。
+  wechat:
+    enabled: False
+    webhook_urls: ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your-key']
+    content_template: |
+      ******用例执行结果统计******
+      > 项目名称: ${JenkinsUtil.get_project_name()}
+      > 构件编号: #${JenkinsUtil.get_build_number()}
+      > 测试环境: ${config.current_env()}
+      > 总用例数：<font color="info">${total}条</font>
+      > 通过用例数：<font color="info">${passed}条</font>
+      > 重试通过用例数：<font color="info">${rerun}条</font>
+      > 失败用例数：<font color="red">${failed}条</font>
+      > 报错用例数：<font color="red">${error}条</font>
+      > 跳过用例数：<font color="warning">${skipped}条</font>
+      > 预期失败用例数：<font color="comment">${xfailed}条</font>
+      > 预期通过用例数：<font color="comment">${xpassed}条</font>
+      > 通过率：<font color="info">${pass_rate}%%</font>
+      > 用例开始时间: <font color="info">${start_time}</font>
+      > 用例执行时长：<font color="info">${duration}s</font>
+      > 测试报告，点击查看 >> [测试报告入口](${JenkinsUtil.get_allure_url()})
+      > 构建详情，点击查看 >> [控制台入口](${JenkinsUtil.get_build_url()})

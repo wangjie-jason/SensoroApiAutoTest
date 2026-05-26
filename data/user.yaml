@@ -1,0 +1,7 @@
+- case_title: "获取单个用户"
+  user_id: 1
+  expected_name: "Leanne Graham"
+
+- case_title: "获取不存在的用户"
+  user_id: 999
+  expected_status: 404

@@ -1,0 +1,14 @@
+TEST:
+  base_url: https://jsonplaceholder.typicode.com
+  default_headers:
+    Content-Type: application/json;charset=UTF-8
+
+DEV:
+  base_url: https://jsonplaceholder.typicode.com
+  default_headers:
+    Content-Type: application/json;charset=UTF-8
+
+PROD:
+  base_url: https://jsonplaceholder.typicode.com
+  default_headers:
+    Content-Type: application/json;charset=UTF-8

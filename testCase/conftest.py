@@ -1,24 +1,28 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-# @Time : 2022/5/24 18:11
 # @Author : wangjie
 # @File : conftest.py
 # @project : SensoroApiAutoTest
 import pytest
 
-from common.base_api import BaseApi
-from common.base_log import logger
-from pageApi.login import Login
-from utils.cache_handle import CacheHandler
+from core.http_client import HttpClient
+from apis.user_api import UserApi
+from utils.cache_util import CacheUtil
 
 
-@pytest.fixture(scope="session", autouse=False)
-def get_token():
-    """获取登录V1的token"""
-    logger.info("开始用例前置操作")
-    # 调登录接口，获取登录接口的token
-    login_response = Login.login('18800000001', '123456')
-    token = BaseApi.get_json(login_response)['data']['token']
-    CacheHandler.set_cache('Authorization', f'Bearer {token}')
-    logger.info("结束用例前置操作")
-    return token
+@pytest.fixture(scope="session")
+def cache_handler() -> CacheUtil:
+    """缓存管理器 fixture，注入共享数据字典"""
+    return CacheUtil()
+
+
+@pytest.fixture(scope="session")
+def http_client() -> HttpClient:
+    """session 级别的 HTTP 客户端"""
+    return HttpClient()
+
+
+@pytest.fixture(scope="session")
+def user_api(http_client: HttpClient) -> UserApi:
+    """用户接口对象"""
+    return UserApi(http_client)

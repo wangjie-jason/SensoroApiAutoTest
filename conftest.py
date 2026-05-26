@@ -8,9 +8,11 @@ import time
 
 import pytest
 
+from core.config_manager import config
 from utils.report_data_handle import ReportDataHandle
 
 
+# ---------- 集合与编码 ----------
 def pytest_sessionstart():
     """在整个pytest运行过程开始之前执行的操作"""
     pass
@@ -35,12 +37,14 @@ def pytest_configure(config):
     pass
 
 
+# ---------- pytest-html 报告美化 ----------
+
 def pytest_metadata(metadata: dict):
     """修改pytest的metadata数据，在pytest-html报告中体现在Environment展示的信息"""
     # 添加项目名称
-    metadata['项目名称'] = 'lins接口自动化测试'
+    metadata['项目名称'] = config.project_name()
     # 删除Java_Home信息
-    metadata.pop("JAVA_HOME")
+    metadata.pop("JAVA_HOME", None)
     # 删除Plugins
     # metadata.pop("Plugins")
 
@@ -75,11 +79,13 @@ def pytest_runtest_makereport(item, call):  # description取值为用例说明__
     report.description = str(item.function.__doc__)
 
 
+# ---------- 控制台摘要 ----------
+
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
     """收集测试结果展示在控制台"""
     pytest_result = ReportDataHandle.pytest_json_report_case_count()
     run_time = round((time.time() - terminalreporter._sessionstarttime), 2)
-    print("******用例执行结果统计******")
+    print("******自动化测试用例执行结果统计******")
     print(f"总用例数：{pytest_result.total}条")
     print(f"通过：{pytest_result.passed}条")
     print(f"重试后通过：{pytest_result.rerun}条")

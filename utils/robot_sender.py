@@ -1,0 +1,107 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
+# @Time : 2023/5/5 11:48
+# @Author : wangjie
+# @File : robot_sender.py
+# @project : SensoroApiAutoTest
+
+import requests
+
+from core.config_manager import config
+from core.exceptions import SendMessageError, ValueTypeError
+from core.logger import logger
+
+
+class EnterpriseWechatNotification:
+    """企业微信群通知"""
+
+    def __init__(self, hook_urls: list):
+        # 企业微信群机器人的hook地址，一个机器人就一个，多个就定义多个，可以写死，也可以写在配置类中
+        self.hook_urls = hook_urls
+        self.header = {'Content-Type': 'application/json'}
+
+    def send_text(self, content, mentioned_mobile_list: list = None):
+        """
+        发送文本类型通知
+        :param content: 文本内容，最长不超过2048个字节，必须是utf8编码
+        :param mentioned_mobile_list: 手机号列表，提醒手机号对应的群成员(@某个成员)，@all表示提醒所有人
+        :return:
+        """
+        # 处理默认值（不传参数时为空列表）
+        mentioned_mobile_list = mentioned_mobile_list or []
+
+        # 校验类型必须是列表
+        if not isinstance(mentioned_mobile_list, list):
+            raise ValueTypeError("手机号码列表必须是 list 类型")
+
+        # 校验所有号码必须是字符串
+        for mobile in mentioned_mobile_list:
+            if not isinstance(mobile, str):
+                raise ValueTypeError(f"手机号码【{mobile}】必须是字符串类型")
+
+        # 构造请求体
+        data = {
+            "msgtype": "text",
+            "text": {
+                "content": content,
+                "mentioned_list": [],
+                "mentioned_mobile_list": mentioned_mobile_list
+            }
+        }
+
+        # 发送请求
+        self._send_msg(data)
+
+    def send_markdown(self, content):
+        """
+        发送markdown消息
+        :param content: markdown格式内容
+        :return:
+        """
+        data = {
+            "msgtype": "markdown",
+            "markdown": {"content": content, },
+        }
+        self._send_msg(data)
+
+    def _upload_file(self, file):
+        """
+        先将文件上传到临时媒体库
+        """
+        for hook_url in self.hook_urls:
+            key = hook_url.split("key=")[1]
+            url = f"https://qyapi.weixin.qq.com/cgi-bin/webhook/upload_media?key={key}&type=file"
+            data = {"file": open(file, "rb")}
+            res = requests.post(url, files=data).json()
+            return res['media_id']
+
+    def send_file_msg(self, file):
+        """
+        发送文件类型的消息
+        @return:
+        """
+
+        data = {"msgtype": "file",
+                "file": {"media_id": self._upload_file(file)}
+                }
+        self._send_msg(data)
+
+    def _send_msg(self, data: dict):
+        """发送企业微信消息通知"""
+
+        logger.info("开始发送企业微信消息")
+        for hook_url in self.hook_urls:
+            response = requests.post(url=hook_url, headers=self.header, json=data)
+            result = response.json()
+            if result["errcode"] == 0:
+                logger.info("企业微信消息发送成功")
+            else:
+                logger.error(f'企业微信「{data["msgtype"]}类型」消息发送失败：{response.json()}')
+                raise SendMessageError(
+                    f"企业微信「{data['msgtype']}类型」消息发送失败，错误代码：{result['errcode']}，错误信息：{result['errmsg']}")
+
+
+if __name__ == '__main__':
+    content = config.wechat_content()
+    webhook_urls = config.wechat_webhook_urls()
+    EnterpriseWechatNotification(webhook_urls).send_markdown(content)
