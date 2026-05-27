@@ -244,11 +244,12 @@ class UserApi:
 
 ```python
 # testcase/test_user.py
-from core.paths import DATAS_DIR
+from core.paths import DATA_DIR
 from utils.yaml_util import YamlUtil
 
 _params = [(item['case_title'], item.get('user_id'), item.get('expected_name'),
-            item.get('expected_status')) for item in YamlUtil.read_yaml(DATAS_DIR / 'user.yaml')]
+            item.get('expected_status')) for item in YamlUtil.read_yaml(DATA_DIR / 'user.yaml')]
+
 
 @allure.feature("用户模块")
 class TestUser:

@@ -9,6 +9,7 @@ import logging
 import os.path
 import sys
 import time
+from logging import FileHandler, NullHandler, StreamHandler
 
 import colorlog
 
@@ -26,7 +27,7 @@ class Logger:
     _log_path = None
 
     @classmethod
-    def get_logger(cls):
+    def get_logger(cls) -> logging.Logger:
         """单例模式,使多文件或多次调用时,始终使用这一个logger"""
         if cls._logger_instance:
             return cls._logger_instance
@@ -67,26 +68,26 @@ class Logger:
             return cls._logger_instance
 
     @classmethod
-    def generate_log_path(cls):
+    def generate_log_path(cls) -> str:
         log_dir_today = os.path.join(LOGS_DIR, time.strftime('%Y-%m-%d'))
         if not os.path.exists(log_dir_today):
             os.makedirs(log_dir_today)
         now = time.strftime('%Y-%m-%d_%H:%M:%S')
-        if sys.platform in ('win32', 'win64'):
+        if sys.platform in ('win32', 'win64'):  # 兼容window文件命名时不支持":"的方式
             separator = '_'
         else:
             separator = ':'
         return os.path.join(log_dir_today, f"{now.replace(':', separator)}-log.log")
 
     @classmethod
-    def create_file_handler(cls, formatter):
+    def create_file_handler(cls, formatter: logging.Formatter) -> FileHandler:
         fh = logging.FileHandler(cls._log_path, encoding='utf-8')
         fh.setFormatter(formatter)
         # fh.setLevel(logging.INFO)
         return fh
 
     @classmethod
-    def create_console_handler(cls, formatter):
+    def create_console_handler(cls, formatter: logging.Formatter) -> StreamHandler | NullHandler:
         if config.console_log():
             ch = logging.StreamHandler()
             ch.setFormatter(formatter)
@@ -96,14 +97,14 @@ class Logger:
             return logging.NullHandler()
 
     @classmethod
-    def configure_log_levels(cls, logger, ch, fh):
+    def configure_log_levels(cls, logger: logging.Logger, ch: StreamHandler | NullHandler, fh: FileHandler) -> None:
         level = getattr(logging, config.log_level().upper(), logging.INFO)
         logger.setLevel(level)
         fh.setLevel(level)
         ch.setLevel(level)
 
     @classmethod
-    def log_color(cls):
+    def log_color(cls) -> colorlog.ColoredFormatter:
         """ 设置日志颜色 """
         log_colors_config = {
             'DEBUG': 'cyan',

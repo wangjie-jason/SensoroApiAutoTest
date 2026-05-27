@@ -17,7 +17,7 @@ CORE_DIR = BASE_DIR / 'core'
 CONFIG_DIR = BASE_DIR / 'config'
 
 # data目录的路径
-DATAS_DIR = BASE_DIR / 'data'
+DATA_DIR = BASE_DIR / 'data'
 
 # files目录的路径
 FILES_DIR = BASE_DIR / 'files'

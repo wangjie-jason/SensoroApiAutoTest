@@ -71,13 +71,6 @@ class MailSender:
 
 
 if __name__ == '__main__':
-    email_config = {
-        'mail_subject': '接口自动化测试报告',  # 邮件标题
-        'sender_username': 'your-email@example.com',  # 发件人邮箱
-        'sender_password': 'your-password',  # 发件人邮箱授权码
-        'receiver_mail_list': ['your-email@example.com', ],  # 收件人邮箱
-        'smtp_domain': 'smtp.example.com',  # 发送邮箱的域名
-        'smtp_port': 465,  # 发送邮箱的端口号
-    }
+    email_config = config.email_config()
     content = config.email_content()
     MailSender(email_config).attach_text(content).send()
