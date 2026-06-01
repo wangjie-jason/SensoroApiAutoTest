@@ -3,22 +3,22 @@ project:
   default_env: TEST
 
 runtime:
-  max_fail_count: 100
-  rerun_count: 1
-  rerun_delay_seconds: 3
-  log_level: INFO
-  console_log: True
+  max_fail_count: 100  # 当本次测试流程所有失败用例达到最大失败数，停止执行
+  rerun_count: 1 # 失败重跑次数
+  rerun_delay_seconds: 3  # 失败重跑间隔时间
+  log_level: INFO   # 设置日志等级
+  console_log: True  # 设置是否开启控制台日志
 
 notifications:
   email:
     enabled: False
     email_config:
-      mail_subject: API 自动化测试报告
-      sender_username: your-email@example.com
-      sender_password: your-password
-      receiver_mail_list: ['your-email@example.com']
-      smtp_domain: smtp.example.com
-      smtp_port: 465
+      mail_subject: API 自动化测试报告  # 邮件标题
+      sender_username: your-email@example.com  # 发件人邮箱 → 可通过 EMAIL_SENDER_USERNAME 环境变量注入
+      sender_password: your-password  # 发件人邮箱授权码 → 可通过 EMAIL_SENDER_PASSWORD 环境变量注入
+      receiver_mail_list: [ 'your-email@example.com' ]  # 收件人邮箱 → 可通过 EMAIL_RECEIVERS 环境变量注入
+      smtp_domain: smtp.example.com  # 发送邮箱的域名
+      smtp_port: 465  # 发送邮箱的端口号
     content_template: |
       各位同事, 大家好:<br><br>
 
@@ -44,7 +44,7 @@ notifications:
       附件为具体的测试报告，详细情况可下载附件查看，非相关负责人员可忽略此消息。谢谢。
   wechat:
     enabled: False
-    webhook_urls: ['https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your-key']
+    webhook_urls: [ 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your-key' ] # 企业微信 webhook → 可通过 WECHAT_WEBHOOK_URLS 环境变量注入
     content_template: |
       ******用例执行结果统计******
       > 项目名称: ${JenkinsUtil.get_project_name()}
