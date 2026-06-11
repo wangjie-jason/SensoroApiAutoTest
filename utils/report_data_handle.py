@@ -22,7 +22,7 @@ class ReportDataHandle:
         pass
 
     @staticmethod
-    def pytest_json_report_case_count() -> TestMetrics | None:
+    def pytest_json_report_case_count() -> TestMetrics:
         """
         解析 pytest-json-report 生成的 JSON 结果文件，统计用例执行数据并返回 TestMetrics
 

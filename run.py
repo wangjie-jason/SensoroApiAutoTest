@@ -57,16 +57,21 @@ if __name__ == '__main__':
     ])
 
     # ------------------------------发送allure报告----------------------------------
-    # 生成allure报告环境信息
-    AllureReportBeautiful.set_report_env_on_results()
-    # 生成allure报告执行器信息
-    AllureReportBeautiful.set_report_executer_on_results()
-    # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
-    os.system(f'allure generate {ALLURE_RESULT} -o {ALLURE_REPORT_DIR} --clean')
-    # 修改allure报告浏览器窗口标题
-    AllureReportBeautiful.set_windows_title(config.project_name())
-    # 修改allure报告标题
-    AllureReportBeautiful.set_report_name(config.project_name())
+    try:
+        # 生成allure报告环境信息
+        AllureReportBeautiful.set_report_env_on_results()
+        # 生成allure报告执行器信息
+        AllureReportBeautiful.set_report_executer_on_results()
+        # 使用allure generate -o 命令将./Temp目录下的临时报告生成到Report目录下变成html报告
+        ret = os.system(f'allure generate {ALLURE_RESULT} -o {ALLURE_REPORT_DIR} --clean')
+        if ret != 0:
+            raise RuntimeError("allure generate 失败, 可能缺少 Java 或 allure CLI")
+        # 修改allure报告浏览器窗口标题
+        AllureReportBeautiful.set_windows_title(config.project_name())
+        # 修改allure报告标题
+        AllureReportBeautiful.set_report_name(config.project_name())
+    except Exception:
+        logger.warning("Allure 报告生成失败, 跳过报告美化, 原始数据仍可用", exc_info=True)
 
     # ------------------------------发送通知消息----------------------------------
     # 获取pytest-json报告数据
